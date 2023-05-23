@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/database/database.dart';
 
 import 'Views/homepage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // initialize the database
+  await AppDatabase().initializeDB();
   runApp(const MyApp());
 }
 
@@ -11,6 +15,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomePage();
+    return const MaterialApp(
+      title: 'QR Attendance',
+      home: HomePage(),
+    );
   }
 }
