@@ -19,22 +19,41 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(title: Text(appName)),
         drawer: drawer(context),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => const AttendanceList())),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (builder) => const AttendanceList())),
+                        child: customCard(
+                            icon: Icons.description_outlined,
+                            title: attendanceList)),
+                    GestureDetector(
                       child: customCard(
-                          icon: Icons.list_alt, title: attendanceList)),
-                  customCard(icon: Icons.storage_outlined, title: genQr),
-                ],
-              ),
-            ],
+                          icon: Icons.qr_code_2_outlined,
+                          title: 'Create QR Code'),
+                    )
+                  ],
+                ),
+                const Divider(thickness: 3, height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                        child: customCard(
+                            icon: Icons.qr_code_scanner_outlined,
+                            title: 'Check QR Code')),
+                    customCard(icon: Icons.storage_outlined, title: genQr)
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

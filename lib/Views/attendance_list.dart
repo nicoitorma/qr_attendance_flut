@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_attendance_flut/Models/attendance.dart';
 import 'package:qr_attendance_flut/Repository/attendance_list_repository.dart';
-import 'package:qr_attendance_flut/Views/custom_list.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
+
+import 'instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -30,13 +31,16 @@ class _AttendanceListState extends State<AttendanceList> {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
-      DateTime? cutOffDateTime = selectedDateTime;
+      String? cutOffDateTime =
+          DateFormat('MM/dd/yyyy, hh:mm a').format(selectedDateTime!);
 
       // Perform actions with the form data
       AttendanceRepo().newAttendance(AttendanceModel(
           attendanceName: name,
           details: details,
-          dateTime: DateTime.now().toString(),
+          dateTime: DateFormat('MM/dd/yyyy, hh:mm a')
+              .format(DateTime.now())
+              .toString(),
           cutoff: cutOffDateTime.toString()));
 
       // Clear the form fields
@@ -146,11 +150,19 @@ class _AttendanceListState extends State<AttendanceList> {
                 return ListView.builder(
                     itemCount: data!.length,
                     itemBuilder: ((context, index) {
-                      return customAttendanceItem(
-                          name: data[index].attendanceName,
-                          details: data[index].details,
-                          time: data[index].dateTime,
-                          cutoff: data[index].cutoff);
+                      return GestureDetector(
+                        onTap: () {
+                          print('On tap $index');
+                        },
+                        onLongPress: () {
+                          print('Long press $index');
+                        },
+                        child: customAttendanceItem(
+                            name: data[index].attendanceName,
+                            detail: data[index].details,
+                            time: data[index].dateTime,
+                            cutoff: data[index].cutoff),
+                      );
                     }));
               }
             }

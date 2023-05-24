@@ -6,7 +6,8 @@ String genQr = 'Generated QR Codes';
 
 String attendanceName = 'Attendance Name';
 String details = 'Details';
-String cutoffDT = 'Cut Off Date and Time: ';
+String created = 'Created: ';
+String cutoffDT = 'Cut Off: ';
 
 String help = 'Help';
 String privPol = 'Privacy Policy';

@@ -11,7 +11,6 @@ class AttendanceRepo {
   }
 
   Future newAttendance(AttendanceModel attendanceModel) async {
-    print(attendanceModel.attendanceName);
     final db = await AppDatabase().initializeDB();
     return await db.insert('attendance_table', attendanceModel.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
