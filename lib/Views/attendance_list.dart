@@ -4,6 +4,7 @@ import 'package:qr_attendance_flut/Models/attendance.dart';
 import 'package:qr_attendance_flut/Repository/attendance_list_repository.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import 'attendance_contents.dart';
 import 'instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
@@ -18,6 +19,7 @@ class _AttendanceListState extends State<AttendanceList> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailsController = TextEditingController();
   DateTime? selectedDateTime;
+  bool isLongPress = false;
 
   @override
   void dispose() {
@@ -31,8 +33,11 @@ class _AttendanceListState extends State<AttendanceList> {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
-      String? cutOffDateTime =
-          DateFormat('MM/dd/yyyy, hh:mm a').format(selectedDateTime!);
+      String? cutOffDateTime;
+      if (selectedDateTime != null) {
+        cutOffDateTime =
+            DateFormat('MM/dd/yyyy, hh:mm a').format(selectedDateTime!);
+      }
 
       // Perform actions with the form data
       AttendanceRepo().newAttendance(AttendanceModel(
@@ -152,16 +157,26 @@ class _AttendanceListState extends State<AttendanceList> {
                     itemBuilder: ((context, index) {
                       return GestureDetector(
                         onTap: () {
-                          print('On tap $index');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) =>
+                                  AttendanceContents(data: data[index])));
                         },
                         onLongPress: () {
-                          print('Long press $index');
+                          if (isLongPress) {
+                            setState(() {
+                              isLongPress = !isLongPress;
+                            });
+                            print('Already long press');
+                          } else {
+                            isLongPress = !isLongPress;
+                            print('Long press $index');
+                          }
                         },
                         child: customAttendanceItem(
-                            name: data[index].attendanceName,
-                            detail: data[index].details,
-                            time: data[index].dateTime,
-                            cutoff: data[index].cutoff),
+                            isSelected: isLongPress,
+                            name: data[index].attendanceName.toString(),
+                            detail: data[index].details.toString(),
+                            time: data[index].dateTime.toString()),
                       );
                     }));
               }

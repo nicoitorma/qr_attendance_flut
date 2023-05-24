@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/values/strings.dart';
 
 Widget customCard({required var icon, required String title}) => Container(
     padding: const EdgeInsets.all(5),
@@ -32,31 +31,38 @@ Widget customCard({required var icon, required String title}) => Container(
 ///   cutoff: The cutoff parameter is likely referring to a deadline or a specific time by which
 /// something needs to be completed or submitted. It is displayed as a text in the custom attendance
 /// item widget.
-Widget customAttendanceItem({var name, var detail, var time, var cutoff}) =>
+Widget customAttendanceItem(
+        {required bool isSelected,
+        required String name,
+        String detail = '',
+        String time = ''}) =>
     Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.blue[200], borderRadius: BorderRadius.circular(5)),
+            border: Border.all(
+                color: isSelected ? Colors.black : Colors.blue[200]!, width: 2),
+            color: Colors.blue[200],
+            borderRadius: BorderRadius.circular(5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            (name != null)
-                ? Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('$attendanceName: $name',
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 18)),
-                  )
-                : Container(),
-            (detail == null)
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, top: 8.0, right: 8.0, bottom: 10.0),
+              child: Text(name,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 18)),
+            ),
+            (detail == '')
                 ? Container()
                 : Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('$details: $detail',
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, bottom: 8.0),
+                    child: Text(detail,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -64,25 +70,15 @@ Widget customAttendanceItem({var name, var detail, var time, var cutoff}) =>
                             fontSize: 18)),
                   ),
             Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(created + time,
+              padding:
+                  const EdgeInsets.only(left: 8.0, bottom: 10.0, right: 8.0),
+              child: Text(time,
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 18)),
             ),
-            (cutoff == null)
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(cutoffDT + cutoff,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 18)),
-                  )
           ],
         ),
       ),
