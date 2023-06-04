@@ -1,8 +1,8 @@
 String appName = 'QR Attendance';
-String newAttendance = 'New Attendance';
-String attendanceList = 'Attendance List';
-String newQr = 'Create QR Code';
-String genQr = 'Generated QR Codes';
+String labelNewAttendance = 'New Attendance';
+String labelAttendanceList = 'Attendance List';
+String labelNewQr = 'Create QR Code';
+String labelGenQr = 'Generated QR Codes';
 
 String attendanceName = 'Attendance Name';
 String details = 'Details';

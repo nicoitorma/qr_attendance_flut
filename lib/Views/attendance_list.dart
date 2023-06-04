@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_attendance_flut/Models/attendance.dart';
-import 'package:qr_attendance_flut/Repository/attendance_list_repository.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Controller/attendance_list_controller.dart';
+import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import 'attendance_contents.dart';
-import 'instantiable_widget.dart';
+import '../Models/attendance.dart';
+import '../Repository/attendance_list_repository.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -28,6 +29,30 @@ class _AttendanceListState extends State<AttendanceList> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AttendanceListProvider>(
+      builder: (context, attendanceListProvider, child) => Scaffold(
+        appBar: AppBar(title: Text(labelAttendanceList)),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showPopup();
+              attendanceListProvider.getAttendanceList();
+            },
+            child: const Icon(Icons.add)),
+        body: ListView.builder(
+            itemCount: attendanceListProvider.attendanceList.length,
+            itemBuilder: ((context, index) {
+              return customAttendanceItem(
+                  name: attendanceListProvider
+                      .attendanceList[index].attendanceName!,
+                  detail: attendanceListProvider.attendanceList[index].details,
+                  time: attendanceListProvider.attendanceList[index].dateTime);
+            })),
+      ),
+    );
+  }
+
   void _submitForm() {
     if (formKey.currentState!.validate()) {
       // Form is valid, process the data
@@ -40,7 +65,7 @@ class _AttendanceListState extends State<AttendanceList> {
       }
 
       // Perform actions with the form data
-      AttendanceRepo().newAttendance(AttendanceModel(
+      newAttendance(AttendanceModel(
           attendanceName: name,
           details: details,
           dateTime: DateFormat('MM/dd/yyyy, hh:mm a')
@@ -58,12 +83,12 @@ class _AttendanceListState extends State<AttendanceList> {
     }
   }
 
-  newAttendancePopup() {
+  showPopup() {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(newAttendance),
+            title: Text(labelNewAttendance),
             content: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: SingleChildScrollView(
@@ -139,55 +164,5 @@ class _AttendanceListState extends State<AttendanceList> {
             ),
           );
         });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(attendanceList)),
-      body: FutureBuilder(
-          future: AttendanceRepo().getAllAttendance(),
-          builder: ((context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                var data = snapshot.data;
-
-                return ListView.builder(
-                    itemCount: data!.length,
-                    itemBuilder: ((context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (builder) =>
-                                  AttendanceContents(data: data[index])));
-                        },
-                        onLongPress: () {
-                          if (isLongPress) {
-                            setState(() {
-                              isLongPress = !isLongPress;
-                            });
-                            print('Already long press');
-                          } else {
-                            isLongPress = !isLongPress;
-                            print('Long press $index');
-                          }
-                        },
-                        child: customAttendanceItem(
-                            isSelected: isLongPress,
-                            name: data[index].attendanceName.toString(),
-                            detail: data[index].details.toString(),
-                            time: data[index].dateTime.toString()),
-                      );
-                    }));
-              }
-            }
-            return const Text('No data');
-          })),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            newAttendancePopup();
-          },
-          child: const Icon(Icons.add)),
-    );
   }
 }

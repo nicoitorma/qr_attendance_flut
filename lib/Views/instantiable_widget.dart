@@ -32,16 +32,17 @@ Widget customCard({required var icon, required String title}) => Container(
 /// something needs to be completed or submitted. It is displayed as a text in the custom attendance
 /// item widget.
 Widget customAttendanceItem(
-        {required bool isSelected,
+        {bool? isSelected,
         required String name,
-        String detail = '',
-        String time = ''}) =>
+        String? detail,
+        String? time}) =>
     Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
-                color: isSelected ? Colors.black : Colors.blue[200]!, width: 2),
+                color: (isSelected != null) ? Colors.black : Colors.blue[200]!,
+                width: 2),
             color: Colors.blue[200],
             borderRadius: BorderRadius.circular(5)),
         child: Column(
@@ -57,22 +58,22 @@ Widget customAttendanceItem(
                       fontFamily: 'Poppins',
                       fontSize: 18)),
             ),
-            (detail == '')
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, right: 8.0, bottom: 8.0),
-                    child: Text(detail,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 18)),
-                  ),
+            Container(
+              padding: detail == null
+                  ? const EdgeInsets.all(0)
+                  : const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+              child: Text(detail ?? '',
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 18)),
+            ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 8.0, bottom: 10.0, right: 8.0),
-              child: Text(time,
+              padding: detail == null
+                  ? const EdgeInsets.all(0)
+                  : const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+              child: Text(time ?? '',
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                       color: Colors.black,

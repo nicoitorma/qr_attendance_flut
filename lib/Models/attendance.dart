@@ -8,12 +8,12 @@ class AttendanceModel {
   AttendanceModel(
       {this.id, this.attendanceName, this.details, this.dateTime, this.cutoff});
 
-  AttendanceModel.fromMap(Map<String, dynamic> item)
+  AttendanceModel.fromJson(Map<String, dynamic> item)
       : id = item['id'],
-        attendanceName = item['attendanceName'],
-        details = item['details'],
-        dateTime = item['dateTime'],
-        cutoff = item['cutoff'];
+        attendanceName = item['attendanceName'] ?? '',
+        details = item['details'] ?? '',
+        dateTime = item['dateTime'] ?? '',
+        cutoff = item['cutoff'] ?? '';
 
   Map<String, Object> toMap() {
     return {

@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                                 builder: (builder) => const AttendanceList())),
                         child: customCard(
                             icon: Icons.description_outlined,
-                            title: attendanceList)),
+                            title: labelAttendanceList)),
                     GestureDetector(
                       child: customCard(
                           icon: Icons.qr_code_2_outlined,
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                         child: customCard(
                             icon: Icons.qr_code_scanner_outlined,
                             title: 'Check QR Code')),
-                    customCard(icon: Icons.storage_outlined, title: genQr)
+                    customCard(icon: Icons.storage_outlined, title: labelGenQr)
                   ],
                 )
               ],

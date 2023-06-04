@@ -1,10 +1,13 @@
-import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Repository/attendance_list_repository.dart';
 
-class AttendanceListController extends ControllerMVC {
-  final AttendanceListController _this = AttendanceListController._();
-  AttendanceListController._();
+import '../Models/attendance.dart';
 
-  // factory AttendanceListController() {
-  //   return _this;
-  // }
+class AttendanceListProvider extends ChangeNotifier {
+  List<AttendanceModel> attendanceList = [];
+
+  getAttendanceList() async {
+    attendanceList = await getAllAttendance();
+    notifyListeners();
+  }
 }
