@@ -14,6 +14,7 @@ class AttendanceListProvider extends ChangeNotifier {
 
   insertNewAttendance(AttendanceModel attendanceModel) async {
     await insertAttendance(attendanceModel);
+    await getAttendanceList();
   }
 
   selectAttendance(AttendanceModel attendanceModel) {
@@ -35,7 +36,8 @@ class AttendanceListProvider extends ChangeNotifier {
     for (var item in clickedAttendance) {
       await deleteAttendance(item.id!);
     }
-    getAttendanceList();
+    clickedAttendance.clear();
+    await getAttendanceList();
     notifyListeners();
   }
 

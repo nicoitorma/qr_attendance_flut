@@ -135,19 +135,13 @@ class _AttendanceListState extends State<AttendanceList> {
 
       // Perform actions with the form data
       provider.insertNewAttendance(AttendanceModel(
-          attendanceName: name,
-          details: details,
-          dateTime: DateFormat('MM/dd/yyyy, hh:mm a')
-              .format(DateTime.now())
-              .toString(),
-          cutoff: cutOffDateTime));
+          attendanceName: name, details: details, cutoff: cutOffDateTime));
 
       // Clear the form fields
       nameController.clear();
       detailsController.clear();
       setState(() {
         selectedCutoffDateTime = null;
-        provider.getAttendanceList();
       });
       Navigator.of(context).pop();
     }

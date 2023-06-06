@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class AttendanceModel {
   int? id;
   String? attendanceName;
@@ -12,14 +14,15 @@ class AttendanceModel {
       : id = item['id'],
         attendanceName = item['attendanceName'] ?? '',
         details = item['details'] ?? '',
-        dateTime = item['dateTime'] ?? '',
+        dateTime = item['dateTime'],
         cutoff = item['cutoff'] ?? '';
 
   Map<String, Object> toMap() {
     return {
       'attendanceName': attendanceName!,
       'details': details ?? '',
-      'dateTime': dateTime ?? '',
+      'dateTime':
+          DateFormat('MM/dd/yyyy, hh:mm a').format(DateTime.now()).toString(),
       'cutoff': cutoff ?? ''
     };
   }
