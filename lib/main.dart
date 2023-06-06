@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/attendance_list_controller.dart';
+import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/database/database.dart';
 
 import 'Views/homepage.dart';

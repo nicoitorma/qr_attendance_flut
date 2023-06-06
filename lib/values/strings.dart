@@ -4,7 +4,7 @@ String labelAttendanceList = 'Attendance List';
 String labelNewQr = 'Create QR Code';
 String labelGenQr = 'Generated QR Codes';
 
-String attendanceName = 'Attendance Name';
+String labelAttendanceName = 'Attendance Name';
 String details = 'Details';
 String created = 'Created: ';
 String cutoffDT = 'Cut Off: ';

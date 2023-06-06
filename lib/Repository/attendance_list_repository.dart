@@ -9,8 +9,13 @@ getAllAttendance() async {
   return queryResult.map((e) => AttendanceModel.fromJson(e)).toList();
 }
 
-newAttendance(AttendanceModel attendanceModel) async {
+insertAttendance(AttendanceModel attendanceModel) async {
   final db = await AppDatabase().initializeDB();
   return await db.insert('attendance_table', attendanceModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace);
+}
+
+deleteAttendance(int id) async {
+  final db = await AppDatabase().initializeDB();
+  await db.delete('attendance_table', where: 'id = ?', whereArgs: [id]);
 }

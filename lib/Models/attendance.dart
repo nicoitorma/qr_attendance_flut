@@ -18,9 +18,9 @@ class AttendanceModel {
   Map<String, Object> toMap() {
     return {
       'attendanceName': attendanceName!,
-      'details': details!,
-      'dateTime': dateTime!,
-      'cutoff': cutoff!
+      'details': details ?? '',
+      'dateTime': dateTime ?? '',
+      'cutoff': cutoff ?? ''
     };
   }
 }

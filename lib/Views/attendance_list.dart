@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/attendance_list_controller.dart';
+import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
+import 'package:qr_attendance_flut/Views/attendance_contents.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Models/attendance.dart';
-import '../Repository/attendance_list_repository.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -19,8 +20,17 @@ class _AttendanceListState extends State<AttendanceList> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailsController = TextEditingController();
-  DateTime? selectedDateTime;
+  DateTime? selectedCutoffDateTime;
   bool isLongPress = false;
+  final Duration duration = const Duration(milliseconds: 350);
+
+  @override
+  void initState() {
+    super.initState();
+    final dbContent =
+        Provider.of<AttendanceListProvider>(context, listen: false);
+    dbContent.getAttendanceList();
+  }
 
   @override
   void dispose() {
@@ -32,58 +42,118 @@ class _AttendanceListState extends State<AttendanceList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AttendanceListProvider>(
-      builder: (context, attendanceListProvider, child) => Scaffold(
-        appBar: AppBar(title: Text(labelAttendanceList)),
+      builder: (context, value, child) => Scaffold(
+        appBar: (isLongPress)
+            ? AppBar(
+                title: Text(value.clickedAttendance.length.toString()),
+                leading: InkWell(
+                    onTap: () {
+                      value.clearSelectedItems();
+                      isLongPress = !isLongPress;
+                    },
+                    child: const Icon(Icons.close)),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                        onTap: () => value.selectAll(),
+                        child: const Icon(Icons.select_all_outlined)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                        onTap: () {
+                          value.deleteItem();
+                          isLongPress = !isLongPress;
+                        },
+                        child: const Icon(Icons.delete_outlined)),
+                  )
+                ],
+              )
+            : AppBar(title: Text(labelAttendanceList)),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              showPopup();
-              attendanceListProvider.getAttendanceList();
+              showPopup(value);
             },
             child: const Icon(Icons.add)),
-        body: ListView.builder(
-            itemCount: attendanceListProvider.attendanceList.length,
-            itemBuilder: ((context, index) {
-              return customAttendanceItem(
-                  name: attendanceListProvider
-                      .attendanceList[index].attendanceName!,
-                  detail: attendanceListProvider.attendanceList[index].details,
-                  time: attendanceListProvider.attendanceList[index].dateTime);
-            })),
+        body: (value.attendanceList.isEmpty)
+            ? const Center(child: Text('NO ITEM'))
+            : ListView.builder(
+                itemCount: value.attendanceList.length,
+                itemBuilder: ((context, index) {
+                  List clickedAttendance = value.clickedAttendance;
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: customAttendanceItem(
+                      color: (clickedAttendance
+                              .contains(value.attendanceList[index]))
+                          ? Colors.red
+                          : Colors.transparent,
+                      attendanceData: value.attendanceList[index],
+                      onTap: () {
+                        if (isLongPress) {
+                          if (value.clickedAttendance
+                              .contains(value.attendanceList[index])) {
+                            value.removeItem(value.attendanceList[index]);
+                            if (value.clickedAttendance.isEmpty) {
+                              isLongPress = !isLongPress;
+                            }
+                          } else {
+                            value.selectAttendance(value.attendanceList[index]);
+                          }
+                          return;
+                        }
+                        Navigator.of(context).push(PageTransition(
+                            type: PageTransitionType.rightToLeftJoined,
+                            child: AttendanceContents(
+                                data: value.attendanceList[index]),
+                            duration: duration,
+                            reverseDuration: duration,
+                            childCurrent: widget));
+                      },
+                      onLongPress: () {
+                        isLongPress = !isLongPress;
+                        value.selectAttendance(value.attendanceList[index]);
+                      },
+                    ),
+                  );
+                })),
       ),
     );
   }
 
-  void _submitForm() {
+  void _submitForm(var provider) {
     if (formKey.currentState!.validate()) {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
       String? cutOffDateTime;
-      if (selectedDateTime != null) {
+      if (selectedCutoffDateTime != null) {
         cutOffDateTime =
-            DateFormat('MM/dd/yyyy, hh:mm a').format(selectedDateTime!);
+            DateFormat('MM/dd/yyyy, hh:mm a').format(selectedCutoffDateTime!);
       }
 
       // Perform actions with the form data
-      newAttendance(AttendanceModel(
+      provider.insertNewAttendance(AttendanceModel(
           attendanceName: name,
           details: details,
           dateTime: DateFormat('MM/dd/yyyy, hh:mm a')
               .format(DateTime.now())
               .toString(),
-          cutoff: cutOffDateTime.toString()));
+          cutoff: cutOffDateTime));
 
       // Clear the form fields
       nameController.clear();
       detailsController.clear();
       setState(() {
-        selectedDateTime = null;
+        selectedCutoffDateTime = null;
+        provider.getAttendanceList();
       });
       Navigator.of(context).pop();
     }
   }
 
-  showPopup() {
+  showPopup(var provider) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -100,12 +170,12 @@ class _AttendanceListState extends State<AttendanceList> {
                         controller: nameController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return attendanceName + emptyFieldError;
+                            return labelAttendanceName + emptyFieldError;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          labelText: attendanceName,
+                          labelText: labelAttendanceName,
                         ),
                       ),
                       TextFormField(
@@ -117,9 +187,9 @@ class _AttendanceListState extends State<AttendanceList> {
                       const SizedBox(height: 16.0),
                       Text(
                         cutoffDT +
-                            (selectedDateTime != null
+                            (selectedCutoffDateTime != null
                                 ? DateFormat('MM/dd/yyyy, hh:mm a')
-                                    .format(selectedDateTime!)
+                                    .format(selectedCutoffDateTime!)
                                 : "Not set"),
                       ),
                       ElevatedButton(
@@ -137,7 +207,7 @@ class _AttendanceListState extends State<AttendanceList> {
                               ).then((selectedTime) {
                                 if (selectedTime != null) {
                                   setState(() {
-                                    selectedDateTime = DateTime(
+                                    selectedCutoffDateTime = DateTime(
                                       selectedDate.year,
                                       selectedDate.month,
                                       selectedDate.day,
@@ -154,7 +224,7 @@ class _AttendanceListState extends State<AttendanceList> {
                       ),
                       const SizedBox(height: 16.0),
                       ElevatedButton(
-                        onPressed: _submitForm,
+                        onPressed: () => _submitForm(provider),
                         child: const Text('Submit'),
                       ),
                     ],
