@@ -22,7 +22,7 @@ Widget drawer(var context) => Drawer(
           textColor: Colors.white,
           iconColor: Colors.white,
           title: Text(privPol),
-          leading: const Icon(Icons.info_outline_rounded),
+          leading: const Icon(Icons.privacy_tip_outlined),
           onTap: () {
             Navigator.pop(context);
           },

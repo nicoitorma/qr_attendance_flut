@@ -5,9 +5,15 @@ String labelNewQr = 'Create QR Code';
 String labelGenQr = 'Generated QR Codes';
 
 String labelAttendanceName = 'Attendance Name';
-String details = 'Details';
-String created = 'Created: ';
-String cutoffDT = 'Cut Off: ';
+String labelDetails = 'Details';
+String labelCreated = 'Created: ';
+String labelCutoffDT = 'Cut Off: ';
+
+String labelName = 'Fullname';
+String labelIdNum = 'ID Number';
+String labelDept = 'Department';
+String labelCreateQr = 'CREATE QR';
+String labelQrCodes = 'QR Codes';
 
 String help = 'Help';
 String privPol = 'Privacy Policy';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Models/attendance.dart';
+import 'package:qr_attendance_flut/values/strings.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 Widget customCard({required var icon, required String title}) => Container(
     padding: const EdgeInsets.all(5),
@@ -32,11 +33,14 @@ Widget customCard({required var icon, required String title}) => Container(
 ///   cutoff: The cutoff parameter is likely referring to a deadline or a specific time by which
 /// something needs to be completed or submitted. It is displayed as a text in the custom attendance
 /// item widget.
-Widget customAttendanceItem(
+Widget customListItem(
     {required Color color,
-    required AttendanceModel attendanceData,
+    var data,
+    int count = 0,
     Function()? onTap,
     Function()? onLongPress}) {
+  var padding = const EdgeInsets.fromLTRB(0.0, 8.0, 0, 5.0);
+  bool isAttendance = (data.runtimeType.toString() == 'AttendanceModel');
   return Card(
     color: Colors.blue[200],
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -49,23 +53,83 @@ Widget customAttendanceItem(
           onTap: onTap,
           onLongPress: onLongPress,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
-            child: Text(
-              attendanceData.attendanceName!,
-              style: const TextStyle(fontSize: 18),
-            ),
+          title: Column(
+            children: [
+              Center(
+                child: Padding(
+                    padding: padding,
+                    child: (isAttendance)
+                        ? Text(
+                            data.attendanceName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : Text(
+                            data.name,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )),
+              ),
+              const Divider(thickness: 2),
+            ],
           ),
-          subtitle: Column(
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
-                child: Text(attendanceData.details ?? ''),
+              Expanded(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: padding,
+                        child: (isAttendance)
+                            ? Text(
+                                '$labelDetails:  ${data.details}',
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Text(data.idNum, overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
+                        child: (isAttendance)
+                            ? Text(
+                                data.dateTime,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Text(
+                                data.college,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
-                child: Text(attendanceData.dateTime ?? ''),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: padding,
+                    child: (isAttendance)
+                        ? Text('QR Contents: $count')
+                        : QrImageView(
+                            data: '${data.name}&${data.idNum}&${data.college}',
+                            size: 60,
+                            padding: EdgeInsets.zero,
+                          ),
+                  ),
+                ),
               )
             ],
           )),

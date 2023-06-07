@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Repository/attendance_list_repository.dart';
+import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 
 import '../Models/attendance.dart';
 
@@ -27,7 +27,7 @@ class AttendanceListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeItem(AttendanceModel attendanceModel) {
+  removeItemFromSelected(AttendanceModel attendanceModel) {
     clickedAttendance.remove(attendanceModel);
     notifyListeners();
   }

@@ -4,10 +4,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/Views/attendance_contents.dart';
-import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
+import 'package:qr_attendance_flut/values/const.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Models/attendance.dart';
+import 'instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -22,7 +23,6 @@ class _AttendanceListState extends State<AttendanceList> {
   final TextEditingController detailsController = TextEditingController();
   DateTime? selectedCutoffDateTime;
   bool isLongPress = false;
-  final Duration duration = const Duration(milliseconds: 350);
 
   @override
   void initState() {
@@ -56,18 +56,26 @@ class _AttendanceListState extends State<AttendanceList> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                        onTap: () => value.selectAll(),
-                        child: const Icon(Icons.select_all_outlined)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
                         onTap: () {
                           value.deleteItem();
                           isLongPress = !isLongPress;
                         },
                         child: const Icon(Icons.delete_outlined)),
-                  )
+                  ),
+                  (value.attendanceList.length > 1)
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                              onTap: () => value.selectAll(),
+                              child: const Icon(Icons.select_all_outlined)),
+                        )
+                      : Container(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                        onTap: () => value.selectAll(),
+                        child: const Icon(Icons.save_outlined)),
+                  ),
                 ],
               )
             : AppBar(title: Text(labelAttendanceList)),
@@ -84,17 +92,18 @@ class _AttendanceListState extends State<AttendanceList> {
                   List clickedAttendance = value.clickedAttendance;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: customAttendanceItem(
+                    child: customListItem(
                       color: (clickedAttendance
                               .contains(value.attendanceList[index]))
                           ? Colors.red
                           : Colors.transparent,
-                      attendanceData: value.attendanceList[index],
+                      data: value.attendanceList[index],
                       onTap: () {
                         if (isLongPress) {
                           if (value.clickedAttendance
                               .contains(value.attendanceList[index])) {
-                            value.removeItem(value.attendanceList[index]);
+                            value.removeItemFromSelected(
+                                value.attendanceList[index]);
                             if (value.clickedAttendance.isEmpty) {
                               isLongPress = !isLongPress;
                             }
@@ -107,8 +116,8 @@ class _AttendanceListState extends State<AttendanceList> {
                             type: PageTransitionType.rightToLeftJoined,
                             child: AttendanceContents(
                                 data: value.attendanceList[index]),
-                            duration: duration,
-                            reverseDuration: duration,
+                            duration: transitionDuration,
+                            reverseDuration: transitionDuration,
                             childCurrent: widget));
                       },
                       onLongPress: () {
@@ -154,33 +163,26 @@ class _AttendanceListState extends State<AttendanceList> {
           return AlertDialog(
             title: Text(labelNewAttendance),
             content: SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: double.maxFinite,
               child: SingleChildScrollView(
                 child: Form(
                   key: formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        controller: nameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return labelAttendanceName + emptyFieldError;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: labelAttendanceName,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: detailsController,
-                        decoration: InputDecoration(
-                          labelText: details,
-                        ),
-                      ),
+                      inputField(
+                          controller: nameController,
+                          label: labelAttendanceName,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return labelAttendanceName + emptyFieldError;
+                            }
+                            return null;
+                          }),
+                      inputField(
+                          controller: detailsController, label: labelDetails),
                       const SizedBox(height: 16.0),
                       Text(
-                        cutoffDT +
+                        labelCutoffDT +
                             (selectedCutoffDateTime != null
                                 ? DateFormat('MM/dd/yyyy, hh:mm a')
                                     .format(selectedCutoffDateTime!)

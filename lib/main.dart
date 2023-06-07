@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/database/database.dart';
 
+import 'Controller/qr_list_provider.dart';
 import 'Views/homepage.dart';
 
 Future<void> main() async {
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AttendanceListProvider())
+        ChangeNotifierProvider(create: (context) => AttendanceListProvider()),
+        ChangeNotifierProvider(create: (context) => QrListProvider())
       ],
       child: const MaterialApp(
         title: 'QR Attendance',

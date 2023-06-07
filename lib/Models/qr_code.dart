@@ -1,9 +1,22 @@
-class QrCode {
+class QrModel {
   int? id;
   String? name;
   String? idNum;
   String? college;
-  String? qrCode;
 
-  QrCode({this.name, this.college, this.idNum, this.qrCode});
+  QrModel({this.name, this.idNum, this.college});
+
+  QrModel.fromJson(Map<String, dynamic> item)
+      : id = item['id'],
+        name = item['name'] ?? '',
+        idNum = item['idNum'] ?? '',
+        college = item['college'] ?? '';
+
+  Map<String, Object> toMap() {
+    return {
+      'name': name!,
+      'idNum': idNum!,
+      'college': college ?? '',
+    };
+  }
 }
