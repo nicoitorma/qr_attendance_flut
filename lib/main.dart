@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/database/database.dart';
+import 'package:qr_attendance_flut/values/strings.dart';
 
 import 'Controller/qr_list_provider.dart';
 import 'Views/homepage.dart';
@@ -23,9 +24,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AttendanceListProvider()),
         ChangeNotifierProvider(create: (context) => QrListProvider())
       ],
-      child: const MaterialApp(
-        title: 'QR Attendance',
-        home: HomePage(),
+      child: MaterialApp(
+        title: appName,
+        home: const HomePage(),
       ),
     );
   }
