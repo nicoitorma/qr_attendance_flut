@@ -40,7 +40,7 @@ Widget customListItem(
     Function()? onTap,
     Function()? onLongPress}) {
   var padding = const EdgeInsets.fromLTRB(0.0, 8.0, 0, 5.0);
-  bool isAttendance = (data.runtimeType.toString() == 'AttendanceModel');
+  bool isAttendance = (data.runtimeType.toString() == labelAttendanceModel);
   return Card(
     color: Colors.blue[200],
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -122,7 +122,7 @@ Widget customListItem(
                   child: Padding(
                     padding: padding,
                     child: (isAttendance)
-                        ? Text('QR Contents: $count')
+                        ? Text('$labelQrContents$count')
                         : QrImageView(
                             data: '${data.name}&${data.idNum}&${data.college}',
                             size: 60,

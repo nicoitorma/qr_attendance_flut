@@ -79,7 +79,7 @@ class _QrCodeListState extends State<QrCodeList> {
         floatingActionButton: FloatingActionButton(
             onPressed: () => addQr(value), child: const Icon(Icons.add)),
         body: (value.qrList.isEmpty)
-            ? const Center(child: Text('NO ITEM'))
+            ? Center(child: Text(labelNoItem))
             : ListView.builder(
                 itemCount: value.qrList.length,
                 itemBuilder: ((context, index) {
@@ -145,7 +145,7 @@ class _QrCodeListState extends State<QrCodeList> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-            title: const Text('New QR Code'),
+            title: Center(child: Text(labelNewQr)),
             content: SizedBox(
               width: double.maxFinite,
               child: SingleChildScrollView(
@@ -158,7 +158,7 @@ class _QrCodeListState extends State<QrCodeList> {
                           label: labelName,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return labelName + emptyFieldError;
+                              return labelName + labelEmptyFieldError;
                             }
                             return null;
                           },
@@ -168,7 +168,7 @@ class _QrCodeListState extends State<QrCodeList> {
                           label: labelIdNum,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return labelIdNum + emptyFieldError;
+                              return labelIdNum + labelEmptyFieldError;
                             }
                             return null;
                           },

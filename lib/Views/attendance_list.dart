@@ -85,7 +85,7 @@ class _AttendanceListState extends State<AttendanceList> {
             },
             child: const Icon(Icons.add)),
         body: (value.attendanceList.isEmpty)
-            ? const Center(child: Text('NO ITEM'))
+            ? Center(child: Text(labelNoItem))
             : ListView.builder(
                 itemCount: value.attendanceList.length,
                 itemBuilder: ((context, index) {
@@ -139,7 +139,7 @@ class _AttendanceListState extends State<AttendanceList> {
       String? cutOffDateTime;
       if (selectedCutoffDateTime != null) {
         cutOffDateTime =
-            DateFormat('MM/dd/yyyy, hh:mm a').format(selectedCutoffDateTime!);
+            DateFormat(labelDateFormat).format(selectedCutoffDateTime!);
       }
 
       // Perform actions with the form data
@@ -174,7 +174,7 @@ class _AttendanceListState extends State<AttendanceList> {
                           label: labelAttendanceName,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return labelAttendanceName + emptyFieldError;
+                              return labelAttendanceName + labelEmptyFieldError;
                             }
                             return null;
                           }),
@@ -184,9 +184,9 @@ class _AttendanceListState extends State<AttendanceList> {
                       Text(
                         labelCutoffDT +
                             (selectedCutoffDateTime != null
-                                ? DateFormat('MM/dd/yyyy, hh:mm a')
+                                ? DateFormat(labelDateFormat)
                                     .format(selectedCutoffDateTime!)
-                                : "Not set"),
+                                : labelNotSet),
                       ),
                       ElevatedButton(
                         onPressed: () {

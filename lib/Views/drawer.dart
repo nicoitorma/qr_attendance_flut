@@ -11,7 +11,7 @@ Widget drawer(var context) => Drawer(
           selectedColor: Colors.grey,
           textColor: Colors.white,
           iconColor: Colors.white,
-          title: Text(help),
+          title: Text(labelHelp),
           leading: const Icon(Icons.help_outline_rounded),
           onTap: () {
             Navigator.pop(context);
@@ -21,7 +21,7 @@ Widget drawer(var context) => Drawer(
           selectedColor: Colors.grey,
           textColor: Colors.white,
           iconColor: Colors.white,
-          title: Text(privPol),
+          title: Text(labelPrivPol),
           leading: const Icon(Icons.privacy_tip_outlined),
           onTap: () {
             Navigator.pop(context);
@@ -31,7 +31,7 @@ Widget drawer(var context) => Drawer(
           selectedColor: Colors.grey,
           textColor: Colors.white,
           iconColor: Colors.white,
-          title: Text(about),
+          title: Text(labelAbout),
           leading: const Icon(Icons.info_outline_rounded),
           onTap: () {
             Navigator.pop(context);
