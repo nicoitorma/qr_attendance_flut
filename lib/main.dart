@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/database/database.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AttendanceListProvider()),
-        ChangeNotifierProvider(create: (context) => QrListProvider())
+        ChangeNotifierProvider(create: (context) => QrListProvider()),
+        ChangeNotifierProvider(create: (context) => AttendanceContentProvider())
       ],
       child: MaterialApp(
         title: appName,

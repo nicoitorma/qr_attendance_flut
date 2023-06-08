@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:qr_attendance_flut/values/strings.dart';
 
 class AttendanceModel {
   int? id;
@@ -21,8 +22,7 @@ class AttendanceModel {
     return {
       'attendanceName': attendanceName!,
       'details': details ?? '',
-      'dateTime':
-          DateFormat('MM/dd/yyyy, hh:mm a').format(DateTime.now()).toString(),
+      'dateTime': DateFormat(labelDateFormat).format(DateTime.now()).toString(),
       'cutoff': cutoff ?? ''
     };
   }
