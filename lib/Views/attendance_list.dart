@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/Views/attendance_contents.dart';
 import 'package:qr_attendance_flut/values/const.dart';
@@ -41,14 +42,14 @@ class _AttendanceListState extends State<AttendanceList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AttendanceListProvider>(
-      builder: (context, value, child) => Scaffold(
+    return Consumer2<AttendanceListProvider, AttendanceContentProvider>(
+      builder: (context, attendanceProv, contentProv, child) => Scaffold(
         appBar: (isLongPress)
             ? AppBar(
-                title: Text(value.clickedAttendance.length.toString()),
+                title: Text(attendanceProv.clickedAttendance.length.toString()),
                 leading: InkWell(
                     onTap: () {
-                      value.clearSelectedItems();
+                      attendanceProv.clearSelectedItems();
                       isLongPress = !isLongPress;
                     },
                     child: const Icon(Icons.close)),
@@ -57,23 +58,41 @@ class _AttendanceListState extends State<AttendanceList> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                         onTap: () {
-                          value.deleteItem();
-                          isLongPress = !isLongPress;
+                          showDialog(
+                              context: context,
+                              builder: ((context) => AlertDialog(
+                                    title: Text(labelAlertDeleteTitle),
+                                    content: Text(labelAlertDeleteContent),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text(labelNo)),
+                                      TextButton(
+                                          onPressed: () {
+                                            attendanceProv.deleteItem();
+                                            isLongPress = !isLongPress;
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(labelYes))
+                                    ],
+                                  )));
                         },
                         child: const Icon(Icons.delete_outlined)),
                   ),
-                  (value.attendanceList.length > 1)
+                  (attendanceProv.attendanceList.length > 1)
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                              onTap: () => value.selectAll(),
+                              onTap: () => attendanceProv.selectAll(),
                               child: const Icon(Icons.select_all_outlined)),
                         )
                       : Container(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                        onTap: () => value.selectAll(),
+                        onTap: () => attendanceProv.selectAll(),
                         child: const Icon(Icons.save_outlined)),
                   ),
                 ],
@@ -81,48 +100,51 @@ class _AttendanceListState extends State<AttendanceList> {
             : AppBar(title: Text(labelAttendanceList)),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              showPopup(value);
+              showPopup(attendanceProv);
             },
             child: const Icon(Icons.add)),
-        body: (value.attendanceList.isEmpty)
+        body: (attendanceProv.attendanceList.isEmpty)
             ? Center(child: Text(labelNoItem))
             : ListView.builder(
-                itemCount: value.attendanceList.length,
+                itemCount: attendanceProv.attendanceList.length,
                 itemBuilder: ((context, index) {
-                  List clickedAttendance = value.clickedAttendance;
+                  List clickedAttendance = attendanceProv.clickedAttendance;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: customListItem(
                       color: (clickedAttendance
-                              .contains(value.attendanceList[index]))
+                              .contains(attendanceProv.attendanceList[index]))
                           ? Colors.red
                           : Colors.transparent,
-                      data: value.attendanceList[index],
+                      data: attendanceProv.attendanceList[index],
+                      count: contentProv.content.length,
                       onTap: () {
                         if (isLongPress) {
-                          if (value.clickedAttendance
-                              .contains(value.attendanceList[index])) {
-                            value.removeItemFromSelected(
-                                value.attendanceList[index]);
-                            if (value.clickedAttendance.isEmpty) {
+                          if (clickedAttendance
+                              .contains(attendanceProv.attendanceList[index])) {
+                            attendanceProv.removeItemFromSelected(
+                                attendanceProv.attendanceList[index]);
+                            if (clickedAttendance.isEmpty) {
                               isLongPress = !isLongPress;
                             }
                           } else {
-                            value.selectAttendance(value.attendanceList[index]);
+                            attendanceProv.selectAttendance(
+                                attendanceProv.attendanceList[index]);
                           }
                           return;
                         }
                         Navigator.of(context).push(PageTransition(
                             type: PageTransitionType.rightToLeftJoined,
                             child: AttendanceContents(
-                                data: value.attendanceList[index]),
+                                data: attendanceProv.attendanceList[index]),
                             duration: transitionDuration,
                             reverseDuration: transitionDuration,
                             childCurrent: widget));
                       },
                       onLongPress: () {
                         isLongPress = !isLongPress;
-                        value.selectAttendance(value.attendanceList[index]);
+                        attendanceProv.selectAttendance(
+                            attendanceProv.attendanceList[index]);
                       },
                     ),
                   );
@@ -136,11 +158,8 @@ class _AttendanceListState extends State<AttendanceList> {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
-      String? cutOffDateTime;
-      if (selectedCutoffDateTime != null) {
-        cutOffDateTime =
-            DateFormat(labelDateFormat).format(selectedCutoffDateTime!);
-      }
+      String? cutOffDateTime =
+          DateFormat(labelDateFormat).format(selectedCutoffDateTime!);
 
       // Perform actions with the form data
       provider.insertNewAttendance(AttendanceModel(
@@ -183,10 +202,10 @@ class _AttendanceListState extends State<AttendanceList> {
                       const SizedBox(height: 16.0),
                       Text(
                         labelCutoffDT +
-                            (selectedCutoffDateTime != null
-                                ? DateFormat(labelDateFormat)
-                                    .format(selectedCutoffDateTime!)
-                                : labelNotSet),
+                            (selectedCutoffDateTime == null
+                                ? labelNotSet
+                                : DateFormat(labelDateFormat)
+                                    .format(selectedCutoffDateTime!)),
                       ),
                       ElevatedButton(
                         onPressed: () {

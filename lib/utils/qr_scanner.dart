@@ -91,9 +91,9 @@ class _QrScannerState extends State<QrScanner> {
               idNum: words[0],
               fullname: words[1],
               dept: words[2],
-              parentId: widget.data.id,
               timeAndDate: timeAndDate,
-              isLate: false));
+              parentId: widget.data.id,
+              isLate: 'false'));
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('${words[1]} is added'),
           ));

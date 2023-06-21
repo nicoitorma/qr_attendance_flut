@@ -54,8 +54,26 @@ class _QrCodeListState extends State<QrCodeList> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                         onTap: () {
-                          value.deleteItem();
-                          isLongPress = !isLongPress;
+                          showDialog(
+                              context: context,
+                              builder: ((context) => AlertDialog(
+                                    title: Text(labelAlertDeleteTitle),
+                                    content: Text(labelAlertDeleteContent),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text(labelNo)),
+                                      TextButton(
+                                          onPressed: () {
+                                            value.deleteItem();
+                                            isLongPress = !isLongPress;
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(labelYes))
+                                    ],
+                                  )));
                         },
                         child: const Icon(Icons.delete_outlined)),
                   ),
@@ -118,14 +136,14 @@ class _QrCodeListState extends State<QrCodeList> {
 
   insertQr(var provider) async {
     if (formKey.currentState!.validate()) {
-      String name = nameController.text.trim();
+      String fullname = nameController.text.trim();
       String idNum = idNumController.text.trim();
       String? dept = deptController.text.trim();
 
       provider.insertQr(QrModel(
-        name: name,
+        fullname: fullname,
         idNum: idNum,
-        college: dept,
+        dept: dept,
       ));
     }
     nameController.clear();

@@ -40,7 +40,12 @@ Widget customListItem(
     Function()? onTap,
     Function()? onLongPress}) {
   var padding = const EdgeInsets.fromLTRB(0.0, 8.0, 0, 5.0);
-  bool isAttendance = (data.runtimeType.toString() == labelAttendanceModel);
+  bool isAttendance = (data.runtimeType.toString() == attendanceModelRuntime);
+  TextStyle titleStyle = const TextStyle(
+      fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold);
+  TextStyle subtitleStyle = const TextStyle(fontSize: 16, color: Colors.black);
+
+  /// this will return a Card
   return Card(
     color: Colors.blue[200],
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -55,6 +60,7 @@ Widget customListItem(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: Column(
             children: [
+              /// this is the TITLE in bold and the underline below
               Center(
                 child: Padding(
                     padding: padding,
@@ -62,23 +68,19 @@ Widget customListItem(
                         ? Text(
                             data.attendanceName,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                            style: titleStyle,
                           )
                         : Text(
-                            data.name,
+                            data.fullname,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                            style: titleStyle,
                           )),
               ),
               const Divider(thickness: 2),
             ],
           ),
+
+          /// this is where the SUBTITLE begin, below the underline
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,44 +94,91 @@ Widget customListItem(
                         padding: padding,
                         child: (isAttendance)
                             ? Text(
-                                '$labelDetails:  ${data.details}',
+                                '$labelDetails: ${data.details}',
                                 overflow: TextOverflow.ellipsis,
+                                style: subtitleStyle,
                               )
-                            : Text(data.idNum, overflow: TextOverflow.ellipsis),
+                            : Text(
+                                data.idNum,
+                                overflow: TextOverflow.ellipsis,
+                                style: subtitleStyle,
+                              ),
                       ),
                     ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0, 0),
                         child: (isAttendance)
+
+                            /// if it is an attendance it will show the timeAndDate the
+                            /// attendance is created.
                             ? Text(
-                                data.dateTime,
-                                overflow: TextOverflow.ellipsis,
+                                '$labelCreated${data.timeAndDate}',
+                                overflow: TextOverflow.visible,
+                                style: subtitleStyle,
                               )
+
+                            /// otherwise it is a QR model, then it will show the department
                             : Text(
-                                data.college,
+                                data.dept,
                                 overflow: TextOverflow.ellipsis,
+                                style: subtitleStyle,
                               ),
                       ),
-                    )
+                    ),
+                    (data.runtimeType.toString() == studentInAttendanceRuntime)
+                        ? Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0),
+                                child:
+
+                                    /// it will show the timeAndDate the
+                                    /// qr is scanned for the attdnc content.
+                                    Text(
+                                  data.timeAndDate,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: subtitleStyle,
+                                )),
+                          )
+                        : Container()
                   ],
                 ),
               ),
               Expanded(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: padding,
-                    child: (isAttendance)
-                        ? Text('$labelQrContents$count')
-                        : QrImageView(
-                            data: '${data.name}&${data.idNum}&${data.college}',
-                            size: 60,
-                            padding: EdgeInsets.zero,
+                child: (isAttendance)
+                    ? Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: padding,
+                              child: Text(
+                                '$labelQrContents$count',
+                                style: subtitleStyle,
+                              ),
+                            ),
                           ),
-                  ),
-                ),
+                          (data.cutoff == '')
+                              ? Container()
+                              : Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: padding,
+                                    child: Text(
+                                        '$labelCutoffDT${data.cutoff.toString()}',
+                                        style: subtitleStyle),
+                                  ),
+                                ),
+                        ],
+                      )
+                    : QrImageView(
+                        data: '${data.fullname}&${data.idNum}&${data.dept}',
+                        size: 60,
+                        padding: EdgeInsets.zero,
+                      ),
               )
             ],
           )),

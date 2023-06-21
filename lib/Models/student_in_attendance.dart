@@ -5,7 +5,7 @@ class StudentInAttendance {
   String? dept;
   int? parentId;
   String? timeAndDate;
-  bool? isLate;
+  String? isLate;
 
   StudentInAttendance(
       {this.idNum,

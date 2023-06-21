@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 getAllAttendance() async {
   final db = await AppDatabase().initializeDB();
   final List<Map<String, Object?>> queryResult =
-      await db.query('attendance_table', orderBy: 'dateTime ASC');
+      await db.query('attendance_table', orderBy: 'timeAndDate ASC');
   return queryResult.map((e) => AttendanceModel.fromJson(e)).toList();
 }
 

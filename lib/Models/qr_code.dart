@@ -1,22 +1,22 @@
 class QrModel {
   int? id;
-  String? name;
+  String? fullname;
   String? idNum;
-  String? college;
+  String? dept;
 
-  QrModel({this.name, this.idNum, this.college});
+  QrModel({this.fullname, this.idNum, this.dept});
 
   QrModel.fromJson(Map<String, dynamic> item)
       : id = item['id'],
-        name = item['name'] ?? '',
+        fullname = item['fullname'] ?? '',
         idNum = item['idNum'] ?? '',
-        college = item['college'] ?? '';
+        dept = item['dept'] ?? '';
 
   Map<String, Object> toMap() {
     return {
-      'name': name!,
+      'fullname': fullname!,
       'idNum': idNum!,
-      'college': college ?? '',
+      'dept': dept ?? '',
     };
   }
 }

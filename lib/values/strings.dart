@@ -4,7 +4,9 @@ String labelAttendanceList = 'Attendance List';
 String labelGenQr = 'Generated QR Codes';
 
 String labelAttendanceModel = 'Attendance Model';
-String labelQrContents = 'QR Contents: ';
+String attendanceModelRuntime = 'AttendanceModel';
+String studentInAttendanceRuntime = 'StudentInAttendance';
+String labelQrContents = 'Scanned QR: ';
 
 String labelAttendanceName = 'Attendance Name';
 String labelDetails = 'Details';
@@ -26,3 +28,8 @@ String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
 String labelNotSet = 'Not Set';
 String labelDateFormat = 'MM/dd/yyyy, hh:mm a';
+
+String labelAlertDeleteTitle = 'Want to delete?';
+String labelAlertDeleteContent = 'Item will be deleted permanently.';
+String labelNo = 'No';
+String labelYes = 'Yes';
