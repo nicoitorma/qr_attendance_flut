@@ -7,14 +7,14 @@ class AttendanceListProvider extends ChangeNotifier {
   List<AttendanceModel> attendanceList = [];
   List<AttendanceModel> clickedAttendance = [];
 
-  getAttendanceList() async {
+  getAttendanceListForDay(DateTime day) async {
     attendanceList = await getAllAttendance();
     notifyListeners();
   }
 
   insertNewAttendance(AttendanceModel attendanceModel) async {
     await insertAttendance(attendanceModel);
-    await getAttendanceList();
+    // await getAttendanceListForDay();
   }
 
   selectAttendance(AttendanceModel attendanceModel) {
@@ -37,7 +37,7 @@ class AttendanceListProvider extends ChangeNotifier {
       await deleteAttendance(item.id!);
     }
     clickedAttendance.clear();
-    await getAttendanceList();
+    // await getAttendanceListForDay();
     notifyListeners();
   }
 
