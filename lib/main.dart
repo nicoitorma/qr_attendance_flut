@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 import 'package:qr_attendance_flut/Views/homepage.dart';
 import 'package:qr_attendance_flut/Views/login.dart';
+import 'package:qr_attendance_flut/Views/start.dart';
 import 'package:qr_attendance_flut/database/database.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
@@ -35,11 +35,30 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AttendanceContentProvider())
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                const EdgeInsets.all(20),
+              ),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            ),
+          ),
+        ),
         title: appName,
-        initialRoute: FirebaseAuth.instance.currentUser == null
-            ? '/sign-in'
-            : '/homepage',
+        initialRoute: '/start',
+        // initialRoute: FirebaseAuth.instance.currentUser == null
+        //     ? '/sign-in'
+        //     : '/homepage',
         routes: {
+          '/start': (context) => const StartPage(),
           '/sign-in': (context) => const Login(),
           '/homepage': (context) => const HomePage()
         },

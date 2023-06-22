@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       width: double.maxFinite,
                       child: customCard(
-                          icon: Icons.storage_outlined, title: labelGenQr),
+                          icon: Icons.qr_code_2_outlined, title: labelQrCodes),
                     ))
               ],
             ),

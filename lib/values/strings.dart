@@ -1,7 +1,7 @@
 String appName = 'QR Attendance';
+String labelWelcome = 'Welcome to\n$appName';
 String labelNewAttendance = 'New Attendance';
 String labelAttendanceList = 'Attendance List';
-String labelGenQr = 'Generated QR Codes';
 
 String labelAttendanceModel = 'Attendance Model';
 String attendanceModelRuntime = 'AttendanceModel';
@@ -13,6 +13,7 @@ String labelDetails = 'Details';
 String labelCreated = 'Created: ';
 String labelCutoffDT = 'Cut Off: ';
 
+/// New QR Code
 String labelNewQr = 'New QR Code';
 String labelName = 'Fullname';
 String labelIdNum = 'ID Number';
@@ -26,12 +27,25 @@ String labelPrivPol = 'Privacy Policy';
 String labelAbout = 'About';
 String labelSignout = 'Sign out';
 
+/// New Attendance Form
 String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
 String labelNotSet = 'Not Set';
 String labelDateFormat = 'MM/dd/yyyy, hh:mm a';
 
+/// Item deletion
 String labelAlertDeleteTitle = 'Want to delete?';
 String labelAlertDeleteContent = 'Item will be deleted permanently.';
 String labelNo = 'No';
 String labelYes = 'Yes';
+
+/// StartPage
+String labelOfflineMode = 'OFFLINE MODE';
+String labelOnlineMode = 'ONLINE MODE';
+String labelOnAttendance = 'Attendances';
+String labelProceed = 'Proceed';
+String msgOnlineAttendance =
+    'The attendance created in the online mode is uploaded online, an attendance code will be generated so that other people can add to the attendance.\nOnly the admin or the one who creates the attendance can edit the content.';
+String msgOfflineAttendance =
+    'The attendance created in the offline mode is saved to the phone storage, other people or device will not be able to access it. No attendance code will be generated.';
+String msgQr = 'The QR Codes created is stored locally.';
