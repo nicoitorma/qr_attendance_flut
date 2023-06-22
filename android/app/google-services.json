@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "870415657488",
+    "project_id": "qr-attendance-32c1b",
+    "storage_bucket": "qr-attendance-32c1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870415657488:android:855333d215feefec9c7895",
+        "android_client_info": {
+          "package_name": "com.example.qr_attendance_flut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870415657488-51no3ho3e8022ie8us75prujgeo6lk0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0vBNRszianK1xvNX5n13-u1xgKsabGKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870415657488-51no3ho3e8022ie8us75prujgeo6lk0q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "870415657488-0vsos7vc7n73130de6dk6sj5rnaki7o6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.qrAttendanceFlut.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

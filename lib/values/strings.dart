@@ -20,9 +20,11 @@ String labelDept = 'Department';
 String labelCreateQr = 'CREATE QR';
 String labelQrCodes = 'QR Codes';
 
+/// Drawer
 String labelHelp = 'Help';
 String labelPrivPol = 'Privacy Policy';
 String labelAbout = 'About';
+String labelSignout = 'Sign out';
 
 String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
