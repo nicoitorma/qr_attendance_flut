@@ -5,29 +5,32 @@ class AttendanceModel {
   int? id;
   String? attendanceName;
   String? details;
-  String? timeAndDate;
+  DateTime? date;
+  DateTime? time;
   String? cutoff;
 
   AttendanceModel(
       {this.id,
       this.attendanceName,
       this.details,
-      this.timeAndDate,
+      this.date,
+      this.time,
       this.cutoff});
 
   AttendanceModel.fromJson(Map<String, dynamic> item)
       : id = item['id'],
         attendanceName = item['attendanceName'] ?? '',
         details = item['details'] ?? '',
-        timeAndDate = item['timeAndDate'],
-        cutoff = item['cutoff'] ?? '';
+        date = DateFormat(labelDateFormat).parse(item['date']),
+        time = DateFormat(labelTimeFormat).parse(item['time']),
+        cutoff = item['cutoff'];
 
   Map<String, Object> toMap() {
     return {
       'attendanceName': attendanceName!,
       'details': details ?? '',
-      'timeAndDate':
-          DateFormat(labelDateFormat).format(DateTime.now()).toString(),
+      'date': DateFormat(labelDateFormat).format(DateTime.now()),
+      'time': DateFormat(labelTimeFormat).format(DateTime.now()),
       'cutoff': cutoff ?? ''
     };
   }

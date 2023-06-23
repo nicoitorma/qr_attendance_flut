@@ -26,7 +26,7 @@ class _AttendanceListState extends State<AttendanceList> {
   DateTime? selectedCutoffDateTime;
   bool isLongPress = false;
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  final CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -43,14 +43,6 @@ class _AttendanceListState extends State<AttendanceList> {
     nameController.dispose();
     detailsController.dispose();
     super.dispose();
-  }
-
-  void _onFormatChange(var format) {
-    if (_calendarFormat != format) {
-      setState(() {
-        _calendarFormat = format;
-      });
-    }
   }
 
   @override
@@ -119,11 +111,7 @@ class _AttendanceListState extends State<AttendanceList> {
                     showPopup(attendanceProv);
                   },
                   child: const Icon(Icons.add)),
-              body:
-                  // (attendanceProv.attendanceList.isEmpty)
-                  //     ? Center(child: Text(labelNoItem))
-                  // :
-                  Column(children: [
+              body: Column(children: [
                 TableCalendar(
                   firstDay: DateTime(2022, 10, 19),
                   lastDay: DateTime(2030, 10, 19),
@@ -131,21 +119,20 @@ class _AttendanceListState extends State<AttendanceList> {
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   calendarFormat: _calendarFormat,
                   startingDayOfWeek: StartingDayOfWeek.monday,
-                  // eventLoader: (day) {},
+                  eventLoader: (day) {
+                    return attendanceProv.getAttendanceOnSelectedDate(day);
+                  },
                   calendarStyle: const CalendarStyle(
-                    // Use `CalendarStyle` to customize the UI
                     outsideDaysVisible: false,
                   ),
                   onDaySelected: (selectedDay, focusedDay) {
                     if (!isSameDay(_selectedDay, selectedDay)) {
-                      // Call `setState()` when updating the selected day
                       setState(() {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
                       });
                     }
                   },
-                  onFormatChanged: (format) => _onFormatChange(format),
                   onPageChanged: (focusedDay) {
                     _focusedDay = focusedDay;
                   },
@@ -207,12 +194,12 @@ class _AttendanceListState extends State<AttendanceList> {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
-      String? cutOffDateTime =
-          DateFormat(labelDateFormat).format(selectedCutoffDateTime!);
 
       // Perform actions with the form data
       provider.insertNewAttendance(AttendanceModel(
-          attendanceName: name, details: details, cutoff: cutOffDateTime));
+          attendanceName: name,
+          details: details,
+          cutoff: selectedCutoffDateTime.toString()));
 
       // Clear the form fields
       nameController.clear();

@@ -31,7 +31,8 @@ String labelSignout = 'Sign out';
 String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
 String labelNotSet = 'Not Set';
-String labelDateFormat = 'MM/dd/yyyy, hh:mm a';
+String labelTimeFormat = 'hh:mm a';
+String labelDateFormat = 'MM/dd/yyy';
 
 /// Item deletion
 String labelAlertDeleteTitle = 'Want to delete?';

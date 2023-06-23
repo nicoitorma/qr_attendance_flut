@@ -114,7 +114,7 @@ Widget customListItem(
                             /// if it is an attendance it will show the timeAndDate the
                             /// attendance is created.
                             ? Text(
-                                '$labelCreated${data.timeAndDate}',
+                                '$labelCreated${data.date} ${data.time}',
                                 overflow: TextOverflow.visible,
                                 style: subtitleStyle,
                               )

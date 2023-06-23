@@ -4,17 +4,25 @@ import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 import '../Models/attendance.dart';
 
 class AttendanceListProvider extends ChangeNotifier {
-  List<AttendanceModel> attendanceList = [];
+  List attendanceList = [];
   List<AttendanceModel> clickedAttendance = [];
+  DateTime? _day;
+
+  getAttendanceOnSelectedDate(day) {
+    print('EVENTLOAD: ${attendanceList.length}');
+    return attendanceList;
+  }
 
   getAttendanceListForDay(DateTime day) async {
-    attendanceList = await getAllAttendance();
+    _day = day;
+    attendanceList = await getAllAttendance(day);
     notifyListeners();
+    print('GET ATTLIST: ${attendanceList.length}');
   }
 
   insertNewAttendance(AttendanceModel attendanceModel) async {
     await insertAttendance(attendanceModel);
-    // await getAttendanceListForDay();
+    await getAttendanceListForDay(_day!);
   }
 
   selectAttendance(AttendanceModel attendanceModel) {

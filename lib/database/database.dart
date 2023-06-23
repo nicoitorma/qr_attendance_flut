@@ -9,7 +9,7 @@ class AppDatabase {
       join(path, 'database.db'),
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE IF NOT EXISTS attendance_table(id INTEGER PRIMARY KEY AUTOINCREMENT, attendanceName TEXT NOT NULL, details TEXT, timeAndDate TEXT, cutoff TEXT)",
+          "CREATE TABLE IF NOT EXISTS attendance_table(id INTEGER PRIMARY KEY AUTOINCREMENT, attendanceName TEXT NOT NULL, details TEXT, date DATETIME, time DATETIME, cutoff DATETIME)",
         );
         await database.execute(
           "CREATE TABLE IF NOT EXISTS qr_table(id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT NOT NULL, idNum TEXT, dept TEXT)",
