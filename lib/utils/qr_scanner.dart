@@ -83,7 +83,7 @@ class _QrScannerState extends State<QrScanner> {
       if (scanData.code != null) {
         this.controller!.pauseCamera();
         String timeAndDate =
-            DateFormat(labelDateFormat).format(DateTime.now()).toString();
+            DateFormat(labelFullDtFormat).format(DateTime.now()).toString();
 
         setState(() {
           List words = scanData.code!.split('&');
@@ -92,7 +92,7 @@ class _QrScannerState extends State<QrScanner> {
               fullname: words[1],
               dept: words[2],
               timeAndDate: timeAndDate,
-              parentId: widget.data.id,
+              attendanceId: widget.data.id,
               isLate: 'false'));
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('${words[1]} is added'),

@@ -3,7 +3,7 @@ class StudentInAttendance {
   String? idNum;
   String? fullname;
   String? dept;
-  int? parentId;
+  int? attendanceId;
   String? timeAndDate;
   String? isLate;
 
@@ -11,7 +11,7 @@ class StudentInAttendance {
       {this.idNum,
       this.fullname,
       this.dept,
-      this.parentId,
+      this.attendanceId,
       this.timeAndDate,
       this.isLate});
 
@@ -20,7 +20,7 @@ class StudentInAttendance {
         idNum = item['idNum'] ?? '',
         fullname = item['fullname'] ?? '',
         dept = item['dept'] ?? '',
-        parentId = item['parentId'] ?? '',
+        attendanceId = item['attendanceId'] ?? '',
         timeAndDate = item['timeAndDate'] ?? '',
         isLate = item['isLate'];
 
@@ -29,7 +29,7 @@ class StudentInAttendance {
       'idNum': idNum ?? '',
       'fullname': fullname ?? '',
       'dept': dept ?? '',
-      'parentId': parentId ?? '',
+      'attendanceId': attendanceId ?? '',
       'timeAndDate': timeAndDate ?? '',
       'isLate': isLate!
     };

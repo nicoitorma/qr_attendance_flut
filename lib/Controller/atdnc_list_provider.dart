@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 
 import '../Models/attendance.dart';
 
 class AttendanceListProvider extends ChangeNotifier {
   List attendanceList = [];
+  Future<int>? count;
   List<AttendanceModel> clickedAttendance = [];
   DateTime? _day;
 
-  getAttendanceOnSelectedDate(day) {
-    print('EVENTLOAD: ${attendanceList.length}');
-    return attendanceList;
+  getAttendanceLength(int attendanceId) async {
+    count = await getAllAttendanceContent(attendanceId);
+    notifyListeners();
   }
 
   getAttendanceListForDay(DateTime day) async {
     _day = day;
     attendanceList = await getAllAttendance(day);
     notifyListeners();
-    print('GET ATTLIST: ${attendanceList.length}');
   }
 
   insertNewAttendance(AttendanceModel attendanceModel) async {
@@ -45,7 +46,7 @@ class AttendanceListProvider extends ChangeNotifier {
       await deleteAttendance(item.id!);
     }
     clickedAttendance.clear();
-    // await getAttendanceListForDay();
+    await getAttendanceListForDay(_day!);
     notifyListeners();
   }
 

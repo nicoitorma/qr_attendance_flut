@@ -5,7 +5,7 @@ import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../values/const.dart';
-import 'attendance_list.dart';
+import 'attendance_list/attendance_list.dart';
 import 'drawer.dart';
 
 class HomePage extends StatefulWidget {

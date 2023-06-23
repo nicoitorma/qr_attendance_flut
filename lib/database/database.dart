@@ -9,13 +9,14 @@ class AppDatabase {
       join(path, 'database.db'),
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE IF NOT EXISTS attendance_table(id INTEGER PRIMARY KEY AUTOINCREMENT, attendanceName TEXT NOT NULL, details TEXT, date DATETIME, time DATETIME, cutoff DATETIME)",
+          "CREATE TABLE IF NOT EXISTS attendance_table(id INTEGER PRIMARY KEY AUTOINCREMENT, attendanceName TEXT NOT NULL, details TEXT, date DATETIME, time DATETIME, cutoffTimeAndDate DATETIME)",
         );
         await database.execute(
           "CREATE TABLE IF NOT EXISTS qr_table(id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT NOT NULL, idNum TEXT, dept TEXT)",
         );
         await database.execute(
-            "CREATE TABLE IF NOT EXISTS studentAdded_table(id INTEGER PRIMARY KEY AUTOINCREMENT, idNum TEXT, fullname TEXT NOT NULL, dept TEXT, timeAndDate TEXT, parentId INTEGER, isLate TEXT)");
+          "CREATE TABLE IF NOT EXISTS studentAdded_table(id INTEGER PRIMARY KEY AUTOINCREMENT, idNum TEXT, fullname TEXT NOT NULL, dept TEXT, timeAndDate TEXT, isLate TEXT, attendanceId INTEGER, FOREIGN KEY (attendanceId) REFERENCES attendance_table(id))",
+        );
       },
       version: 1,
     );

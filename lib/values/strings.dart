@@ -11,7 +11,11 @@ String labelQrContents = 'Scanned QR: ';
 String labelAttendanceName = 'Attendance Name';
 String labelDetails = 'Details';
 String labelCreated = 'Created: ';
-String labelCutoffDT = 'Cut Off: ';
+String labelCutoff = 'Cut Off: ';
+
+String labelFullDtFormat = 'MM/dd/yyy hh:mm a';
+String labelSubmit = 'Submit';
+String labelSelectCutoffDt = 'Select Cut Off Date and Time';
 
 /// New QR Code
 String labelNewQr = 'New QR Code';

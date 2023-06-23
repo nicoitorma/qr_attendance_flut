@@ -23,9 +23,15 @@ class _AttendanceContentsState extends State<AttendanceContents> {
   @override
   void initState() {
     super.initState();
+
+    /// This code is using the `Provider` package to get an instance of the `AttendanceContentProvider`
+    /// class and calling its `getAtndContent` method with the `id` property of the `widget.data` object
+    /// as an argument. This is likely used to fetch the attendance content data for the given `id` and
+    /// update the state of the widget accordingly. The `listen: false` parameter is used to prevent the
+    /// widget from rebuilding when the provider's state changes.
     final provider =
         Provider.of<AttendanceContentProvider>(context, listen: false);
-    provider.getAtndContent();
+    provider.getAtndContent(widget.data.id!);
   }
 
   @override
@@ -84,12 +90,19 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.data.attendanceName!),
-                  (widget.data.cutoff == null)
+                  (widget.data.cutoffTimeAndDate == 'null')
                       ? Container()
-                      : Text('$labelCutoffDT${widget.data.cutoff.toString()}',
+                      : Text('$labelCutoff${widget.data.cutoffTimeAndDate} ',
                           style: appBarSubtitleStyle)
                 ],
               )),
+
+        /// This code block is creating a floating action button with an icon of a QR code scanner. When
+        /// the button is pressed, it checks if the `isLongPress` variable is true, and if so, it sets it
+        /// to false and clears any selected items. It then navigates to a new page using the
+        /// `Navigator.of(context).push` method, passing in a `QrScanner` widget with the `data` property
+        /// set to `widget.data`. The `PageTransition` widget is used to specify the type of transition
+        /// animation to use when navigating to the new page.
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             if (isLongPress) {

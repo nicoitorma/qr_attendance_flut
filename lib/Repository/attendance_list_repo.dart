@@ -9,7 +9,6 @@ getAllAttendance(DateTime day) async {
   // final List<Map<String, Object?>> queryResult =
   //     await db.query('attendance_table', orderBy: 'timeAndDate ASC');
   final formattedDate = DateFormat(labelDateFormat).format(day);
-  print('DB DATE: $formattedDate');
   final List<Map<String, dynamic>> queryResult = await db.rawQuery(
     'SELECT * FROM attendance_table WHERE date = ?',
     [formattedDate],

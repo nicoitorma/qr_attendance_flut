@@ -3,10 +3,13 @@ import 'package:sqflite/sqflite.dart';
 
 import '../database/database.dart';
 
-getAllAttendanceContent() async {
+getAllAttendanceContent(int attendanceId) async {
   final db = await AppDatabase().initializeDB();
-  final List<Map<String, Object?>> queryResult =
-      await db.query('studentAdded_table', orderBy: 'id ASC');
+  final List<Map<String, Object?>> queryResult = await db.query(
+      'studentAdded_table',
+      where: 'attendanceId = ?',
+      whereArgs: [attendanceId],
+      orderBy: 'id ASC');
   return queryResult.map((e) => StudentInAttendance.fromJson(e)).toList();
 }
 

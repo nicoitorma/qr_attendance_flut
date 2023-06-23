@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -36,7 +37,6 @@ Widget customCard({required var icon, required String title}) => Container(
 Widget customListItem(
     {required Color color,
     var data,
-    int count = 0,
     Function()? onTap,
     Function()? onLongPress}) {
   var padding = const EdgeInsets.fromLTRB(0.0, 8.0, 0, 5.0);
@@ -88,33 +88,35 @@ Widget customListItem(
               Expanded(
                 child: Column(
                   children: [
+                    /// Details or ID number
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: (isAttendance)
+                          ? data.details == ''
+                              ? const SizedBox.shrink()
+                              : Text(
+                                  '$labelDetails: ${data.details}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: subtitleStyle,
+                                )
+                          : Text(
+                              data.idNum,
+                              overflow: TextOverflow.ellipsis,
+                              style: subtitleStyle,
+                            ),
+                    ),
+
+                    /// Attendance creation time or the department
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: padding,
                         child: (isAttendance)
-                            ? Text(
-                                '$labelDetails: ${data.details}',
-                                overflow: TextOverflow.ellipsis,
-                                style: subtitleStyle,
-                              )
-                            : Text(
-                                data.idNum,
-                                overflow: TextOverflow.ellipsis,
-                                style: subtitleStyle,
-                              ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0, 0),
-                        child: (isAttendance)
 
                             /// if it is an attendance it will show the timeAndDate the
                             /// attendance is created.
                             ? Text(
-                                '$labelCreated${data.date} ${data.time}',
+                                '$labelCreated${DateFormat(labelDateFormat).format(data.date)} ${DateFormat(labelTimeFormat).format(data.time)}',
                                 overflow: TextOverflow.visible,
                                 style: subtitleStyle,
                               )
@@ -127,6 +129,8 @@ Widget customListItem(
                               ),
                       ),
                     ),
+
+                    /// The time the QR Code is scanned
                     (data.runtimeType.toString() == studentInAttendanceRuntime)
                         ? Align(
                             alignment: Alignment.topLeft,
@@ -147,38 +151,26 @@ Widget customListItem(
                   ],
                 ),
               ),
+              const Divider(),
               Expanded(
-                child: (isAttendance)
-                    ? Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: padding,
-                              child: Text(
-                                '$labelQrContents$count',
-                                style: subtitleStyle,
-                              ),
-                            ),
-                          ),
-                          (data.cutoff == '')
-                              ? Container()
-                              : Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: padding,
-                                    child: Text(
-                                        '$labelCutoffDT${data.cutoff.toString()}',
-                                        style: subtitleStyle),
-                                  ),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: (isAttendance)
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: data.cutoffTimeAndDate == 'null'
+                              ? const Text('')
+                              : Text(
+                                  '$labelCutoff${data.cutoffTimeAndDate}',
+                                  style: subtitleStyle,
                                 ),
-                        ],
-                      )
-                    : QrImageView(
-                        data: '${data.fullname}&${data.idNum}&${data.dept}',
-                        size: 60,
-                        padding: EdgeInsets.zero,
-                      ),
+                        )
+                      : QrImageView(
+                          data: '${data.idNum}&${data.fullname}&${data.dept}',
+                          size: 60,
+                          padding: EdgeInsets.zero,
+                        ),
+                ),
               )
             ],
           )),

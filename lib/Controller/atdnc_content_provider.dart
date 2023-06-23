@@ -5,15 +5,17 @@ import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 class AttendanceContentProvider extends ChangeNotifier {
   List<StudentInAttendance> content = [];
   List<StudentInAttendance> selectedTile = [];
+  int _attendanceId = 0;
 
-  getAtndContent() async {
-    content = await getAllAttendanceContent();
+  getAtndContent(int attendanceId) async {
+    _attendanceId = attendanceId;
+    content = await getAllAttendanceContent(attendanceId);
     notifyListeners();
   }
 
   insertToAttendance(StudentInAttendance studentInAttendance) async {
     await insertAttendanceContent(studentInAttendance);
-    await getAtndContent();
+    await getAtndContent(_attendanceId);
   }
 
   selectTile(StudentInAttendance studentInAttendance) {
@@ -36,7 +38,7 @@ class AttendanceContentProvider extends ChangeNotifier {
       await deleteFromAttendance(item.id!);
     }
     selectedTile.clear();
-    await getAtndContent();
+    await getAtndContent(_attendanceId);
     notifyListeners();
   }
 

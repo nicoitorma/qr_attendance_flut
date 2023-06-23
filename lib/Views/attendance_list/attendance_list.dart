@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
 import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
+import 'package:qr_attendance_flut/Views/attendance_list/widgets.dart';
 import 'package:qr_attendance_flut/values/const.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../Models/attendance.dart';
-import 'attendance_contents.dart';
-import 'instantiable_widget.dart';
+import '../attendance_contents.dart';
+import '../instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -26,7 +25,7 @@ class _AttendanceListState extends State<AttendanceList> {
   DateTime? selectedCutoffDateTime;
   bool isLongPress = false;
 
-  final CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -119,9 +118,6 @@ class _AttendanceListState extends State<AttendanceList> {
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   calendarFormat: _calendarFormat,
                   startingDayOfWeek: StartingDayOfWeek.monday,
-                  eventLoader: (day) {
-                    return attendanceProv.getAttendanceOnSelectedDate(day);
-                  },
                   calendarStyle: const CalendarStyle(
                     outsideDaysVisible: false,
                   ),
@@ -130,6 +126,14 @@ class _AttendanceListState extends State<AttendanceList> {
                       setState(() {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
+                        attendanceProv.getAttendanceListForDay(selectedDay);
+                      });
+                    }
+                  },
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
                       });
                     }
                   },
@@ -137,78 +141,61 @@ class _AttendanceListState extends State<AttendanceList> {
                     _focusedDay = focusedDay;
                   },
                 ),
+                const Divider(thickness: 3),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: attendanceProv.attendanceList.length,
-                      itemBuilder: ((context, index) {
-                        List clickedAttendance =
-                            attendanceProv.clickedAttendance;
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: customListItem(
-                            color: (clickedAttendance.contains(
-                                    attendanceProv.attendanceList[index]))
-                                ? Colors.red
-                                : Colors.transparent,
-                            data: attendanceProv.attendanceList[index],
-                            count: contentProv.content.length,
-                            onTap: () {
-                              if (isLongPress) {
-                                if (clickedAttendance.contains(
-                                    attendanceProv.attendanceList[index])) {
-                                  attendanceProv.removeItemFromSelected(
-                                      attendanceProv.attendanceList[index]);
-                                  if (clickedAttendance.isEmpty) {
-                                    isLongPress = !isLongPress;
+                  child: (attendanceProv.attendanceList.isEmpty)
+                      ? Center(
+                          child: Text(labelNoItem),
+                        )
+                      : ListView.builder(
+                          itemCount: attendanceProv.attendanceList.length,
+                          itemBuilder: ((context, index) {
+                            List clickedAttendance =
+                                attendanceProv.clickedAttendance;
+                            return Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: customListItem(
+                                color: (clickedAttendance.contains(
+                                        attendanceProv.attendanceList[index]))
+                                    ? Colors.red
+                                    : Colors.transparent,
+                                data: attendanceProv.attendanceList[index],
+                                onTap: () {
+                                  if (isLongPress) {
+                                    if (clickedAttendance.contains(
+                                        attendanceProv.attendanceList[index])) {
+                                      attendanceProv.removeItemFromSelected(
+                                          attendanceProv.attendanceList[index]);
+                                      if (clickedAttendance.isEmpty) {
+                                        isLongPress = !isLongPress;
+                                      }
+                                    } else {
+                                      attendanceProv.selectAttendance(
+                                          attendanceProv.attendanceList[index]);
+                                    }
+                                    return;
                                   }
-                                } else {
+                                  Navigator.of(context).push(PageTransition(
+                                      type:
+                                          PageTransitionType.rightToLeftJoined,
+                                      child: AttendanceContents(
+                                          data: attendanceProv
+                                              .attendanceList[index]),
+                                      duration: transitionDuration,
+                                      reverseDuration: transitionDuration,
+                                      childCurrent: widget));
+                                },
+                                onLongPress: () {
+                                  isLongPress = !isLongPress;
                                   attendanceProv.selectAttendance(
                                       attendanceProv.attendanceList[index]);
-                                }
-                                return;
-                              }
-                              Navigator.of(context).push(PageTransition(
-                                  type: PageTransitionType.rightToLeftJoined,
-                                  child: AttendanceContents(
-                                      data:
-                                          attendanceProv.attendanceList[index]),
-                                  duration: transitionDuration,
-                                  reverseDuration: transitionDuration,
-                                  childCurrent: widget));
-                            },
-                            onLongPress: () {
-                              isLongPress = !isLongPress;
-                              attendanceProv.selectAttendance(
-                                  attendanceProv.attendanceList[index]);
-                            },
-                          ),
-                        );
-                      })),
+                                },
+                              ),
+                            );
+                          })),
                 ),
               ]),
             ));
-  }
-
-  void _submitForm(var provider) {
-    if (formKey.currentState!.validate()) {
-      // Form is valid, process the data
-      String name = nameController.text;
-      String? details = detailsController.text;
-
-      // Perform actions with the form data
-      provider.insertNewAttendance(AttendanceModel(
-          attendanceName: name,
-          details: details,
-          cutoff: selectedCutoffDateTime.toString()));
-
-      // Clear the form fields
-      nameController.clear();
-      detailsController.clear();
-      setState(() {
-        selectedCutoffDateTime = null;
-      });
-      Navigator.of(context).pop();
-    }
   }
 
   showPopup(var provider) {
@@ -218,71 +205,8 @@ class _AttendanceListState extends State<AttendanceList> {
           return AlertDialog(
             title: Text(labelNewAttendance),
             content: SizedBox(
-              width: double.maxFinite,
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      inputField(
-                          controller: nameController,
-                          label: labelAttendanceName,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return labelAttendanceName + labelEmptyFieldError;
-                            }
-                            return null;
-                          }),
-                      inputField(
-                          controller: detailsController, label: labelDetails),
-                      const SizedBox(height: 16.0),
-                      Text(
-                        labelCutoffDT +
-                            (selectedCutoffDateTime == null
-                                ? labelNotSet
-                                : DateFormat(labelDateFormat)
-                                    .format(selectedCutoffDateTime!)),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2100),
-                          ).then((selectedDate) {
-                            if (selectedDate != null) {
-                              showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              ).then((selectedTime) {
-                                if (selectedTime != null) {
-                                  setState(() {
-                                    selectedCutoffDateTime = DateTime(
-                                      selectedDate.year,
-                                      selectedDate.month,
-                                      selectedDate.day,
-                                      selectedTime.hour,
-                                      selectedTime.minute,
-                                    );
-                                  });
-                                }
-                              });
-                            }
-                          });
-                        },
-                        child: const Text('Select Cut Off Date and Time'),
-                      ),
-                      const SizedBox(height: 16.0),
-                      ElevatedButton(
-                        onPressed: () => _submitForm(provider),
-                        child: const Text('Submit'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                width: double.maxFinite,
+                child: AttendancePopup(provider: provider)),
           );
         });
   }
