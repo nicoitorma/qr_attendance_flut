@@ -45,6 +45,14 @@ class _AttendanceListState extends State<AttendanceList> {
     super.dispose();
   }
 
+  void _onFormatChange(var format) {
+    if (_calendarFormat != format) {
+      setState(() {
+        _calendarFormat = format;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<AttendanceListProvider, AttendanceContentProvider>(
@@ -122,9 +130,8 @@ class _AttendanceListState extends State<AttendanceList> {
                   focusedDay: _focusedDay,
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   calendarFormat: _calendarFormat,
-                  eventLoader: attendanceProv
-                      .getAttendanceListForDay(_selectedDay ?? _focusedDay),
                   startingDayOfWeek: StartingDayOfWeek.monday,
+                  // eventLoader: (day) {},
                   calendarStyle: const CalendarStyle(
                     // Use `CalendarStyle` to customize the UI
                     outsideDaysVisible: false,
@@ -138,13 +145,7 @@ class _AttendanceListState extends State<AttendanceList> {
                       });
                     }
                   },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
+                  onFormatChanged: (format) => _onFormatChange(format),
                   onPageChanged: (focusedDay) {
                     _focusedDay = focusedDay;
                   },
