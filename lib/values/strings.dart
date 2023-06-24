@@ -33,6 +33,7 @@ String labelHelp = 'Help';
 String labelPrivPol = 'Privacy Policy';
 String labelAbout = 'About';
 String labelSignout = 'Sign out';
+String labelExit = 'Exit';
 
 /// New Attendance Form
 String labelEmptyFieldError = ' cannot be empty';

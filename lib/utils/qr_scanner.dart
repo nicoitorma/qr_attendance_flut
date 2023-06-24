@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:qr_attendance_flut/Models/attendance.dart';
 import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
+import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../Controller/offline/atdnc_content_provider.dart';
@@ -85,24 +86,40 @@ class _QrScannerState extends State<QrScanner> {
         this.controller!.pauseCamera();
         String timeAndDate =
             DateFormat(labelFullDtFormat).format(DateTime.now()).toString();
+        print(timeAndDate);
+        DateTime time = DateFormat(labelFullDtFormat).parse(timeAndDate);
+        print(time);
         List words = scanData.code!.split('&');
 
-        setState(() {
-          // if (isAdded) {
-          //   ScaffoldMessenger.of(context).showSnackBar(
-          //       SnackBar(content: Text('${words[1]} is already added')));
-          // } else {
-          provider!.insertToAttendance(StudentInAttendance(
-              idNum: words[0],
-              fullname: words[1],
-              dept: words[2],
-              timeAndDate: timeAndDate,
-              attendanceId: widget.data.id,
-              isLate: 'false'));
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${words[1]} is added'),
-          ));
-          // }
+        /// This code is checking if a student with a specific ID number and attendance ID is already
+        /// added to the attendance list. It does this by calling the `isAlreadyAdded` method from the
+        /// `AttendanceContentRepo` class and passing in the student ID number and attendance ID as
+        /// parameters.
+        AttendanceContentRepo.isAlreadyAdded(words[0], widget.data.id!)
+            .then((value) {
+          if (value > 0) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('${words[1]} is already added')));
+            return;
+          }
+          bool isLate = false;
+          if (time.isAfter(DateFormat(labelDateFormat)
+              .parse(widget.data.cutoffTimeAndDate!))) {
+            isLate = true;
+          }
+
+          setState(() {
+            provider!.insertToAttendance(StudentInAttendance(
+                idNum: words[0],
+                fullname: words[1],
+                dept: words[2],
+                timeAndDate: timeAndDate,
+                attendanceId: widget.data.id,
+                isLate: isLate.toString()));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${words[1]} is added'),
+            ));
+          });
         });
       }
     });

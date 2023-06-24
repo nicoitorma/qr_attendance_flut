@@ -3,22 +3,26 @@ import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 
 class AttendanceContentProvider extends ChangeNotifier {
+  final AttendanceContentRepo _attendanceContentRepo = AttendanceContentRepo();
   List<StudentInAttendance> content = [];
   List<StudentInAttendance> selectedTile = [];
   int _attendanceId = 0;
+  bool isLongPress = false;
 
-  isAdded(var idNum) async {
-    return await isAlreadyAdded(idNum);
+  setLongPress() {
+    isLongPress = !isLongPress;
+    notifyListeners();
   }
 
   getAtndContent(int attendanceId) async {
     _attendanceId = attendanceId;
-    content = await getAllAttendanceContent(attendanceId);
+    content =
+        await _attendanceContentRepo.getAllAttendanceContent(attendanceId);
     notifyListeners();
   }
 
   insertToAttendance(StudentInAttendance studentInAttendance) async {
-    await insertAttendanceContent(studentInAttendance);
+    await _attendanceContentRepo.insertAttendanceContent(studentInAttendance);
     await getAtndContent(_attendanceId);
   }
 
@@ -39,7 +43,7 @@ class AttendanceContentProvider extends ChangeNotifier {
 
   deleteItem() async {
     for (var item in selectedTile) {
-      await deleteFromAttendance(item.id!);
+      await _attendanceContentRepo.deleteFromAttendance(item.id!);
     }
     selectedTile.clear();
     await getAtndContent(_attendanceId);

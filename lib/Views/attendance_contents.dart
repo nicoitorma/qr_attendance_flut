@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Views/custom_list_tiles/attdnc_cntnt_tile.dart';
+import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Controller/offline/atdnc_content_provider.dart';
@@ -18,7 +19,6 @@ class AttendanceContents extends StatefulWidget {
 }
 
 class _AttendanceContentsState extends State<AttendanceContents> {
-  bool isLongPress = false;
   TextStyle appBarSubtitleStyle = const TextStyle(fontSize: 16);
   @override
   void initState() {
@@ -37,53 +37,8 @@ class _AttendanceContentsState extends State<AttendanceContents> {
   Widget build(BuildContext context) {
     return Consumer<AttendanceContentProvider>(
       builder: (context, value, child) => Scaffold(
-        appBar: (isLongPress)
-            ? AppBar(
-                title: Text(value.content.length.toString()),
-                leading: InkWell(
-                    onTap: () {
-                      value.clearSelectedItems();
-                      isLongPress = !isLongPress;
-                    },
-                    child: const Icon(Icons.close)),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: ((context) => AlertDialog(
-                                    title: Text(labelAlertDeleteTitle),
-                                    content: Text(labelAlertDeleteContent),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context, false);
-                                          },
-                                          child: Text(labelNo)),
-                                      TextButton(
-                                          onPressed: () {
-                                            value.deleteItem();
-                                            isLongPress = !isLongPress;
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(labelYes))
-                                    ],
-                                  )));
-                        },
-                        child: const Icon(Icons.delete_outlined)),
-                  ),
-                  (value.content.length > 1)
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () => value.selectAll(),
-                              child: const Icon(Icons.select_all_outlined)),
-                        )
-                      : Container(),
-                ],
-              )
+        appBar: (value.isLongPress)
+            ? MenuAppBar(value: value)
             : AppBar(
                 title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,8 +59,8 @@ class _AttendanceContentsState extends State<AttendanceContents> {
         /// animation to use when navigating to the new page.
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (isLongPress) {
-              isLongPress = !isLongPress;
+            if (value.isLongPress) {
+              value.setLongPress();
               value.clearSelectedItems();
             }
             Navigator.of(context).push(PageTransition(
@@ -131,13 +86,13 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                             : Colors.transparent,
                         data: value.content[index],
                         onTap: () {
-                          if (isLongPress) {
+                          if (value.isLongPress) {
                             if (value.selectedTile
                                 .contains(value.content[index])) {
                               value
                                   .removeItemFromSelected(value.content[index]);
                               if (value.selectedTile.isEmpty) {
-                                isLongPress = !isLongPress;
+                                value.setLongPress();
                               }
                             } else {
                               value.selectTile(value.content[index]);
@@ -146,7 +101,7 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                           }
                         },
                         onLongPress: () {
-                          isLongPress = !isLongPress;
+                          value.setLongPress();
                           value.selectTile(value.content[index]);
                         }),
                   );

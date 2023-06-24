@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 
 import '../../Models/attendance.dart';
 
 class AttendanceListProvider extends ChangeNotifier {
   List attendanceList = [];
-  Future<int>? count;
   List<AttendanceModel> clickedAttendance = [];
   DateTime? _day;
+  bool isLongPress = false;
 
-  getAttendanceLength(int attendanceId) async {
-    count = await getAllAttendanceContent(attendanceId);
+  setLongPress() {
+    isLongPress = !isLongPress;
     notifyListeners();
   }
 

@@ -198,6 +198,18 @@ class _AttendanceListState extends State<AttendanceList> {
             ));
   }
 
+  /// The function shows a popup dialog with a title and content that includes an attendance popup
+  /// widget.
+  ///
+  /// Args:
+  ///   provider: The "provider" parameter is being passed to the "AttendancePopup" widget as an
+  /// argument. It is likely being used to provide data or functionality to the popup widget. Without
+  /// more context, it is difficult to determine the exact purpose of the "provider" parameter.
+  ///
+  /// Returns:
+  ///   The function `showPopup` is returning an `AlertDialog` widget that displays a title and a
+  /// `SizedBox` containing an `AttendancePopup` widget. The `showDialog` function is used to display the
+  /// `AlertDialog` widget.
   showPopup(var provider) {
     return showDialog(
         context: context,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Controller/offline/atdnc_content_provider.dart';
+
+import '../values/strings.dart';
 
 Widget customCard({required var icon, required String title}) => Container(
     padding: const EdgeInsets.all(5),
@@ -18,3 +21,60 @@ Widget customCard({required var icon, required String title}) => Container(
             style: const TextStyle(fontFamily: 'Poppins', fontSize: 16))
       ],
     ));
+
+class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final AttendanceContentProvider value;
+  const MenuAppBar({super.key, required this.value});
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(value.selectedTile.length.toString()),
+      leading: InkWell(
+          onTap: () {
+            value.clearSelectedItems();
+            value.setLongPress();
+          },
+          child: const Icon(Icons.close)),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: ((context) => AlertDialog(
+                          title: Text(labelAlertDeleteTitle),
+                          content: Text(labelAlertDeleteContent),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, false);
+                                },
+                                child: Text(labelNo)),
+                            TextButton(
+                                onPressed: () {
+                                  value.deleteItem();
+                                  value.setLongPress();
+                                  Navigator.pop(context);
+                                },
+                                child: Text(labelYes))
+                          ],
+                        )));
+              },
+              child: const Icon(Icons.delete_outlined)),
+        ),
+        (value.content.length > 1)
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                    onTap: () => value.selectAll(),
+                    child: const Icon(Icons.select_all_outlined)),
+              )
+            : Container(),
+      ],
+    );
+  }
+}
