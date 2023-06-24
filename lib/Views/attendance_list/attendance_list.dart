@@ -3,13 +3,13 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import 'package:qr_attendance_flut/Views/attendance_list/widgets.dart';
-import 'package:qr_attendance_flut/values/const.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../Controller/offline/atdnc_list_provider.dart';
+import '../../values/const.dart';
 import '../attendance_contents.dart';
-import '../instantiable_widget.dart';
+import '../custom_list_tiles/attendance_tile.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -154,12 +154,12 @@ class _AttendanceListState extends State<AttendanceList> {
                                 attendanceProv.clickedAttendance;
                             return Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: customListItem(
-                                color: (clickedAttendance.contains(
-                                        attendanceProv.attendanceList[index]))
+                              child: AttendanceTile(
+                                data: attendanceProv.attendanceList[index],
+                                color: clickedAttendance.contains(
+                                        attendanceProv.attendanceList[index])
                                     ? Colors.red
                                     : Colors.transparent,
-                                data: attendanceProv.attendanceList[index],
                                 onTap: () {
                                   if (isLongPress) {
                                     if (clickedAttendance.contains(

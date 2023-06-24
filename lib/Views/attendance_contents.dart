@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Views/custom_list_tiles/attdnc_cntnt_tile.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Controller/offline/atdnc_content_provider.dart';
 import '../Models/attendance.dart';
 import '../utils/qr_scanner.dart';
 import '../values/const.dart';
-import 'instantiable_widget.dart';
 
 class AttendanceContents extends StatefulWidget {
   final AttendanceModel data;
@@ -125,7 +125,7 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                   List selectedItem = value.selectedTile;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: customListItem(
+                    child: AttendanceContentTile(
                         color: (selectedItem.contains(value.content[index]))
                             ? Colors.red
                             : Colors.transparent,

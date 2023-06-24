@@ -6,7 +6,7 @@ String labelAttendanceList = 'Attendance List';
 String labelAttendanceModel = 'Attendance Model';
 String attendanceModelRuntime = 'AttendanceModel';
 String studentInAttendanceRuntime = 'StudentInAttendance';
-String labelQrContents = 'Scanned QR: ';
+String labelQrScanned = 'QR Scanned: ';
 
 String labelAttendanceName = 'Attendance Name';
 String labelDetails = 'Details';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
+import 'package:qr_attendance_flut/Views/custom_list_tiles/qr_tile.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Controller/offline/qr_list_provider.dart';
@@ -104,7 +104,7 @@ class _QrCodeListState extends State<QrCodeList> {
                   List selectedQr = value.selectedQr;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: customListItem(
+                    child: QrTile(
                       color: (selectedQr.contains(value.qrList[index]))
                           ? Colors.red
                           : Colors.transparent,
