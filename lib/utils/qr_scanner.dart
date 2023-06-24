@@ -86,9 +86,8 @@ class _QrScannerState extends State<QrScanner> {
         this.controller!.pauseCamera();
         String timeAndDate =
             DateFormat(labelFullDtFormat).format(DateTime.now()).toString();
-        print(timeAndDate);
         DateTime time = DateFormat(labelFullDtFormat).parse(timeAndDate);
-        print(time);
+        bool isLate = false;
         List words = scanData.code!.split('&');
 
         /// This code is checking if a student with a specific ID number and attendance ID is already
@@ -102,7 +101,7 @@ class _QrScannerState extends State<QrScanner> {
                 SnackBar(content: Text('${words[1]} is already added')));
             return;
           }
-          bool isLate = false;
+
           if (time.isAfter(DateFormat(labelDateFormat)
               .parse(widget.data.cutoffTimeAndDate!))) {
             isLate = true;
