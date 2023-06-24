@@ -10,7 +10,17 @@ getAllAttendanceContent(int attendanceId) async {
       where: 'attendanceId = ?',
       whereArgs: [attendanceId],
       orderBy: 'id ASC');
+  db.close();
   return queryResult.map((e) => StudentInAttendance.fromJson(e)).toList();
+}
+
+isAlreadyAdded(String idNum) async {
+  final db = await AppDatabase().initializeDB();
+  final result = await db.rawQuery(
+      'SELECT EXISTS (SELECT 1 FROM studentAdded_table WHERE $idNum = ?)',
+      [idNum]);
+
+  return Sqflite.firstIntValue(result) == 1;
 }
 
 insertAttendanceContent(StudentInAttendance studentInAttendance) async {

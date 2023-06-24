@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "870415657488",
+    "firebase_url": "https://qr-attendance-32c1b-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "qr-attendance-32c1b",
     "storage_bucket": "qr-attendance-32c1b.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "870415657488-51no3ho3e8022ie8us75prujgeo6lk0q.apps.googleusercontent.com",
+          "client_id": "870415657488-eaa5agjno5g46oqab6sn21qrsamumeos.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

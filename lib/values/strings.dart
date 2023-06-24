@@ -14,8 +14,11 @@ String labelCreated = 'Created: ';
 String labelCutoff = 'Cut Off: ';
 
 String labelFullDtFormat = 'MM/dd/yyy hh:mm a';
-String labelSubmit = 'Submit';
+String labelSubmit = 'Create';
 String labelSelectCutoffDt = 'Select Cut Off Date and Time';
+
+/// Firebase
+String labelAttendanceCollection = 'attendances';
 
 /// New QR Code
 String labelNewQr = 'New QR Code';

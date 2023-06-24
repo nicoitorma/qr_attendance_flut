@@ -143,7 +143,6 @@ Widget customListItem(
                                     /// qr is scanned for the attdnc content.
                                     Text(
                                   data.timeAndDate,
-                                  overflow: TextOverflow.ellipsis,
                                   style: subtitleStyle,
                                 )),
                           )

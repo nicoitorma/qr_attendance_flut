@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/qr_list_provider.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import '../Controller/offline/qr_list_provider.dart';
 import '../Models/qr_code.dart';
 import '../values/const.dart';
 

@@ -46,7 +46,7 @@ Widget drawer(var context) => Drawer(
           leading: const Icon(Icons.logout_outlined),
           onTap: () {
             FirebaseUIAuth.signOut();
-            Navigator.pushReplacementNamed(context, '/sign-in');
+            Navigator.pushReplacementNamed(context, '/start');
           },
         )
       ],

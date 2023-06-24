@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
-import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
+
 import 'package:qr_attendance_flut/Views/attendance_list/widgets.dart';
 import 'package:qr_attendance_flut/values/const.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../Controller/offline/atdnc_list_provider.dart';
 import '../attendance_contents.dart';
 import '../instantiable_widget.dart';
 
@@ -46,8 +46,8 @@ class _AttendanceListState extends State<AttendanceList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AttendanceListProvider, AttendanceContentProvider>(
-        builder: (context, attendanceProv, contentProv, child) => Scaffold(
+    return Consumer<AttendanceListProvider>(
+        builder: (context, attendanceProv, child) => Scaffold(
               appBar: (isLongPress)
                   ? AppBar(
                       title: Text(

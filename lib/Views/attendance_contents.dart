@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import '../Controller/offline/atdnc_content_provider.dart';
 import '../Models/attendance.dart';
 import '../utils/qr_scanner.dart';
 import '../values/const.dart';
@@ -22,8 +22,6 @@ class _AttendanceContentsState extends State<AttendanceContents> {
   TextStyle appBarSubtitleStyle = const TextStyle(fontSize: 16);
   @override
   void initState() {
-    super.initState();
-
     /// This code is using the `Provider` package to get an instance of the `AttendanceContentProvider`
     /// class and calling its `getAtndContent` method with the `id` property of the `widget.data` object
     /// as an argument. This is likely used to fetch the attendance content data for the given `id` and
@@ -32,6 +30,7 @@ class _AttendanceContentsState extends State<AttendanceContents> {
     final provider =
         Provider.of<AttendanceContentProvider>(context, listen: false);
     provider.getAtndContent(widget.data.id!);
+    super.initState();
   }
 
   @override

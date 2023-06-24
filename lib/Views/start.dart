@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
@@ -89,11 +90,18 @@ class StartPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                           onPressed: () {
-                            title == labelOnlineMode
-                                ? Navigator.pushReplacementNamed(
-                                    context, '/sign-in')
-                                : Navigator.pushReplacementNamed(
-                                    context, '/homepage');
+                            if (title == labelOnlineMode &&
+                                FirebaseAuth.instance.currentUser == null) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/sign-in');
+                            } else if (title == labelOnlineMode &&
+                                FirebaseAuth.instance.currentUser != null) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/online-homepage');
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                  context, '/homepage');
+                            }
                           },
                           child: Text(
                             labelProceed,

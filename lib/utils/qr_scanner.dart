@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/atdnc_content_provider.dart';
+
 import 'package:qr_attendance_flut/Models/attendance.dart';
 import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../Controller/offline/atdnc_content_provider.dart';
 import '../values/strings.dart';
 
 class QrScanner extends StatefulWidget {
@@ -84,9 +85,13 @@ class _QrScannerState extends State<QrScanner> {
         this.controller!.pauseCamera();
         String timeAndDate =
             DateFormat(labelFullDtFormat).format(DateTime.now()).toString();
+        List words = scanData.code!.split('&');
 
         setState(() {
-          List words = scanData.code!.split('&');
+          // if (isAdded) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //       SnackBar(content: Text('${words[1]} is already added')));
+          // } else {
           provider!.insertToAttendance(StudentInAttendance(
               idNum: words[0],
               fullname: words[1],
@@ -97,6 +102,7 @@ class _QrScannerState extends State<QrScanner> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('${words[1]} is added'),
           ));
+          // }
         });
       }
     });

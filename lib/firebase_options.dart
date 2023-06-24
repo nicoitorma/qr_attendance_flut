@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:870415657488:android:855333d215feefec9c7895',
     messagingSenderId: '870415657488',
     projectId: 'qr-attendance-32c1b',
+    databaseURL: 'https://qr-attendance-32c1b-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'qr-attendance-32c1b.appspot.com',
   );
 }

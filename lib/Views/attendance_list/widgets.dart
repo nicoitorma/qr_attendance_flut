@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_attendance_flut/Controller/atdnc_list_provider.dart';
 
+import '../../Controller/offline/atdnc_list_provider.dart';
 import '../../Models/attendance.dart';
 import '../../values/const.dart';
 import '../../values/strings.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 
-import '../Models/attendance.dart';
+import '../../Models/attendance.dart';
 
 class AttendanceListProvider extends ChangeNotifier {
   List attendanceList = [];

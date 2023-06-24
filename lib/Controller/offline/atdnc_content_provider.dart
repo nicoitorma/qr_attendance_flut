@@ -7,6 +7,10 @@ class AttendanceContentProvider extends ChangeNotifier {
   List<StudentInAttendance> selectedTile = [];
   int _attendanceId = 0;
 
+  isAdded(var idNum) async {
+    return await isAlreadyAdded(idNum);
+  }
+
   getAtndContent(int attendanceId) async {
     _attendanceId = attendanceId;
     content = await getAllAttendanceContent(attendanceId);
