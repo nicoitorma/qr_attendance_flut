@@ -101,11 +101,12 @@ class _QrScannerState extends State<QrScanner> {
                 SnackBar(content: Text('${words[1]} is already added')));
             return;
           }
-
-          if (widget.data.cutoffTimeAndDate != 'null' &&
-              time.isAfter(DateFormat(labelDateFormat)
-                  .parse(widget.data.cutoffTimeAndDate!))) {
-            isLate = true;
+          print('CUTOFF: ${widget.data.cutoffTimeAndDate.runtimeType}');
+          if (widget.data.cutoffTimeAndDate == null) {
+            if (time.isAfter(DateFormat(labelDateFormat)
+                .parse(widget.data.cutoffTimeAndDate!))) {
+              isLate = true;
+            }
           }
 
           setState(() {

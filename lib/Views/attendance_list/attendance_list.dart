@@ -24,7 +24,6 @@ class _AttendanceListState extends State<AttendanceList> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailsController = TextEditingController();
   DateTime? selectedCutoffDateTime;
-  bool isLongPress = false;
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
@@ -49,10 +48,8 @@ class _AttendanceListState extends State<AttendanceList> {
   Widget build(BuildContext context) {
     return Consumer<AttendanceListProvider>(
         builder: (context, attendanceProv, child) => Scaffold(
-              appBar: (isLongPress)
-                  ? MenuAppBar(
-                      value: attendanceProv,
-                    )
+              appBar: (attendanceProv.isLongPress)
+                  ? MenuAppBar(value: attendanceProv)
                   : AppBar(title: Text(labelAttendanceList)),
               floatingActionButton: FloatingActionButton(
                   onPressed: () {
@@ -110,13 +107,13 @@ class _AttendanceListState extends State<AttendanceList> {
                                     ? Colors.red
                                     : Colors.transparent,
                                 onTap: () {
-                                  if (isLongPress) {
+                                  if (attendanceProv.isLongPress) {
                                     if (clickedAttendance
                                         .contains(attendanceProv.list[index])) {
                                       attendanceProv.removeItemFromSelected(
                                           attendanceProv.list[index]);
                                       if (clickedAttendance.isEmpty) {
-                                        isLongPress = !isLongPress;
+                                        attendanceProv.setLongPress();
                                       }
                                     } else {
                                       attendanceProv.selectAttendance(
@@ -134,7 +131,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                       childCurrent: widget));
                                 },
                                 onLongPress: () {
-                                  isLongPress = !isLongPress;
+                                  attendanceProv.setLongPress();
                                   attendanceProv.selectAttendance(
                                       attendanceProv.list[index]);
                                 },

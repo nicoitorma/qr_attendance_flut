@@ -5,6 +5,12 @@ import 'package:qr_attendance_flut/Repository/qr_list_repo.dart';
 class QrListProvider extends ChangeNotifier {
   List<QrModel> list = [];
   List<QrModel> selectedTile = [];
+  bool isLongPress = false;
+
+  setLongPress() {
+    isLongPress = !isLongPress;
+    notifyListeners();
+  }
 
   getQrList() async {
     list = await getAllQr();

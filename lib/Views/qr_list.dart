@@ -8,6 +8,7 @@ import 'package:qr_attendance_flut/values/strings.dart';
 import '../Controller/offline/qr_list_provider.dart';
 import '../Models/qr_code.dart';
 import '../values/const.dart';
+import 'instantiable_widget.dart';
 
 class QrCodeList extends StatefulWidget {
   const QrCodeList({super.key});
@@ -21,7 +22,6 @@ class _QrCodeListState extends State<QrCodeList> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController idNumController = TextEditingController();
   final TextEditingController deptController = TextEditingController();
-  bool isLongPress = false;
   BannerAd? _bannerAd;
 
   @override
@@ -51,59 +51,8 @@ class _QrCodeListState extends State<QrCodeList> {
                 height: _bannerAd!.size.height.toDouble(),
                 child: AdWidget(ad: _bannerAd!))
             : const SizedBox(height: 0),
-        appBar: (isLongPress)
-            ? AppBar(
-                title: Text(value.selectedTile.length.toString()),
-                leading: InkWell(
-                    onTap: () {
-                      value.clearSelectedItems();
-                      isLongPress = !isLongPress;
-                    },
-                    child: const Icon(Icons.close)),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: ((context) => AlertDialog(
-                                    title: Text(labelAlertDeleteTitle),
-                                    content: Text(labelAlertDeleteContent),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context, false);
-                                          },
-                                          child: Text(labelNo)),
-                                      TextButton(
-                                          onPressed: () {
-                                            value.deleteItem();
-                                            isLongPress = !isLongPress;
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(labelYes))
-                                    ],
-                                  )));
-                        },
-                        child: const Icon(Icons.delete_outlined)),
-                  ),
-                  (value.list.length > 1)
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () => value.selectAll(),
-                              child: const Icon(Icons.select_all_outlined)),
-                        )
-                      : Container(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () => value.selectAll(),
-                        child: const Icon(Icons.save_outlined)),
-                  ),
-                ],
-              )
+        appBar: (value.isLongPress)
+            ? MenuAppBar(value: value)
             : AppBar(title: Text(labelQrCodes)),
         floatingActionButton: FloatingActionButton(
             onPressed: () => addQr(value), child: const Icon(Icons.add)),
@@ -121,11 +70,11 @@ class _QrCodeListState extends State<QrCodeList> {
                           : Colors.transparent,
                       data: value.list[index],
                       onTap: () {
-                        if (isLongPress) {
+                        if (value.isLongPress) {
                           if (value.selectedTile.contains(value.list[index])) {
                             value.removeItemFromSelected(value.list[index]);
                             if (value.selectedTile.isEmpty) {
-                              isLongPress = !isLongPress;
+                              value.setLongPress();
                             }
                           } else {
                             value.selectQr(value.list[index]);
@@ -134,7 +83,7 @@ class _QrCodeListState extends State<QrCodeList> {
                         }
                       },
                       onLongPress: () {
-                        isLongPress = !isLongPress;
+                        value.setLongPress();
                         value.selectQr(value.list[index]);
                       },
                     ),
