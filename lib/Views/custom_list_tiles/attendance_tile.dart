@@ -39,6 +39,7 @@ class AttendanceTile extends CustomTile {
                   ),
                 ),
               ),
+              const Divider(thickness: 2),
             ]),
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

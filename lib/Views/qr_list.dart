@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Views/custom_list_tiles/qr_tile.dart';
+import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../Controller/offline/qr_list_provider.dart';
@@ -20,10 +22,12 @@ class _QrCodeListState extends State<QrCodeList> {
   final TextEditingController idNumController = TextEditingController();
   final TextEditingController deptController = TextEditingController();
   bool isLongPress = false;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    _bannerAd = AdHelper.createBannerAd();
     final provider = Provider.of<QrListProvider>(context, listen: false);
     provider.getQrList();
   }
@@ -33,6 +37,7 @@ class _QrCodeListState extends State<QrCodeList> {
     nameController.dispose();
     idNumController.dispose();
     deptController.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -40,9 +45,15 @@ class _QrCodeListState extends State<QrCodeList> {
   Widget build(BuildContext context) {
     return Consumer<QrListProvider>(
       builder: (context, value, child) => Scaffold(
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!))
+            : const SizedBox(height: 0),
         appBar: (isLongPress)
             ? AppBar(
-                title: Text(value.selectedQr.length.toString()),
+                title: Text(value.selectedTile.length.toString()),
                 leading: InkWell(
                     onTap: () {
                       value.clearSelectedItems();
@@ -77,7 +88,7 @@ class _QrCodeListState extends State<QrCodeList> {
                         },
                         child: const Icon(Icons.delete_outlined)),
                   ),
-                  (value.qrList.length > 1)
+                  (value.list.length > 1)
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
@@ -96,35 +107,35 @@ class _QrCodeListState extends State<QrCodeList> {
             : AppBar(title: Text(labelQrCodes)),
         floatingActionButton: FloatingActionButton(
             onPressed: () => addQr(value), child: const Icon(Icons.add)),
-        body: (value.qrList.isEmpty)
+        body: (value.list.isEmpty)
             ? Center(child: Text(labelNoItem))
             : ListView.builder(
-                itemCount: value.qrList.length,
+                itemCount: value.list.length,
                 itemBuilder: ((context, index) {
-                  List selectedQr = value.selectedQr;
+                  List selectedQr = value.selectedTile;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: QrTile(
-                      color: (selectedQr.contains(value.qrList[index]))
+                      color: (selectedQr.contains(value.list[index]))
                           ? Colors.red
                           : Colors.transparent,
-                      data: value.qrList[index],
+                      data: value.list[index],
                       onTap: () {
                         if (isLongPress) {
-                          if (value.selectedQr.contains(value.qrList[index])) {
-                            value.removeItemFromSelected(value.qrList[index]);
-                            if (value.selectedQr.isEmpty) {
+                          if (value.selectedTile.contains(value.list[index])) {
+                            value.removeItemFromSelected(value.list[index]);
+                            if (value.selectedTile.isEmpty) {
                               isLongPress = !isLongPress;
                             }
                           } else {
-                            value.selectQr(value.qrList[index]);
+                            value.selectQr(value.list[index]);
                           }
                           return;
                         }
                       },
                       onLongPress: () {
                         isLongPress = !isLongPress;
-                        value.selectQr(value.qrList[index]);
+                        value.selectQr(value.list[index]);
                       },
                     ),
                   );

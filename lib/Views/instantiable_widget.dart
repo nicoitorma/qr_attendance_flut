@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Controller/offline/atdnc_content_provider.dart';
 
 import '../values/strings.dart';
 
@@ -23,7 +22,7 @@ Widget customCard({required var icon, required String title}) => Container(
     ));
 
 class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final AttendanceContentProvider value;
+  final dynamic value;
   const MenuAppBar({super.key, required this.value});
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -66,7 +65,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
               child: const Icon(Icons.delete_outlined)),
         ),
-        (value.content.length > 1)
+        (value.list.length > 1)
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(

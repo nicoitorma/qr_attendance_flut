@@ -72,37 +72,36 @@ class _AttendanceContentsState extends State<AttendanceContents> {
           },
           child: const Icon(Icons.qr_code_scanner_outlined),
         ),
-        body: (value.content.isEmpty)
+        body: (value.list.isEmpty)
             ? Center(child: Text(labelNoItem))
             : ListView.builder(
-                itemCount: value.content.length,
+                itemCount: value.list.length,
                 itemBuilder: (context, index) {
                   List selectedItem = value.selectedTile;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: AttendanceContentTile(
-                        color: (selectedItem.contains(value.content[index]))
+                        color: (selectedItem.contains(value.list[index]))
                             ? Colors.red
                             : Colors.transparent,
-                        data: value.content[index],
+                        data: value.list[index],
                         onTap: () {
                           if (value.isLongPress) {
                             if (value.selectedTile
-                                .contains(value.content[index])) {
-                              value
-                                  .removeItemFromSelected(value.content[index]);
+                                .contains(value.list[index])) {
+                              value.removeItemFromSelected(value.list[index]);
                               if (value.selectedTile.isEmpty) {
                                 value.setLongPress();
                               }
                             } else {
-                              value.selectTile(value.content[index]);
+                              value.selectTile(value.list[index]);
                             }
                             return;
                           }
                         },
                         onLongPress: () {
                           value.setLongPress();
-                          value.selectTile(value.content[index]);
+                          value.selectTile(value.list[index]);
                         }),
                   );
                 }),

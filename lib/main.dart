@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'package:qr_attendance_flut/Views/homepage.dart';
@@ -23,6 +24,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  MobileAds.instance.initialize();
   // // Pass all uncaught "fatal" errors from the framework to Crashlytics
   // FlutterError.onError = (errorDetails) {
   //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);

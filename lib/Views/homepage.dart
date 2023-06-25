@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:qr_attendance_flut/Views/qr_list.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import '../utils/ad_helper.dart';
 import '../values/const.dart';
 import 'attendance_list/attendance_list.dart';
 import 'drawer.dart';
@@ -16,11 +18,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  BannerAd? _bannerAd;
+
+  @override
+  void initState() {
+    super.initState();
+    _bannerAd = AdHelper.createBannerAd();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text(appName)),
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!))
+            : const SizedBox(),
         drawer: drawer(context),
         body: SingleChildScrollView(
           child: Padding(

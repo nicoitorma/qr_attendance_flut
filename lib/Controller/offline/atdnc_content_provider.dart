@@ -4,7 +4,7 @@ import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 
 class AttendanceContentProvider extends ChangeNotifier {
   final AttendanceContentRepo _attendanceContentRepo = AttendanceContentRepo();
-  List<StudentInAttendance> content = [];
+  List<StudentInAttendance> list = [];
   List<StudentInAttendance> selectedTile = [];
   int _attendanceId = 0;
   bool isLongPress = false;
@@ -16,8 +16,7 @@ class AttendanceContentProvider extends ChangeNotifier {
 
   getAtndContent(int attendanceId) async {
     _attendanceId = attendanceId;
-    content =
-        await _attendanceContentRepo.getAllAttendanceContent(attendanceId);
+    list = await _attendanceContentRepo.getAllAttendanceContent(attendanceId);
     notifyListeners();
   }
 
@@ -50,14 +49,14 @@ class AttendanceContentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// A function that will select all the item in the attendance list
+  /// A function that will select all the item in the attendance _list
   selectAll() {
     selectedTile.clear();
-    if (selectedTile.length == content.length) {
+    if (selectedTile.length == list.length) {
       return;
     } else {
-      for (int i = 0; i < content.length; i++) {
-        selectedTile.add(content[i]);
+      for (int i = 0; i < list.length; i++) {
+        selectedTile.add(list[i]);
       }
     }
     notifyListeners();

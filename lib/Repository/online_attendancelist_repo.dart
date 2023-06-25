@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 class OnlineAttendanceRepo {
@@ -21,10 +22,10 @@ class OnlineAttendanceRepo {
               labelAttendanceCollection) // Replace with your collection name
           .doc('user1') // Replace with your document ID
           .snapshots();
-      print('READ LOG FOR FIRESTORE DB');
+
       return result;
     } catch (err) {
-      print('Error fetching document: $err');
+      debugPrint('Error fetching document: $err');
     }
   }
 

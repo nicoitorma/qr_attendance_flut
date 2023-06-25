@@ -4,8 +4,8 @@ import 'package:qr_attendance_flut/Repository/attendance_list_repo.dart';
 import '../../Models/attendance.dart';
 
 class AttendanceListProvider extends ChangeNotifier {
-  List attendanceList = [];
-  List<AttendanceModel> clickedAttendance = [];
+  List<AttendanceModel> list = [];
+  final List<AttendanceModel> selectedTile = [];
   DateTime? _day;
   bool isLongPress = false;
 
@@ -16,7 +16,7 @@ class AttendanceListProvider extends ChangeNotifier {
 
   getAttendanceListForDay(DateTime day) async {
     _day = day;
-    attendanceList = await getAllAttendance(day);
+    list = await getAllAttendance(day);
     notifyListeners();
   }
 
@@ -26,37 +26,37 @@ class AttendanceListProvider extends ChangeNotifier {
   }
 
   selectAttendance(AttendanceModel attendanceModel) {
-    clickedAttendance.add(attendanceModel);
+    selectedTile.add(attendanceModel);
     notifyListeners();
   }
 
   clearSelectedItems() {
-    clickedAttendance.clear();
+    selectedTile.clear();
     notifyListeners();
   }
 
   removeItemFromSelected(AttendanceModel attendanceModel) {
-    clickedAttendance.remove(attendanceModel);
+    selectedTile.remove(attendanceModel);
     notifyListeners();
   }
 
   deleteItem() async {
-    for (var item in clickedAttendance) {
+    for (var item in selectedTile) {
       await deleteAttendance(item.id!);
     }
-    clickedAttendance.clear();
+    selectedTile.clear();
     await getAttendanceListForDay(_day!);
     notifyListeners();
   }
 
   /// A function that will select all the item in the attendance list
   selectAll() {
-    clickedAttendance.clear();
-    if (clickedAttendance.length == attendanceList.length) {
+    selectedTile.clear();
+    if (selectedTile.length == list.length) {
       return;
     } else {
-      for (int i = 0; i < attendanceList.length; i++) {
-        clickedAttendance.add(attendanceList[i]);
+      for (int i = 0; i < list.length; i++) {
+        selectedTile.add(list[i]);
       }
     }
     notifyListeners();

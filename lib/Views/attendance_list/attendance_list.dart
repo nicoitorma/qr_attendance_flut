@@ -10,6 +10,7 @@ import '../../Controller/offline/atdnc_list_provider.dart';
 import '../../values/const.dart';
 import '../attendance_contents.dart';
 import '../custom_list_tiles/attendance_tile.dart';
+import '../instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -49,60 +50,8 @@ class _AttendanceListState extends State<AttendanceList> {
     return Consumer<AttendanceListProvider>(
         builder: (context, attendanceProv, child) => Scaffold(
               appBar: (isLongPress)
-                  ? AppBar(
-                      title: Text(
-                          attendanceProv.clickedAttendance.length.toString()),
-                      leading: InkWell(
-                          onTap: () {
-                            attendanceProv.clearSelectedItems();
-                            isLongPress = !isLongPress;
-                          },
-                          child: const Icon(Icons.close)),
-                      actions: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: ((context) => AlertDialog(
-                                          title: Text(labelAlertDeleteTitle),
-                                          content:
-                                              Text(labelAlertDeleteContent),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, false);
-                                                },
-                                                child: Text(labelNo)),
-                                            TextButton(
-                                                onPressed: () {
-                                                  attendanceProv.deleteItem();
-                                                  isLongPress = !isLongPress;
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(labelYes))
-                                          ],
-                                        )));
-                              },
-                              child: const Icon(Icons.delete_outlined)),
-                        ),
-                        (attendanceProv.attendanceList.length > 1)
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                    onTap: () => attendanceProv.selectAll(),
-                                    child:
-                                        const Icon(Icons.select_all_outlined)),
-                              )
-                            : Container(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () => attendanceProv.selectAll(),
-                              child: const Icon(Icons.save_outlined)),
-                        ),
-                      ],
+                  ? MenuAppBar(
+                      value: attendanceProv,
                     )
                   : AppBar(title: Text(labelAttendanceList)),
               floatingActionButton: FloatingActionButton(
@@ -143,35 +92,35 @@ class _AttendanceListState extends State<AttendanceList> {
                 ),
                 const Divider(thickness: 3),
                 Expanded(
-                  child: (attendanceProv.attendanceList.isEmpty)
+                  child: (attendanceProv.list.isEmpty)
                       ? Center(
                           child: Text(labelNoItem),
                         )
                       : ListView.builder(
-                          itemCount: attendanceProv.attendanceList.length,
+                          itemCount: attendanceProv.list.length,
                           itemBuilder: ((context, index) {
                             List clickedAttendance =
-                                attendanceProv.clickedAttendance;
+                                attendanceProv.selectedTile;
                             return Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: AttendanceTile(
-                                data: attendanceProv.attendanceList[index],
-                                color: clickedAttendance.contains(
-                                        attendanceProv.attendanceList[index])
+                                data: attendanceProv.list[index],
+                                color: clickedAttendance
+                                        .contains(attendanceProv.list[index])
                                     ? Colors.red
                                     : Colors.transparent,
                                 onTap: () {
                                   if (isLongPress) {
-                                    if (clickedAttendance.contains(
-                                        attendanceProv.attendanceList[index])) {
+                                    if (clickedAttendance
+                                        .contains(attendanceProv.list[index])) {
                                       attendanceProv.removeItemFromSelected(
-                                          attendanceProv.attendanceList[index]);
+                                          attendanceProv.list[index]);
                                       if (clickedAttendance.isEmpty) {
                                         isLongPress = !isLongPress;
                                       }
                                     } else {
                                       attendanceProv.selectAttendance(
-                                          attendanceProv.attendanceList[index]);
+                                          attendanceProv.list[index]);
                                     }
                                     return;
                                   }
@@ -179,8 +128,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                       type:
                                           PageTransitionType.rightToLeftJoined,
                                       child: AttendanceContents(
-                                          data: attendanceProv
-                                              .attendanceList[index]),
+                                          data: attendanceProv.list[index]),
                                       duration: transitionDuration,
                                       reverseDuration: transitionDuration,
                                       childCurrent: widget));
@@ -188,7 +136,7 @@ class _AttendanceListState extends State<AttendanceList> {
                                 onLongPress: () {
                                   isLongPress = !isLongPress;
                                   attendanceProv.selectAttendance(
-                                      attendanceProv.attendanceList[index]);
+                                      attendanceProv.list[index]);
                                 },
                               ),
                             );

@@ -3,11 +3,11 @@ import 'package:qr_attendance_flut/Models/qr_code.dart';
 import 'package:qr_attendance_flut/Repository/qr_list_repo.dart';
 
 class QrListProvider extends ChangeNotifier {
-  List<QrModel> qrList = [];
-  List<QrModel> selectedQr = [];
+  List<QrModel> list = [];
+  List<QrModel> selectedTile = [];
 
   getQrList() async {
-    qrList = await getAllQr();
+    list = await getAllQr();
     notifyListeners();
   }
 
@@ -17,36 +17,36 @@ class QrListProvider extends ChangeNotifier {
   }
 
   selectQr(QrModel qrModel) {
-    selectedQr.add(qrModel);
+    selectedTile.add(qrModel);
     notifyListeners();
   }
 
   clearSelectedItems() {
-    selectedQr.clear();
+    selectedTile.clear();
     notifyListeners();
   }
 
   removeItemFromSelected(QrModel qrModel) {
-    selectedQr.remove(qrModel);
+    selectedTile.remove(qrModel);
     notifyListeners();
   }
 
   deleteItem() async {
-    for (var item in selectedQr) {
+    for (var item in selectedTile) {
       await deleteQr(item.id!);
     }
-    selectedQr.clear();
+    selectedTile.clear();
     await getQrList();
     notifyListeners();
   }
 
   selectAll() {
-    selectedQr.clear();
-    if (selectedQr.length == qrList.length) {
+    selectedTile.clear();
+    if (selectedTile.length == list.length) {
       return;
     } else {
-      for (int i = 0; i < qrList.length; i++) {
-        selectedQr.add(qrList[i]);
+      for (int i = 0; i < list.length; i++) {
+        selectedTile.add(list[i]);
       }
     }
     notifyListeners();
