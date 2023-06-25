@@ -102,8 +102,9 @@ class _QrScannerState extends State<QrScanner> {
             return;
           }
 
-          if (time.isAfter(DateFormat(labelDateFormat)
-              .parse(widget.data.cutoffTimeAndDate!))) {
+          if (widget.data.cutoffTimeAndDate != 'null' &&
+              time.isAfter(DateFormat(labelDateFormat)
+                  .parse(widget.data.cutoffTimeAndDate!))) {
             isLate = true;
           }
 
