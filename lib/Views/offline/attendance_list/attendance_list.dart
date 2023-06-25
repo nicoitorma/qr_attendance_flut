@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-import 'package:qr_attendance_flut/Views/attendance_list/widgets.dart';
+import 'package:qr_attendance_flut/Views/offline/attendance_list/widgets.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../Controller/offline/atdnc_list_provider.dart';
-import '../../values/const.dart';
+import '../../../Controller/offline/atdnc_list_provider.dart';
+import '../../../values/const.dart';
+import '../../custom_list_tiles/attendance_tile.dart';
+import '../../instantiable_widget.dart';
 import '../attendance_contents.dart';
-import '../custom_list_tiles/attendance_tile.dart';
-import '../instantiable_widget.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});

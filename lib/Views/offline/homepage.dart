@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:qr_attendance_flut/Views/qr_list.dart';
+import 'package:qr_attendance_flut/Views/offline/qr_list.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import '../utils/ad_helper.dart';
-import '../values/const.dart';
+import '../../utils/ad_helper.dart';
+import '../../values/const.dart';
+import '../drawer.dart';
+
 import 'attendance_list/attendance_list.dart';
-import 'drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-import 'package:qr_attendance_flut/Views/homepage.dart';
 import 'package:qr_attendance_flut/Views/login.dart';
 import 'package:qr_attendance_flut/Views/online_homepage.dart';
 import 'package:qr_attendance_flut/Views/start.dart';
@@ -15,6 +14,7 @@ import 'Controller/offline/atdnc_list_provider.dart';
 import 'Controller/offline/qr_list_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'Views/offline/homepage.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {

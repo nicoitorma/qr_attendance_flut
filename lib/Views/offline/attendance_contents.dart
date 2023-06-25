@@ -5,10 +5,10 @@ import 'package:qr_attendance_flut/Views/custom_list_tiles/attdnc_cntnt_tile.dar
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import '../Controller/offline/atdnc_content_provider.dart';
-import '../Models/attendance.dart';
-import '../utils/qr_scanner.dart';
-import '../values/const.dart';
+import '../../Controller/offline/atdnc_content_provider.dart';
+import '../../Models/attendance.dart';
+import '../../utils/qr_scanner.dart';
+import '../../values/const.dart';
 
 class AttendanceContents extends StatefulWidget {
   final AttendanceModel data;

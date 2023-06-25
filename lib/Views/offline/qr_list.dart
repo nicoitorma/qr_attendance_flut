@@ -5,10 +5,10 @@ import 'package:qr_attendance_flut/Views/custom_list_tiles/qr_tile.dart';
 import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import '../Controller/offline/qr_list_provider.dart';
-import '../Models/qr_code.dart';
-import '../values/const.dart';
-import 'instantiable_widget.dart';
+import '../../Controller/offline/qr_list_provider.dart';
+import '../../Models/qr_code.dart';
+import '../../values/const.dart';
+import '../instantiable_widget.dart';
 
 class QrCodeList extends StatefulWidget {
   const QrCodeList({super.key});
