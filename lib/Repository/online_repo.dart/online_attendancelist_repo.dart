@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Models/attendance.dart';
@@ -17,12 +18,12 @@ class OnlineAttendanceRepo {
         codeUnits.map((unit) => chars.codeUnitAt(unit)));
   }
 
-  fetchAttendance() {
+  fetchAttendance(String acctEmail) {
     try {
       Stream result = _db
           .collection(
               labelAttendanceCollection) // Replace with your collection name
-          .doc('user1') // Replace with your document ID
+          .doc('sample@gmail.com') // Replace with your document ID
           .snapshots();
 
       return result;
@@ -35,12 +36,14 @@ class OnlineAttendanceRepo {
     try {
       await FirebaseFirestore.instance
           .collection(labelAttendanceCollection)
-          .doc(_generateRandomString())
-          .set({
-        'attendanceName': attendanceModel.attendanceName,
-        'details': attendanceModel.details,
-        'timeAndDate': DateTime.now(),
-        'cutoff': attendanceModel.cutoffTimeAndDate
+          .doc(getUserEmail())
+          .update({
+        _generateRandomString(): {
+          'attendanceName': attendanceModel.attendanceName,
+          'details': attendanceModel.details,
+          'timeAndDate': DateTime.now(),
+          'cutoff': attendanceModel.cutoffTimeAndDate
+        }
       });
     } catch (e) {
       debugPrint('Error creating document: $e');

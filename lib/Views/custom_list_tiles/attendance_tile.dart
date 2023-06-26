@@ -39,6 +39,13 @@ class AttendanceTile extends CustomTile {
                   ),
                 ),
               ),
+              (data.attendanceCode != null)
+                  ? Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text('$labelAttendanceCode${data.attendanceCode}',
+                          style: subtitleStyle),
+                    )
+                  : Container(),
               const Divider(thickness: 2),
             ]),
             subtitle: Row(
@@ -64,11 +71,15 @@ class AttendanceTile extends CustomTile {
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: padding,
-                          child: Text(
-                            '$labelCreated${DateFormat(labelDateFormat).format(data.date)} ${DateFormat(labelTimeFormat).format(data.time)}',
-                            overflow: TextOverflow.visible,
-                            style: subtitleStyle,
-                          ),
+                          child: (data.date == null)
+                              ? Text(
+                                  '$labelCreated${DateFormat(labelDateFormat).format(data.timeAndDate)}',
+                                  style: subtitleStyle)
+                              : Text(
+                                  '$labelCreated${DateFormat(labelDateFormat).format(data.date)} ${DateFormat(labelTimeFormat).format(data.time)}',
+                                  overflow: TextOverflow.visible,
+                                  style: subtitleStyle,
+                                ),
                         ),
                       ),
                     ],

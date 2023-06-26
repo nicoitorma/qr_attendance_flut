@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Controller/online/attdnc_list_provider.dart';
 
 import 'package:qr_attendance_flut/Views/login.dart';
 import 'package:qr_attendance_flut/Views/online_homepage.dart';
@@ -47,7 +48,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AttendanceListProvider()),
         ChangeNotifierProvider(create: (context) => QrListProvider()),
-        ChangeNotifierProvider(create: (context) => AttendanceContentProvider())
+        ChangeNotifierProvider(
+            create: (context) => AttendanceContentProvider()),
+        ChangeNotifierProvider(
+            create: ((context) => OnlineAttendanceListProvider()))
       ],
       child: MaterialApp(
         theme: ThemeData(

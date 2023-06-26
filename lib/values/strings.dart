@@ -14,6 +14,7 @@ String labelCutoff = 'Cut Off: ';
 
 /// Firebase
 String labelAttendanceCollection = 'attendances';
+String labelAttendanceCode = 'Code: ';
 
 /// New QR Code
 String labelNewQr = 'New QR Code';
