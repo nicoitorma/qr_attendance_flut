@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
-import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
+
+import '../../Repository/offline_repo.dart/attendance_content_repo.dart';
 
 class AttendanceContentProvider extends ChangeNotifier {
   final AttendanceContentRepo _attendanceContentRepo = AttendanceContentRepo();

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:qr_attendance_flut/utils/ad_helper.dart';
+import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 class StartPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = AdHelper.createBannerAd();
+    //_bannerAd = AdHelper.createBannerAd();
   }
 
   @override
@@ -29,12 +29,8 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: (_bannerAd != null)
-          ? SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!))
-          : const SizedBox(),
+      bottomNavigationBar:
+          (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(

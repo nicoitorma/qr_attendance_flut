@@ -7,6 +7,9 @@ class AttendanceModel {
   String? details;
   DateTime? date;
   DateTime? time;
+
+  /// timeAndDate is to be used for firebase firestore
+  DateTime? timeAndDate;
   String? cutoffTimeAndDate;
 
   AttendanceModel({
@@ -15,8 +18,15 @@ class AttendanceModel {
     this.details,
     this.date,
     this.time,
+    this.timeAndDate,
     this.cutoffTimeAndDate,
   });
+
+  AttendanceModel.fromOnlineJson(Map<String, dynamic> item)
+      : attendanceName = item['attendanceName'] ?? '',
+        details = item['details'] ?? '',
+        timeAndDate = DateFormat(labelFullDtFormat).parse(item['timeAndDate']),
+        cutoffTimeAndDate = item['cutoffTimeAndDate'] ?? '';
 
   AttendanceModel.fromJson(Map<String, dynamic> item)
       : id = item['id'],

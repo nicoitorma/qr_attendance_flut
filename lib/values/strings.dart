@@ -1,6 +1,5 @@
 String appName = 'QR Attendance';
 String labelWelcome = 'Welcome to\n$appName';
-String labelNewAttendance = 'New Attendance';
 String labelAttendanceList = 'Attendance List';
 
 String labelAttendanceModel = 'Attendance Model';
@@ -12,10 +11,6 @@ String labelAttendanceName = 'Attendance Name';
 String labelDetails = 'Details';
 String labelCreated = 'Created: ';
 String labelCutoff = 'Cut Off: ';
-
-String labelFullDtFormat = 'MM/dd/yyy hh:mm a';
-String labelSubmit = 'Create';
-String labelSelectCutoffDt = 'Select Cut Off Date and Time';
 
 /// Firebase
 String labelAttendanceCollection = 'attendances';
@@ -36,11 +31,26 @@ String labelSignout = 'Sign out';
 String labelExit = 'Exit';
 
 /// New Attendance Form
+String labelCreateAttendance = 'Create attendance';
 String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
 String labelNotSet = 'Not Set';
 String labelTimeFormat = 'hh:mm a';
 String labelDateFormat = 'MM/dd/yyy';
+String labelFullDtFormat = 'MM/dd/yyy hh:mm a';
+String labelSubmit = 'Create';
+String labelSelectCutoffDt = 'Set Cut Off Date and Time';
+
+String labelJoinAttendance = 'Join attendance';
+String labelJoin = 'Join';
+String msgJoin1 =
+    'Ask for the 6 character attendance code, then enter it here.';
+String msgJoin2 =
+    '\u2022\tJoined Attendance can make you add scanned QR code to the attendance.';
+String msgJoin3 =
+    '\u2022\tThe QR code that you scan will be visible to the admin of the attendance.';
+String msgJoin4 =
+    '\u2022\tYou cannot see the QR code that other people have scanned. ';
 
 /// Item deletion
 String labelAlertDeleteTitle = 'Want to delete?';

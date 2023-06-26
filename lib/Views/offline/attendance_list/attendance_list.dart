@@ -52,8 +52,16 @@ class _AttendanceListState extends State<AttendanceList> {
                   ? MenuAppBar(value: attendanceProv)
                   : AppBar(title: Text(labelAttendanceList)),
               floatingActionButton: FloatingActionButton(
+
+                  /// This code is defining the action to be taken when the FloatingActionButton is
+                  /// pressed. It is using the Navigator to push a new page onto the stack, which is
+                  /// created using the CreateAttendancePopup widget and passing the attendanceProv
+                  /// object as a parameter. This will display a popup for creating a new attendance
+                  /// record.
                   onPressed: () {
-                    showPopup(attendanceProv);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (builder) =>
+                            CreateAttendancePopup(provider: attendanceProv)));
                   },
                   child: const Icon(Icons.add)),
               body: Column(children: [
@@ -141,30 +149,5 @@ class _AttendanceListState extends State<AttendanceList> {
                 ),
               ]),
             ));
-  }
-
-  /// The function shows a popup dialog with a title and content that includes an attendance popup
-  /// widget.
-  ///
-  /// Args:
-  ///   provider: The "provider" parameter is being passed to the "AttendancePopup" widget as an
-  /// argument. It is likely being used to provide data or functionality to the popup widget. Without
-  /// more context, it is difficult to determine the exact purpose of the "provider" parameter.
-  ///
-  /// Returns:
-  ///   The function `showPopup` is returning an `AlertDialog` widget that displays a title and a
-  /// `SizedBox` containing an `AttendancePopup` widget. The `showDialog` function is used to display the
-  /// `AlertDialog` widget.
-  showPopup(var provider) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(labelNewAttendance),
-            content: SizedBox(
-                width: double.maxFinite,
-                child: AttendancePopup(provider: provider)),
-          );
-        });
   }
 }

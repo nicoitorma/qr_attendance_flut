@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Views/custom_list_tiles/qr_tile.dart';
-import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Controller/offline/qr_list_provider.dart';
@@ -27,7 +26,7 @@ class _QrCodeListState extends State<QrCodeList> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = AdHelper.createBannerAd();
+    //_bannerAd = AdHelper.createBannerAd();
     final provider = Provider.of<QrListProvider>(context, listen: false);
     provider.getQrList();
   }
@@ -45,12 +44,8 @@ class _QrCodeListState extends State<QrCodeList> {
   Widget build(BuildContext context) {
     return Consumer<QrListProvider>(
       builder: (context, value, child) => Scaffold(
-        bottomNavigationBar: (_bannerAd != null)
-            ? SizedBox(
-                width: _bannerAd!.size.width.toDouble(),
-                height: _bannerAd!.size.height.toDouble(),
-                child: AdWidget(ad: _bannerAd!))
-            : const SizedBox(height: 0),
+        bottomNavigationBar:
+            (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(height: 0),
         appBar: (value.isLongPress)
             ? MenuAppBar(value: value)
             : AppBar(title: Text(labelQrCodes)),

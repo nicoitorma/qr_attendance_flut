@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/Models/qr_code.dart';
-import 'package:qr_attendance_flut/Repository/qr_list_repo.dart';
+
+import '../../Repository/offline_repo.dart/qr_list_repo.dart';
 
 class QrListProvider extends ChangeNotifier {
   List<QrModel> list = [];

@@ -5,7 +5,6 @@ import 'package:qr_attendance_flut/Views/offline/qr_list.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import '../../utils/ad_helper.dart';
 import '../../values/const.dart';
 import '../drawer.dart';
 
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = AdHelper.createBannerAd();
+    //_bannerAd = AdHelper.createBannerAd();
   }
 
   @override
@@ -38,12 +37,8 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text(appName)),
-        bottomNavigationBar: (_bannerAd != null)
-            ? SizedBox(
-                width: _bannerAd!.size.width.toDouble(),
-                height: _bannerAd!.size.height.toDouble(),
-                child: AdWidget(ad: _bannerAd!))
-            : const SizedBox(),
+        bottomNavigationBar:
+            (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
         drawer: drawer(context),
         body: SingleChildScrollView(
           child: Padding(

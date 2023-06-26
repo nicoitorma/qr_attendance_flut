@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../values/strings.dart';
 
@@ -76,4 +77,11 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
+}
+
+showAd(var bannerAd) {
+  return SizedBox(
+      width: bannerAd!.size.width.toDouble(),
+      height: bannerAd!.size.height.toDouble(),
+      child: AdWidget(ad: bannerAd!));
 }

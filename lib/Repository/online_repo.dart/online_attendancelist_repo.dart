@@ -4,13 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import '../../Models/attendance.dart';
+
 class OnlineAttendanceRepo {
   final _db = FirebaseFirestore.instance;
 
   String _generateRandomString() {
-    const chars = 'abcdefghijklmnopqrstuvwxyz';
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     final random = Random();
-    final codeUnits = List.generate(5, (index) => random.nextInt(chars.length));
+    final codeUnits = List.generate(6, (index) => random.nextInt(chars.length));
     return String.fromCharCodes(
         codeUnits.map((unit) => chars.codeUnitAt(unit)));
   }
@@ -29,19 +31,19 @@ class OnlineAttendanceRepo {
     }
   }
 
-  void createAttendance({int count = 0}) async {
-    List data = ['data1', 'data2', 'data3', 'data4', 'data5'];
+  void createAttendance({required AttendanceModel attendanceModel}) async {
     try {
-      await _db.collection(labelAttendanceCollection).doc('user1').update({
-        _generateRandomString(): {
-          'attendanceName': data[count],
-          'details': 'hehe',
-          'timeAndDate': DateTime.now()
-        },
+      await FirebaseFirestore.instance
+          .collection(labelAttendanceCollection)
+          .doc(_generateRandomString())
+          .set({
+        'attendanceName': attendanceModel.attendanceName,
+        'details': attendanceModel.details,
+        'timeAndDate': DateTime.now(),
+        'cutoff': attendanceModel.cutoffTimeAndDate
       });
-      print('Document created successfully.');
     } catch (e) {
-      print('Error creating document: $e');
+      debugPrint('Error creating document: $e');
     }
   }
 }

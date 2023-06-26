@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../Models/qr_code.dart';
-import '../database/database.dart';
+import '../../Models/qr_code.dart';
+import '../../database/database.dart';
 
 getAllQr() async {
   final db = await AppDatabase().initializeDB();

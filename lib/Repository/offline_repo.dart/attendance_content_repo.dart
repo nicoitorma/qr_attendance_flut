@@ -1,7 +1,7 @@
 import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../database/database.dart';
+import '../../database/database.dart';
 
 class AttendanceContentRepo {
   getAllAttendanceContent(int attendanceId) async {

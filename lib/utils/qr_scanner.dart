@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 import 'package:qr_attendance_flut/Models/attendance.dart';
 import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
-import 'package:qr_attendance_flut/Repository/attendance_content_repo.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../Controller/offline/atdnc_content_provider.dart';
+import '../Repository/offline_repo.dart/attendance_content_repo.dart';
 import '../values/strings.dart';
 
 class QrScanner extends StatefulWidget {
