@@ -20,11 +20,8 @@ class OnlineAttendanceRepo {
 
   fetchAttendance(String acctEmail) {
     try {
-      Stream result = _db
-          .collection(
-              labelAttendanceCollection) // Replace with your collection name
-          .doc('sample@gmail.com') // Replace with your document ID
-          .snapshots();
+      Stream result =
+          _db.collection(labelCollection).doc(labelAttendanceDocs).snapshots();
 
       return result;
     } catch (err) {
@@ -32,17 +29,37 @@ class OnlineAttendanceRepo {
     }
   }
 
+  joinAttendance({String? code}) async {
+    final document = FirebaseFirestore.instance
+        .collection(labelCollection)
+        .doc(labelAttendanceDocs);
+
+    try {
+      DocumentSnapshot docSnapshot = await document.get();
+      // Update the value of the `users` field in the inner map.
+      Map<String, dynamic> data = docSnapshot.data()! as Map<String, dynamic>;
+      List innerMap = data[code]['users'];
+      if (!innerMap.contains(getUserEmail())) {
+        innerMap.add(getUserEmail());
+        await document.update(data);
+      }
+    } catch (err) {
+      debugPrint('Contents: Not Found');
+    }
+  }
+
   void createAttendance({required AttendanceModel attendanceModel}) async {
     try {
       await FirebaseFirestore.instance
-          .collection(labelAttendanceCollection)
-          .doc(getUserEmail())
+          .collection(labelCollection)
+          .doc(labelAttendanceDocs)
           .update({
         _generateRandomString(): {
           'attendanceName': attendanceModel.attendanceName,
           'details': attendanceModel.details,
           'timeAndDate': DateTime.now(),
-          'cutoff': attendanceModel.cutoffTimeAndDate
+          'cutoff': attendanceModel.cutoffTimeAndDate,
+          'users': [getUserEmail()]
         }
       });
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Repository/online_repo.dart/online_attendancelist_repo.dart';
 import 'package:qr_attendance_flut/values/const.dart';
 
 import '../values/strings.dart';
@@ -19,7 +20,10 @@ class JoinAttendance extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                    onPressed: () => _submitForm(),
+                    onPressed: () {
+                      _submitForm(formKey, codeController);
+                      Navigator.of(context).pop();
+                    },
                     style: const ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll(Colors.green)),
@@ -56,5 +60,9 @@ class JoinAttendance extends StatelessWidget {
     );
   }
 
-  void _submitForm() {}
+  void _submitForm(var formKey, TextEditingController codeController) {
+    if (formKey.currentState!.validate()) {
+      OnlineAttendanceRepo().joinAttendance(code: codeController.text);
+    }
+  }
 }

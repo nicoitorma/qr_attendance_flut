@@ -50,8 +50,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => QrListProvider()),
         ChangeNotifierProvider(
             create: (context) => AttendanceContentProvider()),
-        ChangeNotifierProvider(
-            create: ((context) => OnlineAttendanceListProvider()))
+        StreamProvider(
+            create: (_) => OnlineAttendanceListProvider().attendanceList,
+            initialData: OnlineAttendanceListProvider().list)
       ],
       child: MaterialApp(
         theme: ThemeData(

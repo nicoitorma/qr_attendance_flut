@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
@@ -24,6 +25,14 @@ class AttendanceModel {
     this.attendanceCode,
     this.cutoffTimeAndDate,
   });
+
+  factory AttendanceModel.fromOnlineMap(Map<String, dynamic> item) {
+    return AttendanceModel(
+        attendanceName: item['attendanceName'],
+        details: item['details'],
+        cutoffTimeAndDate: item['cutoff'],
+        timeAndDate: (item['timeAndDate'] as Timestamp).toDate());
+  }
 
   AttendanceModel.fromJson(Map<String, dynamic> item)
       : id = item['id'],
