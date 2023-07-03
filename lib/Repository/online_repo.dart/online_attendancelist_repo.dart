@@ -7,63 +7,94 @@ import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Models/attendance.dart';
 
-class OnlineAttendanceRepo {
-  final _db = FirebaseFirestore.instance;
+final _db = FirebaseFirestore.instance;
 
-  String _generateRandomString() {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    final random = Random();
-    final codeUnits = List.generate(6, (index) => random.nextInt(chars.length));
-    return String.fromCharCodes(
-        codeUnits.map((unit) => chars.codeUnitAt(unit)));
-  }
+String _generateRandomString() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  final random = Random();
+  final codeUnits = List.generate(6, (index) => random.nextInt(chars.length));
+  return String.fromCharCodes(codeUnits.map((unit) => chars.codeUnitAt(unit)));
+}
 
-  fetchAttendance(String acctEmail) {
-    try {
-      Stream result =
-          _db.collection(labelCollection).doc(labelAttendanceDocs).snapshots();
+convertDocsFromFirestore() async {
+  List<AttendanceModel> dataList = [];
+  final jsonDoc = await FirebaseFirestore.instance
+      .collection(labelCollection)
+      .doc(labelAttendanceDocs)
+      .get();
 
-      return result;
-    } catch (err) {
-      debugPrint('Error fetching document: $err');
+  final data = jsonDoc.data();
+
+  data!.forEach((key, value) {
+    if (value['users'].contains(getUserEmail())) {
+      AttendanceModel attendance =
+          AttendanceModel.fromDocumentSnapshot(key, value);
+      dataList.add(attendance);
     }
-  }
+  });
+  return dataList;
+}
 
-  joinAttendance({String? code}) async {
-    final document = FirebaseFirestore.instance
+deleteField(String code) async {
+  try {
+    await _db
         .collection(labelCollection)
-        .doc(labelAttendanceDocs);
-
-    try {
-      DocumentSnapshot docSnapshot = await document.get();
-      // Update the value of the `users` field in the inner map.
-      Map<String, dynamic> data = docSnapshot.data()! as Map<String, dynamic>;
-      List innerMap = data[code]['users'];
-      if (!innerMap.contains(getUserEmail())) {
-        innerMap.add(getUserEmail());
-        await document.update(data);
-      }
-    } catch (err) {
-      debugPrint('Contents: Not Found');
-    }
+        .doc(labelAttendanceDocs)
+        .update({code: FieldValue.delete()});
+    print('Field deleted successfully.');
+  } catch (err) {
+    print('Error deleting field: $err');
   }
+}
 
-  void createAttendance({required AttendanceModel attendanceModel}) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection(labelCollection)
-          .doc(labelAttendanceDocs)
-          .update({
-        _generateRandomString(): {
-          'attendanceName': attendanceModel.attendanceName,
-          'details': attendanceModel.details,
-          'timeAndDate': DateTime.now(),
-          'cutoff': attendanceModel.cutoffTimeAndDate,
-          'users': [getUserEmail()]
-        }
-      });
-    } catch (e) {
-      debugPrint('Error creating document: $e');
+removeUser(String code) async {
+  final document = _db.collection(labelCollection).doc(labelAttendanceDocs);
+
+  try {
+    DocumentSnapshot docSnapshot = await document.get();
+    // Update the value of the `users` field in the inner map.
+    Map<String, dynamic> data = docSnapshot.data()! as Map<String, dynamic>;
+    List innerMap = data[code]['users'];
+
+    if (innerMap.contains(getUserEmail())) {
+      innerMap.remove(getUserEmail());
+      await document.update(data);
     }
+  } catch (err) {
+    debugPrint('Error: $err');
+  }
+}
+
+joinAttendanceInFirestore(String code) async {
+  try {
+    final document = _db.collection(labelCollection).doc(labelAttendanceDocs);
+    DocumentSnapshot docSnapshot = await document.get();
+    // Update the value of the `users` field in the inner map.
+    Map<String, dynamic> data = docSnapshot.data()! as Map<String, dynamic>;
+    List innerMap = data[code]['users'];
+    if (!innerMap.contains(getUserEmail())) {
+      innerMap.add(getUserEmail());
+      await document.update(data);
+    }
+    print('Success joining attendance');
+  } catch (err) {
+    debugPrint('Error: $err');
+  }
+}
+
+createAttendanceInFirestore({required AttendanceModel attendanceModel}) async {
+  try {
+    await _db.collection(labelCollection).doc(labelAttendanceDocs).update({
+      _generateRandomString(): {
+        'attendanceName': attendanceModel.attendanceName,
+        'details': attendanceModel.details,
+        'timeAndDate': DateTime.now(),
+        'cutoff': attendanceModel.cutoffTimeAndDate,
+        'users': [getUserEmail()]
+      }
+    });
+    return 'Success creating attendance';
+  } catch (e) {
+    debugPrint('Error creating document: $e');
   }
 }

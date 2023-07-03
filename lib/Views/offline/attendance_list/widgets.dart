@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_attendance_flut/Repository/online_repo.dart/online_attendancelist_repo.dart';
+import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
+import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 
 import '../../../Controller/offline/atdnc_list_provider.dart';
 import '../../../Models/attendance.dart';
@@ -121,17 +121,14 @@ class _CreateAttendancePopupState extends State<CreateAttendancePopup> {
       // Form is valid, process the data
       String name = nameController.text;
       String? details = detailsController.text;
-      User? user = FirebaseAuth.instance.currentUser;
 
-      if (user != null) {
-        OnlineAttendanceRepo().createAttendance(
-            attendanceModel: AttendanceModel(
-                attendanceName: name,
-                details: details,
-                cutoffTimeAndDate: (cutoffTimeAndDate == null)
-                    ? 'null'
-                    : DateFormat(labelFullDtFormat)
-                        .format(cutoffTimeAndDate!)));
+      if (isOnlineMode()) {
+        OnlineAttendanceListProvider().createAttendance(AttendanceModel(
+            attendanceName: name,
+            details: details,
+            cutoffTimeAndDate: (cutoffTimeAndDate == null)
+                ? 'null'
+                : DateFormat(labelFullDtFormat).format(cutoffTimeAndDate!)));
       } else {
         /// This code is calling the `insertNewAttendance` method of the `provider` object passed to the
         /// `AttendancePopup` widget as a parameter. It is passing a new `AttendanceModel` object as an
@@ -156,3 +153,27 @@ class _CreateAttendancePopupState extends State<CreateAttendancePopup> {
     }
   }
 }
+
+// tableCalendar({
+//   DateTime? focusedDay,
+//   CalendarFormat calendarFormat = CalendarFormat.month,
+//   DateTime? selectedDay,
+//   Function(DateTime?, DateTime?)? onDaySelected,
+//   Function(CalendarFormat)? onFormatChanged,
+// }) =>
+//     TableCalendar(
+//       firstDay: DateTime(2022, 10, 19),
+//       lastDay: DateTime(2030, 10, 19),
+//       focusedDay: focusedDay ?? DateTime.now(),
+//       selectedDayPredicate: (day) => isSameDay(selectedDay, day),
+//       calendarFormat: calendarFormat,
+//       startingDayOfWeek: StartingDayOfWeek.monday,
+//       calendarStyle: const CalendarStyle(
+//         outsideDaysVisible: false,
+//       ),
+//       onDaySelected: onDaySelected,
+//       onFormatChanged: onFormatChanged,
+//       onPageChanged: (focusedDay) {
+//         focusedDay = focusedDay;
+//       },
+//     );

@@ -52,12 +52,6 @@ class _AttendanceListState extends State<AttendanceList> {
                   ? MenuAppBar(value: attendanceProv)
                   : AppBar(title: Text(labelAttendanceList)),
               floatingActionButton: FloatingActionButton(
-
-                  /// This code is defining the action to be taken when the FloatingActionButton is
-                  /// pressed. It is using the Navigator to push a new page onto the stack, which is
-                  /// created using the CreateAttendancePopup widget and passing the attendanceProv
-                  /// object as a parameter. This will display a popup for creating a new attendance
-                  /// record.
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (builder) =>
@@ -97,35 +91,35 @@ class _AttendanceListState extends State<AttendanceList> {
                 ),
                 const Divider(thickness: 3),
                 Expanded(
-                  child: (attendanceProv.list.isEmpty)
+                  child: (attendanceProv.attendanceList.isEmpty)
                       ? Center(
                           child: Text(labelNoItem),
                         )
                       : ListView.builder(
-                          itemCount: attendanceProv.list.length,
+                          itemCount: attendanceProv.attendanceList.length,
                           itemBuilder: ((context, index) {
                             List clickedAttendance =
                                 attendanceProv.selectedTile;
                             return Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: AttendanceTile(
-                                data: attendanceProv.list[index],
-                                color: clickedAttendance
-                                        .contains(attendanceProv.list[index])
+                                data: attendanceProv.attendanceList[index],
+                                color: clickedAttendance.contains(
+                                        attendanceProv.attendanceList[index])
                                     ? Colors.red
                                     : Colors.transparent,
                                 onTap: () {
                                   if (attendanceProv.isLongPress) {
-                                    if (clickedAttendance
-                                        .contains(attendanceProv.list[index])) {
+                                    if (clickedAttendance.contains(
+                                        attendanceProv.attendanceList[index])) {
                                       attendanceProv.removeItemFromSelected(
-                                          attendanceProv.list[index]);
+                                          attendanceProv.attendanceList[index]);
                                       if (clickedAttendance.isEmpty) {
                                         attendanceProv.setLongPress();
                                       }
                                     } else {
-                                      attendanceProv.selectAttendance(
-                                          attendanceProv.list[index]);
+                                      attendanceProv.selectTile(
+                                          attendanceProv.attendanceList[index]);
                                     }
                                     return;
                                   }
@@ -133,15 +127,16 @@ class _AttendanceListState extends State<AttendanceList> {
                                       type:
                                           PageTransitionType.rightToLeftJoined,
                                       child: AttendanceContents(
-                                          data: attendanceProv.list[index]),
+                                          data: attendanceProv
+                                              .attendanceList[index]),
                                       duration: transitionDuration,
                                       reverseDuration: transitionDuration,
                                       childCurrent: widget));
                                 },
                                 onLongPress: () {
                                   attendanceProv.setLongPress();
-                                  attendanceProv.selectAttendance(
-                                      attendanceProv.list[index]);
+                                  attendanceProv.selectTile(
+                                      attendanceProv.attendanceList[index]);
                                 },
                               ),
                             );

@@ -14,28 +14,31 @@ class AttendanceModel {
   DateTime? timeAndDate;
   String? attendanceCode;
   String? cutoffTimeAndDate;
+  String? user;
 
-  AttendanceModel({
-    this.id,
-    this.attendanceName,
-    this.details,
-    this.date,
-    this.time,
-    this.timeAndDate,
-    this.attendanceCode,
-    this.cutoffTimeAndDate,
-  });
+  AttendanceModel(
+      {this.id,
+      this.attendanceName,
+      this.details,
+      this.date,
+      this.time,
+      this.timeAndDate,
+      this.attendanceCode,
+      this.cutoffTimeAndDate,
+      this.user});
 
-  factory AttendanceModel.fromOnlineMap(Map<String, dynamic> item) {
+  factory AttendanceModel.fromDocumentSnapshot(String code, Map data) {
     return AttendanceModel(
-        attendanceName: item['attendanceName'],
-        details: item['details'],
-        cutoffTimeAndDate: item['cutoff'],
-        timeAndDate: (item['timeAndDate'] as Timestamp).toDate());
+        attendanceCode: code,
+        attendanceName: data['attendanceName'] ?? '',
+        details: data['details'] ?? '',
+        timeAndDate: (data['timeAndDate'] as Timestamp).toDate(),
+        cutoffTimeAndDate: data['cutoff'],
+        user: data['users'][0]);
   }
 
   AttendanceModel.fromJson(Map<String, dynamic> item)
-      : id = item['id'],
+      : id = item['id'] ?? '',
         attendanceName = item['attendanceName'] ?? '',
         details = item['details'] ?? '',
         date = DateFormat(labelDateFormat).parse(item['date']),

@@ -52,6 +52,10 @@ dependencies:
   table_calendar: ^3.0.9
   # shared_preferences: ^2.1.2
   google_mobile_ads:
+  connectivity_plus:
+  excel: ^2.1.0
+  path_provider:
+  downloads_path_provider_28: ^0.1.2
 
 dev_dependencies:
   flutter_test:

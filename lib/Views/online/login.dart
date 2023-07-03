@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:qr_attendance_flut/Views/online_homepage.dart';
+import 'package:qr_attendance_flut/Views/online/online_homepage.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 class Login extends StatefulWidget {

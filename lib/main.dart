@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_attendance_flut/Controller/online/attdnc_list_provider.dart';
+import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
 
-import 'package:qr_attendance_flut/Views/login.dart';
-import 'package:qr_attendance_flut/Views/online_homepage.dart';
+import 'package:qr_attendance_flut/Views/online/login.dart';
+import 'package:qr_attendance_flut/Views/online/online_homepage.dart';
 import 'package:qr_attendance_flut/Views/start.dart';
 import 'package:qr_attendance_flut/database/database.dart';
+import 'package:qr_attendance_flut/utils/connectivity.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import 'Controller/offline/atdnc_content_provider.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
   );
 
   MobileAds.instance.initialize();
+  // TODO: Uncomment this
   // // Pass all uncaught "fatal" errors from the framework to Crashlytics
   // FlutterError.onError = (errorDetails) {
   //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
@@ -50,9 +52,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => QrListProvider()),
         ChangeNotifierProvider(
             create: (context) => AttendanceContentProvider()),
-        StreamProvider(
-            create: (_) => OnlineAttendanceListProvider().attendanceList,
-            initialData: OnlineAttendanceListProvider().list)
+        StreamProvider<ConnectionStatus>.value(
+          initialData: ConnectionStatus.offline,
+          value: ConnectivityService().connectivityController.stream,
+        ),
+        ChangeNotifierProvider(
+            create: (context) => OnlineAttendanceListProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(

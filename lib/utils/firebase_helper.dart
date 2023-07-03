@@ -7,3 +7,10 @@ getUserEmail() {
   }
   return '';
 }
+
+isOnlineMode() {
+  if (FirebaseAuth.instance.currentUser != null) {
+    return true;
+  }
+  return false;
+}
