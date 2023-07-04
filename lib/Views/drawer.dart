@@ -7,7 +7,10 @@ Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
     child: Column(
       children: [
-        const CircleAvatar(),
+        Image.asset(
+          'assets/images/dev.png',
+          height: 130,
+        ),
         const Divider(thickness: 3),
         ListTile(
           selectedColor: Colors.grey,

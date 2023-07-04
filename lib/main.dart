@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_attendance_flut/Controller/online/online_attdnc_content_prov.dart';
 import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
 
 import 'package:qr_attendance_flut/Views/online/login.dart';
@@ -48,16 +49,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AttendanceListProvider()),
-        ChangeNotifierProvider(create: (context) => QrListProvider()),
-        ChangeNotifierProvider(
-            create: (context) => AttendanceContentProvider()),
+        ChangeNotifierProvider(create: (_) => AttendanceListProvider()),
+        ChangeNotifierProvider(create: (_) => QrListProvider()),
+        ChangeNotifierProvider(create: (_) => AttendanceContentProvider()),
         StreamProvider<ConnectionStatus>.value(
           initialData: ConnectionStatus.offline,
           value: ConnectivityService().connectivityController.stream,
         ),
-        ChangeNotifierProvider(
-            create: (context) => OnlineAttendanceListProvider()),
+        ChangeNotifierProvider(create: (_) => OnlineAttendanceListProvider()),
+        ChangeNotifierProvider(create: (_) => OnlineAttendanceContentsProv())
       ],
       child: MaterialApp(
         theme: ThemeData(

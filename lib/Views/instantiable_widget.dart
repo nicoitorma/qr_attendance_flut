@@ -74,7 +74,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
               child: const Icon(Icons.delete_outlined)),
         ),
-        (value.list.length > 1)
+        (value.attendanceList.length > 1)
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(

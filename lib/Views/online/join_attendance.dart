@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
 import 'package:qr_attendance_flut/values/const.dart';
 
 import '../../values/strings.dart';
 
 class JoinAttendance extends StatelessWidget {
-  const JoinAttendance({super.key});
+  final dynamic value;
+  const JoinAttendance({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class JoinAttendance extends StatelessWidget {
 
   void _submitForm(var formKey, TextEditingController codeController) {
     if (formKey.currentState!.validate()) {
-      OnlineAttendanceListProvider().joinAttendance(codeController.text);
+      value.joinAttendance(codeController.text);
     }
   }
 }

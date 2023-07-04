@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class StudentInAttendance {
   int? id;
   String? idNum;
@@ -5,7 +7,7 @@ class StudentInAttendance {
   String? dept;
   int? attendanceId;
   String? timeAndDate;
-  String? isLate;
+  bool? isLate;
 
   StudentInAttendance(
       {this.idNum,
@@ -23,6 +25,15 @@ class StudentInAttendance {
         attendanceId = item['attendanceId'] ?? '',
         timeAndDate = item['timeAndDate'] ?? '',
         isLate = item['isLate'];
+
+  factory StudentInAttendance.fromDocumentSnapshot(String code, Map data) {
+    return StudentInAttendance(
+        idNum: code,
+        fullname: data['fullname'] ?? '',
+        dept: data['dept'] ?? '',
+        timeAndDate: (data['timeAndDate'] as Timestamp).toString(),
+        isLate: data['isLate']);
+  }
 
   Map<String, Object> toMap() {
     return {

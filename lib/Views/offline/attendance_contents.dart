@@ -20,17 +20,20 @@ class AttendanceContents extends StatefulWidget {
 
 class _AttendanceContentsState extends State<AttendanceContents> {
   TextStyle appBarSubtitleStyle = const TextStyle(fontSize: 16);
+  late dynamic prov;
+
   @override
   void initState() {
+    super.initState();
+
     /// This code is using the `Provider` package to get an instance of the `AttendanceContentProvider`
     /// class and calling its `getAtndContent` method with the `id` property of the `widget.data` object
     /// as an argument. This is likely used to fetch the attendance content data for the given `id` and
     /// update the state of the widget accordingly. The `listen: false` parameter is used to prevent the
     /// widget from rebuilding when the provider's state changes.
-    final provider =
-        Provider.of<AttendanceContentProvider>(context, listen: false);
-    provider.getAtndContent(widget.data.id!);
-    super.initState();
+
+    final prov = Provider.of<AttendanceContentProvider>(context, listen: false);
+    prov.getAtndContent(widget.data.id!);
   }
 
   @override

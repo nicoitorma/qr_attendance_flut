@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 
-import '../../../Controller/offline/atdnc_list_provider.dart';
 import '../../../Models/attendance.dart';
 import '../../../values/const.dart';
 import '../../../values/strings.dart';
 
 class CreateAttendancePopup extends StatefulWidget {
-  final AttendanceListProvider? provider;
+  final dynamic provider;
 
   const CreateAttendancePopup({Key? key, this.provider}) : super(key: key);
 
@@ -123,7 +121,7 @@ class _CreateAttendancePopupState extends State<CreateAttendancePopup> {
       String? details = detailsController.text;
 
       if (isOnlineMode()) {
-        OnlineAttendanceListProvider().createAttendance(AttendanceModel(
+        widget.provider.createAttendance(AttendanceModel(
             attendanceName: name,
             details: details,
             cutoffTimeAndDate: (cutoffTimeAndDate == null)

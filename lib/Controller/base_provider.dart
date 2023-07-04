@@ -19,7 +19,7 @@ abstract class BaseProvider extends ChangeNotifier {
 
   selectTile(AttendanceModel attendanceModel) {
     selectedTile.add(attendanceModel);
-    // notifyListeners();
+    notifyListeners();
   }
 
   removeItemFromSelected(AttendanceModel attendanceModel) {
