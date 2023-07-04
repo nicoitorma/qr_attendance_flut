@@ -6,6 +6,7 @@ import 'package:qr_attendance_flut/Views/online/widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Models/attendance.dart';
+import '../../utils/qr_scanner.dart';
 import '../../values/const.dart';
 import '../custom_list_tiles/attdnc_cntnt_tile.dart';
 
@@ -24,7 +25,7 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   void initState() {
     super.initState();
     prov = Provider.of<OnlineAttendanceContentsProv>(context, listen: false);
-    prov.getAtndContent();
+    prov.getAttndcContent();
   }
 
   @override
@@ -32,6 +33,24 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
     return Consumer<OnlineAttendanceContentsProv>(
       builder: ((context, value, child) => Scaffold(
           appBar: AppBar(title: Text(widget.data.attendanceName!)),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (value.isLongPress) {
+                value.setLongPress();
+                value.clearSelectedItems();
+              }
+              Navigator.of(context).push(PageTransition(
+                  type: PageTransitionType.fade,
+                  child: QrScanner(
+                    data: widget.data,
+                    provider: value,
+                  ),
+                  duration: transitionDuration,
+                  reverseDuration: transitionDuration,
+                  childCurrent: widget));
+            },
+            child: const Icon(Icons.qr_code_scanner_outlined),
+          ),
           body: NetworkWidget(
               child: (value.list.isEmpty)
                   ? Center(child: Text(labelNoItem))

@@ -9,7 +9,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../Controller/offline/atdnc_list_provider.dart';
 import '../../../values/const.dart';
 import '../../custom_list_tiles/attendance_tile.dart';
-import '../../instantiable_widget.dart';
+import '../../menu_app_bar.dart';
 import '../attendance_contents.dart';
 
 class AttendanceList extends StatefulWidget {
@@ -91,35 +91,35 @@ class _AttendanceListState extends State<AttendanceList> {
                 ),
                 const Divider(thickness: 3),
                 Expanded(
-                  child: (attendanceProv.attendanceList.isEmpty)
+                  child: (attendanceProv.list.isEmpty)
                       ? Center(
                           child: Text(labelNoItem),
                         )
                       : ListView.builder(
-                          itemCount: attendanceProv.attendanceList.length,
+                          itemCount: attendanceProv.list.length,
                           itemBuilder: ((context, index) {
                             List clickedAttendance =
                                 attendanceProv.selectedTile;
                             return Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: AttendanceTile(
-                                data: attendanceProv.attendanceList[index],
-                                color: clickedAttendance.contains(
-                                        attendanceProv.attendanceList[index])
+                                data: attendanceProv.list[index],
+                                color: clickedAttendance
+                                        .contains(attendanceProv.list[index])
                                     ? Colors.red
                                     : Colors.transparent,
                                 onTap: () {
                                   if (attendanceProv.isLongPress) {
-                                    if (clickedAttendance.contains(
-                                        attendanceProv.attendanceList[index])) {
+                                    if (clickedAttendance
+                                        .contains(attendanceProv.list[index])) {
                                       attendanceProv.removeItemFromSelected(
-                                          attendanceProv.attendanceList[index]);
+                                          attendanceProv.list[index]);
                                       if (clickedAttendance.isEmpty) {
                                         attendanceProv.setLongPress();
                                       }
                                     } else {
                                       attendanceProv.selectTile(
-                                          attendanceProv.attendanceList[index]);
+                                          attendanceProv.list[index]);
                                     }
                                     return;
                                   }
@@ -127,16 +127,15 @@ class _AttendanceListState extends State<AttendanceList> {
                                       type:
                                           PageTransitionType.rightToLeftJoined,
                                       child: AttendanceContents(
-                                          data: attendanceProv
-                                              .attendanceList[index]),
+                                          data: attendanceProv.list[index]),
                                       duration: transitionDuration,
                                       reverseDuration: transitionDuration,
                                       childCurrent: widget));
                                 },
                                 onLongPress: () {
                                   attendanceProv.setLongPress();
-                                  attendanceProv.selectTile(
-                                      attendanceProv.attendanceList[index]);
+                                  attendanceProv
+                                      .selectTile(attendanceProv.list[index]);
                                 },
                               ),
                             );

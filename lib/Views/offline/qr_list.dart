@@ -8,6 +8,7 @@ import '../../Controller/offline/qr_list_provider.dart';
 import '../../Models/qr_code.dart';
 import '../../values/const.dart';
 import '../instantiable_widget.dart';
+import '../menu_app_bar.dart';
 
 class QrCodeList extends StatefulWidget {
   const QrCodeList({super.key});

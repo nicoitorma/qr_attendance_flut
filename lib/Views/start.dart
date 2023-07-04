@@ -105,10 +105,12 @@ class _StartPageState extends State<StartPage> {
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15)),
                   Text(msg1),
-                  Text(labelQrCodes,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15)),
-                  Text(msg2),
+                  (title == labelOnlineMode)
+                      ? Container()
+                      : Text(labelQrCodes,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
+                  (title == labelOnlineMode) ? Container() : Text(msg2),
                   Align(
                       alignment: Alignment.center,
                       child: ElevatedButton(

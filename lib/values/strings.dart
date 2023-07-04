@@ -39,8 +39,8 @@ String labelEmptyFieldError = ' cannot be empty';
 String labelNoItem = 'No Item Available';
 String labelNotSet = 'Not Set';
 String labelTimeFormat = 'hh:mm a';
-String labelDateFormat = 'MM/dd/yyy';
-String labelFullDtFormat = 'MM/dd/yyy hh:mm a';
+String labelDateFormat = 'MM-dd-yyy';
+String labelFullDtFormat = 'MM-dd-yyy hh:mm a';
 String labelSubmit = 'Create';
 String labelSelectCutoffDt = 'Set Cut Off Date and Time';
 

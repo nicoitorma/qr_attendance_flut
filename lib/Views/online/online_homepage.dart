@@ -10,7 +10,7 @@ import 'package:qr_attendance_flut/Views/online/widget.dart';
 import '../../values/const.dart';
 import '../../values/strings.dart';
 import '../custom_list_tiles/attendance_tile.dart';
-import '../instantiable_widget.dart';
+import '../menu_app_bar.dart';
 import '../offline/attendance_list/widgets.dart';
 import 'join_attendance.dart';
 
@@ -104,47 +104,46 @@ class _OnlineHomepageState extends State<OnlineHomepage> {
                   },
                   child: const Icon(Icons.add)),
               body: NetworkWidget(
-                child: (value.attendanceList.isEmpty)
+                child: (value.list.isEmpty)
                     ? Center(
                         child: Text(labelNoItem),
                       )
                     : ListView.builder(
-                        itemCount: value.attendanceList.length,
+                        itemCount: value.list.length,
                         itemBuilder: ((context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: AttendanceTile(
-                              data: value.attendanceList[index],
-                              color: value.selectedTile
-                                      .contains(value.attendanceList[index])
-                                  ? Colors.red
-                                  : Colors.transparent,
+                              data: value.list[index],
+                              color:
+                                  value.selectedTile.contains(value.list[index])
+                                      ? Colors.red
+                                      : Colors.transparent,
                               onTap: () {
                                 if (value.isLongPress) {
                                   if (value.selectedTile
-                                      .contains(value.attendanceList[index])) {
+                                      .contains(value.list[index])) {
                                     value.removeItemFromSelected(
-                                        value.attendanceList[index]);
+                                        value.list[index]);
                                     if (value.selectedTile.isEmpty) {
                                       value.setLongPress();
                                     }
                                   } else {
-                                    value.selectTile(
-                                        value.attendanceList[index]);
+                                    value.selectTile(value.list[index]);
                                   }
                                   return;
                                 }
                                 Navigator.of(context).push(PageTransition(
                                     type: PageTransitionType.rightToLeftJoined,
                                     child: OnlineAttendanceContents(
-                                        data: value.attendanceList[index]),
+                                        data: value.list[index]),
                                     duration: transitionDuration,
                                     reverseDuration: transitionDuration,
                                     childCurrent: widget));
                               },
                               onLongPress: () {
                                 value.setLongPress();
-                                value.selectTile(value.attendanceList[index]);
+                                value.selectTile(value.list[index]);
                               },
                             ),
                           );

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Views/custom_list_tiles/attdnc_cntnt_tile.dart';
-import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Controller/offline/atdnc_content_provider.dart';
 import '../../Models/attendance.dart';
 import '../../utils/qr_scanner.dart';
 import '../../values/const.dart';
+import '../menu_app_bar.dart';
 
 class AttendanceContents extends StatefulWidget {
   final AttendanceModel data;
@@ -68,7 +68,7 @@ class _AttendanceContentsState extends State<AttendanceContents> {
             }
             Navigator.of(context).push(PageTransition(
                 type: PageTransitionType.fade,
-                child: QrScanner(data: widget.data),
+                child: QrScanner(data: widget.data, provider: value),
                 duration: transitionDuration,
                 reverseDuration: transitionDuration,
                 childCurrent: widget));

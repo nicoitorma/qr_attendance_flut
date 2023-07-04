@@ -7,7 +7,7 @@ class AttendanceListProvider extends BaseProvider {
   DateTime? _day;
   getAttendanceListForDay(DateTime day) async {
     _day = day;
-    attendanceList = await getAllAttendance(day);
+    list = await getAllAttendance(day);
     notifyListeners();
   }
 

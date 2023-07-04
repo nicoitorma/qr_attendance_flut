@@ -13,10 +13,10 @@ class OnlineContentListRepo extends ChangeNotifier {
         .get();
 
     final data = jsonDoc.data();
-    print(data);
 
     data!.forEach((key, value) {
-      if (value['code'] == 'zja5xj') {
+      if (value['code'] == 'a40w1m') {
+        print(value['code']);
         StudentInAttendance student =
             StudentInAttendance.fromDocumentSnapshot(key, value);
         dataList.add(student);

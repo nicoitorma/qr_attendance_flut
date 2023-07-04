@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Models/attendance.dart';
-
 abstract class BaseProvider extends ChangeNotifier {
-  List<AttendanceModel> attendanceList = [];
+  List list = [];
   List selectedTile = [];
   bool isLongPress = false;
 
@@ -17,23 +15,23 @@ abstract class BaseProvider extends ChangeNotifier {
     // notifyListeners();
   }
 
-  selectTile(AttendanceModel attendanceModel) {
-    selectedTile.add(attendanceModel);
+  selectTile(dynamic selected) {
+    selectedTile.add(selected);
     notifyListeners();
   }
 
-  removeItemFromSelected(AttendanceModel attendanceModel) {
-    selectedTile.remove(attendanceModel);
+  removeItemFromSelected(dynamic selected) {
+    selectedTile.remove(selected);
     // notifyListeners();
   }
 
   selectAll() {
     selectedTile.clear();
-    if (selectedTile.length == attendanceList.length) {
+    if (selectedTile.length == list.length) {
       return;
     } else {
-      for (int i = 0; i < attendanceList.length; i++) {
-        selectedTile.add(attendanceList[i]);
+      for (int i = 0; i < list.length; i++) {
+        selectedTile.add(list[i]);
       }
     }
     notifyListeners();
