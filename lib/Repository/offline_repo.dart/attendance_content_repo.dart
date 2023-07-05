@@ -50,7 +50,7 @@ class AttendanceContentRepo {
   ///
   /// Returns:
   ///   The method is returning the result of the `db.insert` operation, which is a Future<int>.
-  nsertAttendanceContent(StudentInAttendance studentInAttendance) async {
+  insertAttendanceContent(StudentInAttendance studentInAttendance) async {
     final db = await AppDatabase().initializeDB();
     try {
       return await db.insert('studentAdded_table', studentInAttendance.toMap(),
