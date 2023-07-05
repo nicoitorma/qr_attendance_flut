@@ -37,17 +37,6 @@ class _QrScannerState extends State<QrScanner> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   if (isOnlineMode()) {
-  //     provider = Provider.of<OnlineAttendanceContentsProv>(context);
-  //   } else {
-  //     provider = Provider.of<AttendanceContentProvider>(context);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,11 +89,33 @@ class _QrScannerState extends State<QrScanner> {
         bool isLate = false;
         List words = scanData.code!.split('&');
 
-        if (isOnlineMode()) {
-          print(widget.provider.runtimeType);
-        } else {
-          print(widget.provider.runtimeType);
+        /// The code block is checking if the `cutoffTimeAndDate` property of the `widget.data` object
+        /// is not null. If it is not null, it then checks if the current time (`time`) is after the
+        /// cutoff time specified by `widget.data.cutoffTimeAndDate`. If the current time is indeed
+        /// after the cutoff time, it sets the `isLate` variable to `true`. This logic is used to
+        /// determine if a student is late for attendance based on the cutoff time.
+        if (widget.data.cutoffTimeAndDate != 'null') {
+          if (timeScanned.isAfter(DateFormat(labelFullDtFormat)
+              .parse(widget.data.cutoffTimeAndDate!))) {
+            isLate = true;
+          }
+        }
 
+        if (isOnlineMode()) {
+          print('ONLINE MODE');
+          setState(() {
+            widget.provider!.insertToAttendance(StudentInAttendance(
+                idNum: words[0],
+                fullname: words[1],
+                dept: words[2],
+                timeAndDate: timeAndDate,
+                code: widget.data.attendanceCode,
+                isLate: isLate.toString()));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${words[1]} is added'),
+            ));
+          });
+        } else {
           /// This code is checking if a student with a specific ID number and attendance ID is already
           /// added to the attendance list. It does this by calling the `isAlreadyAdded` method from the
           /// `AttendanceContentRepo` class and passing in the student ID number and attendance ID as
@@ -115,18 +126,6 @@ class _QrScannerState extends State<QrScanner> {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('${words[1]} is already added')));
               return;
-            }
-
-            /// The code block is checking if the `cutoffTimeAndDate` property of the `widget.data` object
-            /// is not null. If it is not null, it then checks if the current time (`time`) is after the
-            /// cutoff time specified by `widget.data.cutoffTimeAndDate`. If the current time is indeed
-            /// after the cutoff time, it sets the `isLate` variable to `true`. This logic is used to
-            /// determine if a student is late for attendance based on the cutoff time.
-            if (widget.data.cutoffTimeAndDate != 'null') {
-              if (timeScanned.isAfter(DateFormat(labelFullDtFormat)
-                  .parse(widget.data.cutoffTimeAndDate!))) {
-                isLate = true;
-              }
             }
 
             setState(() {

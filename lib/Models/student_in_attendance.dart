@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class StudentInAttendance {
   int? id;
   String? idNum;
@@ -9,13 +7,17 @@ class StudentInAttendance {
   String? timeAndDate;
   String? isLate;
 
+  /// For Online DB
+  String? code;
+
   StudentInAttendance(
       {this.idNum,
       this.fullname,
       this.dept,
       this.attendanceId,
       this.timeAndDate,
-      this.isLate});
+      this.isLate,
+      this.code});
 
   StudentInAttendance.fromJson(Map<String, dynamic> item)
       : id = item['id'],
@@ -26,12 +28,12 @@ class StudentInAttendance {
         timeAndDate = item['timeAndDate'] ?? '',
         isLate = item['isLate'];
 
-  factory StudentInAttendance.fromDocumentSnapshot(String code, Map data) {
+  factory StudentInAttendance.fromDocumentSnapshot(String idNum, Map data) {
     return StudentInAttendance(
-        idNum: code,
+        idNum: idNum,
         fullname: data['fullname'] ?? '',
         dept: data['dept'] ?? '',
-        timeAndDate: (data['timeAndDate'] as Timestamp).toString(),
+        timeAndDate: data['timeAndDate'],
         isLate: data['isLate']);
   }
 

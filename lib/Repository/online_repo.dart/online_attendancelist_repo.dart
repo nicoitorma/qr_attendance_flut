@@ -83,9 +83,12 @@ joinAttendanceInFirestore(String code) async {
 }
 
 createAttendanceInFirestore({required AttendanceModel attendanceModel}) async {
+  String attendanceCode = _generateRandomString();
   try {
+    /// This will add a new attendance to the document [attendances], it will be use to as reference for the users that
+    /// has access to the document.
     await _db.collection(labelCollection).doc(labelAttendanceDocs).update({
-      _generateRandomString(): {
+      attendanceCode: {
         'attendanceName': attendanceModel.attendanceName,
         'details': attendanceModel.details,
         'timeAndDate': DateTime.now(),
@@ -93,6 +96,10 @@ createAttendanceInFirestore({required AttendanceModel attendanceModel}) async {
         'users': [getUserEmail()]
       }
     });
+
+    /// This will create a new document in the collection where the scanned QR will be added.
+    ///
+    _db.collection(labelCollection).doc(attendanceCode).set({});
     return 'Success creating attendance';
   } catch (e) {
     debugPrint('Error creating document: $e');

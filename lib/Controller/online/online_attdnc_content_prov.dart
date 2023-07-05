@@ -1,18 +1,26 @@
 import 'package:qr_attendance_flut/Controller/base_provider.dart';
 import 'package:qr_attendance_flut/Repository/online_repo.dart/online_list_repo.dart';
 
+import '../../Models/student_in_attendance.dart';
+
 class OnlineAttendanceContentsProv extends BaseProvider {
   String idNum = '';
+  String? attendanceCode;
 
-  getAttndcContent() async {
-    list = await OnlineContentListRepo().getAllContent();
+  getAttndcContent(String code) async {
+    print('GET ATTENDANCE');
+    attendanceCode = code;
+    list = await OnlineContentListRepo().getAllContent(code);
     notifyListeners();
   }
 
-  // insertToAttendance(StudentInAttendance studentInAttendance) async {
-  //   await OnlineContentListRepo().insertAttendanceContent(studentInAttendance);
-  //   await getAtndContent(_attendanceId);
-  // }
+  insertToAttendance(StudentInAttendance studentInAttendance) async {
+    print('PROV: $attendanceCode');
+    await OnlineContentListRepo()
+        .insertToContents(attendanceCode!, studentInAttendance);
+    // getAttndcContent(attendanceCode!);
+    notifyListeners();
+  }
 
   // deleteItem() async {
   //   for (var item in selectedTile) {

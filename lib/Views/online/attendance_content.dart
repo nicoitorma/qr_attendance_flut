@@ -25,7 +25,7 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   void initState() {
     super.initState();
     prov = Provider.of<OnlineAttendanceContentsProv>(context, listen: false);
-    prov.getAttndcContent();
+    prov.getAttndcContent(widget.data.attendanceCode!);
   }
 
   @override
