@@ -9,6 +9,7 @@ import '../../Models/attendance.dart';
 import '../../utils/qr_scanner.dart';
 import '../../values/const.dart';
 import '../custom_list_tiles/attdnc_cntnt_tile.dart';
+import '../menu_app_bar.dart';
 
 class OnlineAttendanceContents extends StatefulWidget {
   final AttendanceModel data;
@@ -32,7 +33,9 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   Widget build(BuildContext context) {
     return Consumer<OnlineAttendanceContentsProv>(
       builder: ((context, value, child) => Scaffold(
-          appBar: AppBar(title: Text(widget.data.attendanceName!)),
+          appBar: (value.isLongPress)
+              ? MenuAppBar(value: value)
+              : AppBar(title: Text(widget.data.attendanceName!)),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (value.isLongPress) {
@@ -61,7 +64,29 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
                           padding: const EdgeInsets.all(5),
                           child: AttendanceContentTile(
                               data: value.list[index],
-                              color: Colors.transparent),
+                              color: (value.selectedTile
+                                      .contains(value.list[index]))
+                                  ? Colors.red
+                                  : Colors.transparent,
+                              onTap: () {
+                                if (value.isLongPress) {
+                                  if (value.selectedTile
+                                      .contains(value.list[index])) {
+                                    value.removeItemFromSelected(
+                                        value.list[index]);
+                                    if (value.selectedTile.isEmpty) {
+                                      value.setLongPress();
+                                    }
+                                  } else {
+                                    value.selectTile(value.list[index]);
+                                  }
+                                  return;
+                                }
+                              },
+                              onLongPress: () {
+                                value.setLongPress();
+                                value.selectTile(value.list[index]);
+                              }),
                         );
                       })))),
     );

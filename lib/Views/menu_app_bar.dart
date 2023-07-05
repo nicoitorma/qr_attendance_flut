@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../Controller/offline/atdnc_list_provider.dart';
 import '../Controller/online/online_attdnc_list_provider.dart';
 import '../Models/student_in_attendance.dart';
 import '../Repository/offline_repo.dart/attendance_content_repo.dart';
 import '../utils/excel_writer.dart';
+import '../utils/firebase_helper.dart';
 import '../values/strings.dart';
 
 class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -44,10 +44,16 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 child: Text(labelNo)),
                             TextButton(
                                 onPressed: () {
-                                  (value.runtimeType ==
-                                          OnlineAttendanceListProvider)
-                                      ? value.deleteItemOnFirestore()
-                                      : value.deleteItem();
+                                  if (isOnlineMode()) {
+                                    if (value.runtimeType ==
+                                        OnlineAttendanceListProvider) {
+                                      value.deleteItemOnFirestore();
+                                    } else {
+                                      value.deleteItemOnDocument();
+                                    }
+                                  } else {
+                                    value.deleteItem();
+                                  }
                                   value.setLongPress();
                                   Navigator.pop(context);
                                 },
@@ -69,50 +75,52 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
             : Container(),
 
         /// Download button
-        (value.selectedTile.length < 2)
-            ? Padding(
-                padding: const EdgeInsets.all(8),
-                child: InkWell(
-                  onTap: () async {
-                    List<String> result = [];
-                    String attendanceName = '';
-                    String details = '';
-                    List<StudentInAttendance> list = [];
+        (value.runtimeType.toString() == 'AttendanceContentProvider' ||
+                value.runtimeType.toString() == 'OnlineAttendanceContentsProv')
+            ? Container()
+            : (value.selectedTile.length < 2)
+                ? Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: InkWell(
+                      onTap: () async {
+                        List<String> result = [];
+                        String attendanceName = '';
+                        String details = '';
+                        List<StudentInAttendance> list = [];
 
-                    if (value.runtimeType == AttendanceListProvider) {
-                      attendanceName = value.selectedTile[0].attendanceName;
-                      details = value.selectedTile[0].details;
-                      list = await AttendanceContentRepo()
-                          .getAllAttendanceContent(value.selectedTile[0].id);
-                      result = await ExcelWriter.writeCustomModels(
-                          attendanceName, details, list);
+                        attendanceName = value.selectedTile[0].attendanceName;
+                        details = value.selectedTile[0].details;
+                        list = await AttendanceContentRepo()
+                            .getAllAttendanceContent(value.selectedTile[0].id);
+                        result = await ExcelWriter.writeCustomModels(
+                            attendanceName, details, list);
 
-                      // ignore: use_build_context_synchronously
-                      showDialog(
-                          context: context,
-                          builder: ((context) => AlertDialog(
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Attendance Export'),
-                                    Text(result[0])
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                            context: context,
+                            builder: ((context) => AlertDialog(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Attendance Export'),
+                                      Text(result[0])
+                                    ],
+                                  ),
+                                  content: Text(result[1]),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, false);
+                                        },
+                                        child: const Text('Close')),
                                   ],
-                                ),
-                                content: Text(result[1]),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context, false);
-                                      },
-                                      child: const Text('Close')),
-                                ],
-                              )));
-                    }
-                  },
-                  child: const Icon(Icons.save_alt_outlined),
-                ),
-              )
-            : Container()
+                                )));
+                      },
+                      child: const Icon(Icons.save_alt_outlined),
+                    ),
+                  )
+                : Container()
       ],
     );
   }

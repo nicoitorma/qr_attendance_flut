@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:excel/excel.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../Models/student_in_attendance.dart';
 
 class ExcelWriter {
+  static final _crashlytics = FirebaseCrashlytics.instance;
   static Future writeCustomModels(String attendanceName, String details,
       List<StudentInAttendance> models) async {
     // Get the external storage directory
@@ -18,7 +20,7 @@ class ExcelWriter {
     }
 
     if (downloadsDirectory == null) {
-      print('Failed to access storage directory.');
+      _crashlytics.log('XLS WRITER: DOWNLOAD DIRECTORY NOT FOUND');
       return;
     }
 
@@ -57,6 +59,7 @@ class ExcelWriter {
       result.add('Success');
       result.add('$attendanceName is saved on Downloads folder.');
     } catch (err) {
+      _crashlytics.log('XLS WRITER: ${err.toString()}');
       result.add('Failed');
       result.add(err.toString());
     }

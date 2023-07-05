@@ -102,7 +102,6 @@ class _QrScannerState extends State<QrScanner> {
         }
 
         if (isOnlineMode()) {
-          print('ONLINE MODE');
           setState(() {
             widget.provider!.insertToAttendance(StudentInAttendance(
                 idNum: words[0],

@@ -42,4 +42,15 @@ class OnlineContentListRepo extends ChangeNotifier {
       _crashlytics.log('ONLINE CONT REPO: ${err.toString()}');
     }
   }
+
+  deleteOnDocument(String attendanceCode, String idNum) async {
+    try {
+      final document = _db.collection(labelCollection).doc(attendanceCode);
+
+      // Delete the `name` field from the document
+      await document.update({idNum: FieldValue.delete()});
+    } catch (err) {
+      _crashlytics.log('ONLINE CONT REPO: ${err.toString()}');
+    }
+  }
 }

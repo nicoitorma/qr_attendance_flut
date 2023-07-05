@@ -8,7 +8,6 @@ class OnlineAttendanceContentsProv extends BaseProvider {
   String? attendanceCode;
 
   getAttndcContent(String code) async {
-    print('GET ATTENDANCE');
     attendanceCode = code;
     list = await OnlineContentListRepo().getAllContent(code);
     notifyListeners();
@@ -21,26 +20,13 @@ class OnlineAttendanceContentsProv extends BaseProvider {
     notifyListeners();
   }
 
-  // deleteItem() async {
-  //   for (var item in selectedTile) {
-  //     await OnlineContentListRepo().deleteFromAttendance(item.id!);
-  //   }
-  //   selectedTile.clear();
-  //   await getAtndContent(_attendanceId);
-  //   notifyListeners();
-  // }
-
-  /// A function that will select all the item in the attendance _list
-  @override
-  selectAll() {
-    selectedTile.clear();
-    if (selectedTile.length == list.length) {
-      return;
-    } else {
-      for (int i = 0; i < list.length; i++) {
-        selectedTile.add(list[i]);
-      }
+  deleteItemOnDocument() async {
+    for (var item in selectedTile) {
+      await OnlineContentListRepo()
+          .deleteOnDocument(attendanceCode!, item.idNum);
     }
+    selectedTile.clear();
+    await getAttndcContent(attendanceCode!);
     notifyListeners();
   }
 }

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
@@ -20,21 +19,25 @@ String _generateRandomString() {
 
 convertDocsFromFirestore() async {
   List<AttendanceModel> dataList = [];
-  final jsonDoc = await FirebaseFirestore.instance
-      .collection(labelCollection)
-      .doc(labelAttendanceDocs)
-      .get();
+  try {
+    final jsonDoc = await FirebaseFirestore.instance
+        .collection(labelCollection)
+        .doc(labelAttendanceDocs)
+        .get();
 
-  final data = jsonDoc.data();
+    final data = jsonDoc.data();
 
-  data!.forEach((key, value) {
-    if (value['users'].contains(getUserEmail())) {
-      AttendanceModel attendance =
-          AttendanceModel.fromDocumentSnapshot(key, value);
-      dataList.add(attendance);
-    }
-  });
-  return dataList;
+    data!.forEach((key, value) {
+      if (value['users'].contains(getUserEmail())) {
+        AttendanceModel attendance =
+            AttendanceModel.fromDocumentSnapshot(key, value);
+        dataList.add(attendance);
+      }
+    });
+    return dataList;
+  } catch (err) {
+    _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
+  }
 }
 
 deleteField(String code) async {
@@ -43,9 +46,8 @@ deleteField(String code) async {
         .collection(labelCollection)
         .doc(labelAttendanceDocs)
         .update({code: FieldValue.delete()});
-    print('Field deleted successfully.');
   } catch (err) {
-    print('Error deleting field: $err');
+    _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
   }
 }
 
@@ -63,7 +65,7 @@ removeUser(String code) async {
       await document.update(data);
     }
   } catch (err) {
-    debugPrint('Error: $err');
+    _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
   }
 }
 
