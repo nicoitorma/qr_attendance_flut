@@ -14,3 +14,11 @@ isOnlineMode() {
   }
   return false;
 }
+
+getUserName() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    return user.displayName.toString();
+  }
+  return '';
+}

@@ -26,6 +26,7 @@ String labelCreateQr = 'CREATE QR';
 String labelQrCodes = 'QR Codes';
 
 /// Drawer
+String labelProfile = 'Profile';
 String labelHelp = 'Help';
 String labelPrivPol = 'Privacy Policy';
 String labelAbout = 'About';

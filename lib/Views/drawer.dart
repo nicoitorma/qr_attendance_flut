@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Views/help_screen.dart';
+import 'package:qr_attendance_flut/Views/profile_screen.dart';
+import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
+
+import 'about_screen.dart';
 
 Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
@@ -11,7 +16,25 @@ Widget drawer(var context) => Drawer(
           'assets/images/dev.png',
           height: 130,
         ),
+        (getUserName() == 'null')
+            ? Container()
+            : Text(
+                getUserName(),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+              ),
         const Divider(thickness: 3),
+        ListTile(
+          selectedColor: Colors.grey,
+          textColor: Colors.white,
+          iconColor: Colors.white,
+          title: Text(labelProfile),
+          leading: const Icon(Icons.person_2_outlined),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CustomProfileScreen()));
+          },
+        ),
         ListTile(
           selectedColor: Colors.grey,
           textColor: Colors.white,
@@ -20,6 +43,8 @@ Widget drawer(var context) => Drawer(
           leading: const Icon(Icons.help_outline_rounded),
           onTap: () {
             Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const HelpScreen()));
           },
         ),
         ListTile(
@@ -40,6 +65,8 @@ Widget drawer(var context) => Drawer(
           leading: const Icon(Icons.info_outline_rounded),
           onTap: () {
             Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const AboutScreen()));
           },
         ),
         FirebaseAuth.instance.currentUser != null

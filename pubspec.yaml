@@ -56,6 +56,7 @@ dependencies:
   excel: ^2.1.0
   path_provider:
   downloads_path_provider_28: ^0.1.2
+  flutter_widget_from_html_core: ^0.10.2
 
 dev_dependencies:
   flutter_test:

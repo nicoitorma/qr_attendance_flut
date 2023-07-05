@@ -24,6 +24,7 @@ class _QrScannerState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   bool isFlashOn = false;
+  Color borderColor = Colors.blue;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -60,14 +61,17 @@ class _QrScannerState extends State<QrScanner> {
         ],
       ),
       body: InkWell(
-        onTap: () => controller?.resumeCamera(),
+        onTap: () {
+          controller?.resumeCamera();
+          setState(() => borderColor = Colors.blue);
+        },
         child: QRView(
           key: qrKey,
           onQRViewCreated: _onQRViewCreated,
           overlay: QrScannerOverlayShape(
               borderRadius: 10,
-              borderColor: Colors.blue,
-              borderWidth: 5,
+              borderColor: borderColor,
+              borderWidth: 10,
               cutOutSize: MediaQuery.of(context).size.width * .8),
         ),
       ),
@@ -79,6 +83,18 @@ class _QrScannerState extends State<QrScanner> {
     controller.scannedDataStream.listen((scanData) {
       if (scanData.code != null) {
         this.controller!.pauseCamera();
+
+        /// This code block checks if the scanned QR code contains the character "&". If it does not
+        /// contain "&", it means that the QR code is not supported and a snackbar is shown with the
+        /// message "QR Code not supported". The return statement is used to exit the method and prevent
+        /// further processing of the QR code.
+        if (!RegExp('&').hasMatch(scanData.code!)) {
+          setState(() => borderColor = Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('QR Code not supported'),
+          ));
+          return;
+        }
 
         /// To be used in the timeAndDate the QR Scanned
         String timeAndDate =
@@ -103,6 +119,7 @@ class _QrScannerState extends State<QrScanner> {
 
         if (isOnlineMode()) {
           setState(() {
+            borderColor = Colors.green;
             widget.provider!.insertToAttendance(StudentInAttendance(
                 idNum: words[0],
                 fullname: words[1],
