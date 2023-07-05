@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
@@ -8,6 +9,7 @@ import 'package:qr_attendance_flut/values/strings.dart';
 import '../../Models/attendance.dart';
 
 final _db = FirebaseFirestore.instance;
+final _crashlytics = FirebaseCrashlytics.instance;
 
 String _generateRandomString() {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -76,9 +78,8 @@ joinAttendanceInFirestore(String code) async {
       innerMap.add(getUserEmail());
       await document.update(data);
     }
-    print('Success joining attendance');
   } catch (err) {
-    debugPrint('Error: $err');
+    _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
   }
 }
 
@@ -100,8 +101,7 @@ createAttendanceInFirestore({required AttendanceModel attendanceModel}) async {
     /// This will create a new document in the collection where the scanned QR will be added.
     ///
     _db.collection(labelCollection).doc(attendanceCode).set({});
-    return 'Success creating attendance';
-  } catch (e) {
-    debugPrint('Error creating document: $e');
+  } catch (err) {
+    _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
   }
 }

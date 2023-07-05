@@ -5,6 +5,7 @@ import '../../database/database.dart';
 
 getAllQr() async {
   final db = await AppDatabase().initializeDB();
+
   final List<Map<String, Object?>> queryResult = await db.query('qr_table');
   return queryResult.map((e) => QrModel.fromJson(e)).toList();
 }

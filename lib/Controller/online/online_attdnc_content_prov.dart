@@ -15,10 +15,9 @@ class OnlineAttendanceContentsProv extends BaseProvider {
   }
 
   insertToAttendance(StudentInAttendance studentInAttendance) async {
-    print('PROV: $attendanceCode');
     await OnlineContentListRepo()
         .insertToContents(attendanceCode!, studentInAttendance);
-    // getAttndcContent(attendanceCode!);
+    getAttndcContent(attendanceCode!);
     notifyListeners();
   }
 
