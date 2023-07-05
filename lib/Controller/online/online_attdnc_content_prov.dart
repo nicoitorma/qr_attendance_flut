@@ -1,22 +1,32 @@
 import 'package:qr_attendance_flut/Controller/base_provider.dart';
 import 'package:qr_attendance_flut/Repository/online_repo.dart/online_list_repo.dart';
+import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 
 import '../../Models/student_in_attendance.dart';
 
 class OnlineAttendanceContentsProv extends BaseProvider {
   String idNum = '';
   String? attendanceCode;
+  String? user;
 
-  getAttndcContent(String code) async {
+  getAttndcContent(String user, String code) async {
     attendanceCode = code;
-    list = await OnlineContentListRepo().getAllContent(code);
+    this.user = user;
+    if (user == getUserEmail()) {
+      /// The user is not admin
+      list = await OnlineContentListRepo().getAllContentForAdmin(code);
+    } else {
+      /// The user is admin
+      list = await OnlineContentListRepo().getAllContent(user, code);
+    }
+
     notifyListeners();
   }
 
   insertToAttendance(StudentInAttendance studentInAttendance) async {
     await OnlineContentListRepo()
         .insertToContents(attendanceCode!, studentInAttendance);
-    getAttndcContent(attendanceCode!);
+    getAttndcContent(user!, attendanceCode!);
     notifyListeners();
   }
 
@@ -26,7 +36,7 @@ class OnlineAttendanceContentsProv extends BaseProvider {
           .deleteOnDocument(attendanceCode!, item.idNum);
     }
     selectedTile.clear();
-    await getAttndcContent(attendanceCode!);
+    await getAttndcContent(user!, attendanceCode!);
     notifyListeners();
   }
 }

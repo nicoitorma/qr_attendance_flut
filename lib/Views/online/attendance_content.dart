@@ -26,7 +26,7 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   void initState() {
     super.initState();
     prov = Provider.of<OnlineAttendanceContentsProv>(context, listen: false);
-    prov.getAttndcContent(widget.data.attendanceCode!);
+    prov.getAttndcContent(widget.data.user!, widget.data.attendanceCode!);
   }
 
   @override
@@ -35,7 +35,17 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
       builder: ((context, value, child) => Scaffold(
           appBar: (value.isLongPress)
               ? MenuAppBar(value: value)
-              : AppBar(title: Text(widget.data.attendanceName!)),
+              : AppBar(
+                  title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.data.attendanceName!),
+                    (widget.data.cutoffTimeAndDate == 'null')
+                        ? Container()
+                        : Text('$labelCutoff${widget.data.cutoffTimeAndDate} ',
+                            style: subtitleStyle)
+                  ],
+                )),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (value.isLongPress) {

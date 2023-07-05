@@ -19,7 +19,6 @@ class AttendanceContents extends StatefulWidget {
 }
 
 class _AttendanceContentsState extends State<AttendanceContents> {
-  TextStyle appBarSubtitleStyle = const TextStyle(fontSize: 16);
   late dynamic prov;
 
   @override
@@ -50,7 +49,7 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                   (widget.data.cutoffTimeAndDate == 'null')
                       ? Container()
                       : Text('$labelCutoff${widget.data.cutoffTimeAndDate} ',
-                          style: appBarSubtitleStyle)
+                          style: subtitleStyle)
                 ],
               )),
 

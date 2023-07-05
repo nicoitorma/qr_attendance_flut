@@ -10,6 +10,9 @@ class StudentInAttendance {
   /// For Online DB
   String? code;
 
+  /// The user is the one who scanned the QR
+  String? scanner;
+
   StudentInAttendance(
       {this.idNum,
       this.fullname,
@@ -17,7 +20,8 @@ class StudentInAttendance {
       this.attendanceId,
       this.timeAndDate,
       this.isLate,
-      this.code});
+      this.code,
+      this.scanner});
 
   StudentInAttendance.fromJson(Map<String, dynamic> item)
       : id = item['id'],
