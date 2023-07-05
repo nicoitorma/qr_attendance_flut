@@ -8,7 +8,7 @@ class OnlineAttendanceListProvider extends BaseProvider {
   /// This function fetches attendance data from an online repository and adds it to a list if the user's
   /// email is included in the data.
   getAttendance() async {
-    list = await convertDocsFromFirestore();
+    list = await getDocsContent();
     notifyListeners();
   }
 

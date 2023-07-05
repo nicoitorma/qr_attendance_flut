@@ -17,7 +17,7 @@ String _generateRandomString() {
   return String.fromCharCodes(codeUnits.map((unit) => chars.codeUnitAt(unit)));
 }
 
-convertDocsFromFirestore() async {
+getDocsContent() async {
   List<AttendanceModel> dataList = [];
   try {
     final jsonDoc = await FirebaseFirestore.instance
@@ -40,17 +40,29 @@ convertDocsFromFirestore() async {
   }
 }
 
+/// The function `deleteField` deletes a field from a document in a Firestore collection and also
+/// deletes the document itself.
+///
+/// Args:
+///   code (String): The "code" parameter in the "deleteField" function is a string that represents the
+/// code or identifier of the field that needs to be deleted.
 deleteField(String code) async {
   try {
     await _db
         .collection(labelCollection)
         .doc(labelAttendanceDocs)
         .update({code: FieldValue.delete()});
+    _db.collection(labelCollection).doc(code).delete();
   } catch (err) {
     _crashlytics.log('ONLINE ATTLIST REPO: ${err.toString()}');
   }
 }
 
+/// The function removes a user from a list of users in a document in a Firestore database.
+///
+/// Args:
+///   code (String): The `code` parameter is a string that represents a code used to identify a specific
+/// entry in the database.
 removeUser(String code) async {
   final document = _db.collection(labelCollection).doc(labelAttendanceDocs);
 
@@ -69,6 +81,12 @@ removeUser(String code) async {
   }
 }
 
+/// The function `joinAttendanceInFirestore` updates the `users` field in a Firestore document with the
+/// provided `code` if the user's email is not already present in the list.
+///
+/// Args:
+///   code (String): The `code` parameter is a string that represents a code used to identify a specific
+/// attendance record in Firestore.
 joinAttendanceInFirestore(String code) async {
   try {
     final document = _db.collection(labelCollection).doc(labelAttendanceDocs);
