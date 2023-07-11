@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Repository/online_repo.dart/online_content_list_repo.dart';
 
 import '../Controller/online/online_attdnc_list_provider.dart';
 import '../Models/student_in_attendance.dart';
@@ -84,18 +85,21 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: InkWell(
                       onTap: () async {
                         List<String> result = [];
-                        String attendanceName = '';
-                        String details = '';
+                        String attendanceName =
+                            value.selectedTile[0].attendanceName;
+                        String details = value.selectedTile[0].details;
                         List<StudentInAttendance> list = [];
+                        if (isOnlineMode()) {
+                          list = await getContentsInOnline(
+                              value.selectedTile[0].attendanceCode);
+                        } else {
+                          list = await getContentsInLocal();
+                        }
 
-                        attendanceName = value.selectedTile[0].attendanceName;
-                        details = value.selectedTile[0].details;
-                        list = await AttendanceContentRepo()
-                            .getAllAttendanceContent(value.selectedTile[0].id);
                         result = await ExcelWriter.writeCustomModels(
                             attendanceName, details, list);
 
-                        // ignore: use_build_context_synchronously
+                        //ignore: use_build_context_synchronously
                         showDialog(
                             context: context,
                             builder: ((context) => AlertDialog(
@@ -111,6 +115,8 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   actions: [
                                     TextButton(
                                         onPressed: () {
+                                          value.setLongPress();
+                                          value.clearSelectedItems();
                                           Navigator.pop(context, false);
                                         },
                                         child: const Text('Close')),
@@ -123,5 +129,21 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                 : Container()
       ],
     );
+  }
+
+  getContentsInOnline(code) async {
+    String user = value.selectedTile[0].user;
+    if (value.selectedTile[0].user == getUserEmail()) {
+      return await OnlineContentListRepo().getAllContentForAdmin(code);
+    } else {
+      return await OnlineContentListRepo().getAllContent(user, code);
+    }
+    // return await OnlineAttendanceContentsProv()
+    // .getAttndcContent(getUserEmail(), code);
+  }
+
+  getContentsInLocal() async {
+    return await AttendanceContentRepo()
+        .getAllAttendanceContent(value.selectedTile[0].id);
   }
 }

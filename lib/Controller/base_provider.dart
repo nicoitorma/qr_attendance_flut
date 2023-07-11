@@ -12,6 +12,7 @@ abstract class BaseProvider extends ChangeNotifier {
 
   clearSelectedItems() {
     selectedTile.clear();
+    notifyListeners();
   }
 
   selectTile(dynamic selected) {

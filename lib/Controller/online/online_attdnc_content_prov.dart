@@ -1,5 +1,5 @@
 import 'package:qr_attendance_flut/Controller/base_provider.dart';
-import 'package:qr_attendance_flut/Repository/online_repo.dart/online_list_repo.dart';
+import 'package:qr_attendance_flut/Repository/online_repo.dart/online_content_list_repo.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 
 import '../../Models/student_in_attendance.dart';
@@ -12,11 +12,12 @@ class OnlineAttendanceContentsProv extends BaseProvider {
   getAttndcContent(String user, String code) async {
     attendanceCode = code;
     this.user = user;
+
     if (user == getUserEmail()) {
-      /// The user is not admin
+      /// The user is the creator of attendance
       list = await OnlineContentListRepo().getAllContentForAdmin(code);
     } else {
-      /// The user is admin
+      /// The user is not the creator
       list = await OnlineContentListRepo().getAllContent(user, code);
     }
 

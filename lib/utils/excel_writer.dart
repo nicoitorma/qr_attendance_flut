@@ -9,6 +9,8 @@ import '../Models/student_in_attendance.dart';
 
 class ExcelWriter {
   static final _crashlytics = FirebaseCrashlytics.instance;
+  static Excel? excel;
+  static Sheet? sheet;
   static Future writeCustomModels(String attendanceName, String details,
       List<StudentInAttendance> models) async {
     // Get the external storage directory
@@ -30,31 +32,32 @@ class ExcelWriter {
     await Directory(downloadsPath).create(recursive: true);
 
     // Create a new Excel workbook
-    var excel = Excel.createExcel();
+    excel = Excel.createExcel();
 
     // Create a new sheet
-    var sheet = excel['Sheet1'];
+    sheet = excel?['Sheet1'];
 
-    // Add header row
-    sheet.appendRow([
-      'ID Number',
-      'Name',
-      'Department',
-      'Date and Time Scanned',
-    ]);
+    setHeaderRow();
 
     // Add custom model data to the sheet
     for (var model in models) {
-      sheet.appendRow(
+      sheet?.appendRow(
           [model.idNum, model.fullname, model.dept, model.timeAndDate]);
+
+      if (model.isLate == 'true') {
+        // Set the cell color to red
+        sheet
+            ?.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 3))
+            .cellStyle = CellStyle(backgroundColorHex: '#ed344a');
+      }
     }
 
     // Save the workbook to the specified file path
     var filePath =
-        '${downloadsDirectory.path}/QRAttendance/$attendanceName ($details).xlsx';
+        '${downloadsDirectory.path}/QRAttendance/Attendance/$attendanceName ($details).xlsx';
     List<String> result = [];
     try {
-      var fileBytes = excel.save();
+      var fileBytes = excel?.save();
       File(filePath).writeAsBytesSync(fileBytes!);
       result.add('Success');
       result.add('$attendanceName is saved on Downloads folder.');
@@ -65,5 +68,36 @@ class ExcelWriter {
     }
 
     return result;
+  }
+
+  static setHeaderRow() {
+    CellStyle cellStyle = CellStyle(
+        backgroundColorHex: '#34a8eb',
+        textWrapping: TextWrapping.Clip,
+        horizontalAlign: HorizontalAlign.Center,
+        verticalAlign: VerticalAlign.Center);
+
+    sheet?.setColWidth(0, 15);
+    sheet?.setColWidth(1, 35);
+    sheet?.setColWidth(2, 15);
+    sheet?.setColWidth(3, 25);
+
+    // Add header row
+    sheet?.appendRow([
+      'ID Number',
+      'Name',
+      'Department',
+      'Date and Time Scanned',
+    ]);
+
+    List cells = [];
+    cells.add(sheet?.cell(CellIndex.indexByString('A1')));
+    cells.add(sheet?.cell(CellIndex.indexByString('B1')));
+    cells.add(sheet?.cell(CellIndex.indexByString('C1')));
+    cells.add(sheet?.cell(CellIndex.indexByString('D1')));
+
+    for (var cell in cells) {
+      cell.cellStyle = cellStyle;
+    }
   }
 }

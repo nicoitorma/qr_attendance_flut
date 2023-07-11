@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_flut/Views/help_screen.dart';
-import 'package:qr_attendance_flut/Views/profile_screen.dart';
+import 'package:qr_attendance_flut/Views/sidebar_screen/profile_screen.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-import 'about_screen.dart';
+import 'sidebar_screen/about_screen.dart';
+import 'sidebar_screen/help_screen.dart';
 
 Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
