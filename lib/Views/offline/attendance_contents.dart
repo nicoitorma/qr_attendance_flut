@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Views/custom_list_tiles/attdnc_cntnt_tile.dart';
+import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Controller/offline/atdnc_content_provider.dart';
 import '../../Models/attendance.dart';
 import '../../utils/qr_scanner.dart';
 import '../../values/const.dart';
+import '../instantiable_widget.dart';
 import '../menu_app_bar.dart';
 
 class AttendanceContents extends StatefulWidget {
@@ -20,10 +23,12 @@ class AttendanceContents extends StatefulWidget {
 
 class _AttendanceContentsState extends State<AttendanceContents> {
   late dynamic prov;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    _bannerAd = AdHelper.createBannerAd();
 
     /// This code is using the `Provider` package to get an instance of the `AttendanceContentProvider`
     /// class and calling its `getAtndContent` method with the `id` property of the `widget.data` object
@@ -52,6 +57,8 @@ class _AttendanceContentsState extends State<AttendanceContents> {
                           style: subtitleStyle)
                 ],
               )),
+        bottomNavigationBar:
+            (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
 
         /// This code block is creating a floating action button with an icon of a QR code scanner. When
         /// the button is pressed, it checks if the `isLongPress` variable is true, and if so, it sets it

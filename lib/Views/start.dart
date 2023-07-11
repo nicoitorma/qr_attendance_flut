@@ -4,6 +4,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:qr_attendance_flut/Views/instantiable_widget.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
+import '../utils/ad_helper.dart';
+
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
 
@@ -17,7 +19,7 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    //_bannerAd = AdHelper.createBannerAd();
+    _bannerAd = AdHelper.createBannerAd();
   }
 
   @override

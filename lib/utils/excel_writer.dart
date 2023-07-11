@@ -38,7 +38,7 @@ class ExcelWriter {
     sheet = excel?['Sheet1'];
 
     setHeaderRow();
-
+    int row = 1;
     // Add custom model data to the sheet
     for (var model in models) {
       sheet?.appendRow(
@@ -47,9 +47,10 @@ class ExcelWriter {
       if (model.isLate == 'true') {
         // Set the cell color to red
         sheet
-            ?.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 3))
+            ?.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row))
             .cellStyle = CellStyle(backgroundColorHex: '#ed344a');
       }
+      row += 1;
     }
 
     // Save the workbook to the specified file path

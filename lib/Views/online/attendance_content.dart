@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/online/online_attdnc_content_prov.dart';
 import 'package:qr_attendance_flut/Views/online/widget.dart';
+import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Models/attendance.dart';
 import '../../utils/qr_scanner.dart';
 import '../../values/const.dart';
 import '../custom_list_tiles/attdnc_cntnt_tile.dart';
+import '../instantiable_widget.dart';
 import '../menu_app_bar.dart';
 
 class OnlineAttendanceContents extends StatefulWidget {
@@ -22,9 +25,11 @@ class OnlineAttendanceContents extends StatefulWidget {
 
 class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   late OnlineAttendanceContentsProv prov;
+  BannerAd? _bannerAd;
   @override
   void initState() {
     super.initState();
+    _bannerAd = AdHelper.createBannerAd();
     prov = Provider.of<OnlineAttendanceContentsProv>(context, listen: false);
     prov.getAttndcContent(widget.data.user!, widget.data.attendanceCode!);
   }
@@ -46,6 +51,8 @@ class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
                             style: subtitleStyle)
                   ],
                 )),
+          bottomNavigationBar:
+              (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (value.isLongPress) {

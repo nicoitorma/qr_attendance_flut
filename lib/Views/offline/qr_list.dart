@@ -6,6 +6,7 @@ import 'package:qr_attendance_flut/values/strings.dart';
 
 import '../../Controller/offline/qr_list_provider.dart';
 import '../../Models/qr_code.dart';
+import '../../utils/ad_helper.dart';
 import '../../values/const.dart';
 import '../instantiable_widget.dart';
 import '../menu_app_bar.dart';
@@ -27,7 +28,7 @@ class _QrCodeListState extends State<QrCodeList> {
   @override
   void initState() {
     super.initState();
-    //_bannerAd = AdHelper.createBannerAd();
+    _bannerAd = AdHelper.createBannerAd();
     final provider = Provider.of<QrListProvider>(context, listen: false);
     provider.getQrList();
   }
@@ -46,7 +47,7 @@ class _QrCodeListState extends State<QrCodeList> {
     return Consumer<QrListProvider>(
       builder: (context, value, child) => Scaffold(
         bottomNavigationBar:
-            (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(height: 0),
+            (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
         appBar: (value.isLongPress)
             ? MenuAppBar(value: value)
             : AppBar(title: Text(labelQrCodes)),

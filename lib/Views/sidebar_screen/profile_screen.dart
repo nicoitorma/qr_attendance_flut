@@ -1,16 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 
-class CustomProfileScreen extends StatelessWidget {
+import '../instantiable_widget.dart';
+
+class CustomProfileScreen extends StatefulWidget {
   const CustomProfileScreen({super.key});
+
+  @override
+  State<CustomProfileScreen> createState() => _CustomProfileScreenState();
+}
+
+class _CustomProfileScreenState extends State<CustomProfileScreen> {
+  BannerAd? _bannerAd;
+
+  @override
+  void initState() {
+    super.initState();
+    _bannerAd = AdHelper.createBannerAd();
+  }
 
   @override
   Widget build(BuildContext context) {
     final auth = FirebaseAuth.instance;
 
-    Future<bool> _reauthenticate(BuildContext context) {
+    Future<bool> reauthenticate(BuildContext context) {
       return showReauthenticateDialog(
         context: context,
         providers: [EmailAuthProvider()],
@@ -21,6 +38,8 @@ class CustomProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(labelProfile)),
+      bottomNavigationBar:
+          (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -43,7 +62,7 @@ class CustomProfileScreen extends StatelessWidget {
               DeleteAccountButton(
                 auth: auth,
                 onSignInRequired: () {
-                  return _reauthenticate(context);
+                  return reauthenticate(context);
                 },
               ),
             ],

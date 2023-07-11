@@ -32,6 +32,7 @@ class _AttendanceListState extends State<AttendanceList> {
   @override
   void initState() {
     super.initState();
+
     final dbContent =
         Provider.of<AttendanceListProvider>(context, listen: false);
     dbContent.getAttendanceListForDay(_focusedDay);

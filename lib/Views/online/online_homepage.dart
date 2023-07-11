@@ -7,9 +7,11 @@ import 'package:qr_attendance_flut/Views/drawer.dart';
 import 'package:qr_attendance_flut/Views/online/attendance_content.dart';
 import 'package:qr_attendance_flut/Views/online/widget.dart';
 
+import '../../utils/ad_helper.dart';
 import '../../values/const.dart';
 import '../../values/strings.dart';
 import '../custom_list_tiles/attendance_tile.dart';
+import '../instantiable_widget.dart';
 import '../menu_app_bar.dart';
 import '../offline/attendance_list/widgets.dart';
 import 'join_attendance.dart';
@@ -29,7 +31,7 @@ class _OnlineHomepageState extends State<OnlineHomepage> {
     super.initState();
 
     // TODO: DO not forget to load ads;
-    //_bannerAd = AdHelper.createBannerAd();
+    _bannerAd = AdHelper.createBannerAd();
   }
 
   @override
@@ -47,6 +49,8 @@ class _OnlineHomepageState extends State<OnlineHomepage> {
         builder: (context, value, child) => SafeArea(
                 child: Scaffold(
               drawer: drawer(context),
+              bottomNavigationBar:
+                  (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
               appBar: (value.isLongPress)
                   ? MenuAppBar(value: value)
                   : AppBar(title: Text(labelAttendanceList)),
