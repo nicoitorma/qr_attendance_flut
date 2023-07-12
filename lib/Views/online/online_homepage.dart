@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/online/online_attdnc_list_provider.dart';
 import 'package:qr_attendance_flut/Views/drawer.dart';
 import 'package:qr_attendance_flut/Views/online/attendance_content.dart';
-import 'package:qr_attendance_flut/Views/online/widget.dart';
+import 'package:qr_attendance_flut/Views/online/network_widget.dart';
 
 import '../../utils/ad_helper.dart';
 import '../../values/const.dart';

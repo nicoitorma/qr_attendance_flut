@@ -24,8 +24,7 @@ void saveQRCodeToStorage(
 
   // Generate QR code widget
   final qrCode = QrCode.fromData(
-      data: '${idNum}&${name}&${dept}',
-      errorCorrectLevel: QrErrorCorrectLevel.L);
+      data: '$idNum&$name&$dept', errorCorrectLevel: QrErrorCorrectLevel.L);
 
   final painter = QrPainter.withQr(
     qr: qrCode,
@@ -35,11 +34,11 @@ void saveQRCodeToStorage(
     embeddedImage: null,
   );
   final picData = await painter.toImageData(2048, format: ImageByteFormat.png);
-  await writeToFile(picData!, downloadsPath + '/${idNum}.png');
+  await writeToFile(picData!, '$downloadsPath/$idNum.png');
 
   // Show a snackbar to let the user know that the image was saved.
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+    const SnackBar(
       content: Text('QR code saved to phone storage'),
     ),
   );

@@ -3,7 +3,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_attendance_flut/Controller/online/online_attdnc_content_prov.dart';
-import 'package:qr_attendance_flut/Views/online/widget.dart';
+import 'package:qr_attendance_flut/Views/online/network_widget.dart';
 import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 

@@ -47,6 +47,7 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const UserAvatar(),
+              Center(child: Text('${auth.currentUser?.email}')),
               const SizedBox(
                 height: 15.0,
               ),

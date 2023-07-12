@@ -26,7 +26,7 @@ class ExcelWriter {
       return;
     }
 
-    String downloadsPath = '${downloadsDirectory.path}/QRAttendance';
+    String downloadsPath = '${downloadsDirectory.path}/QRAttendance/Attendance';
 
     // Create the directory if it doesn't exist
     await Directory(downloadsPath).create(recursive: true);
@@ -54,8 +54,9 @@ class ExcelWriter {
     }
 
     // Save the workbook to the specified file path
-    var filePath =
-        '${downloadsDirectory.path}/QRAttendance/Attendance/$attendanceName ($details).xlsx';
+    var filePath = details == ''
+        ? '${downloadsDirectory.path}/QRAttendance/Attendance/$attendanceName.xlsx'
+        : '${downloadsDirectory.path}/QRAttendance/Attendance/$attendanceName ($details).xlsx';
     List<String> result = [];
     try {
       var fileBytes = excel?.save();

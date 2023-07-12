@@ -14,6 +14,7 @@ class NetworkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var network = Provider.of<ConnectionStatus>(context);
+    print(network);
 
     if (network == ConnectionStatus.wifi ||
         network == ConnectionStatus.mobileData) {

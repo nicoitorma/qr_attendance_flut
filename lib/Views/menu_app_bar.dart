@@ -67,66 +67,68 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
 
         /// Select all button
-        (value.list.length > 1)
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                    onTap: () => value.selectAll(),
-                    child: const Icon(Icons.select_all_outlined)),
-              )
-            : Container(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+              onTap: () => value.selectAll(),
+              child: const Icon(Icons.select_all_outlined)),
+        ),
 
         /// Download button
         (value.runtimeType.toString() == 'AttendanceContentProvider' ||
                 value.runtimeType.toString() == 'OnlineAttendanceContentsProv')
             ? Container()
-            : (value.selectedTile.length < 2)
-                ? Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: InkWell(
-                      onTap: () async {
-                        if (value.runtimeType.toString() ==
-                                'AttendanceListProvider' ||
-                            value.runtimeType.toString() ==
-                                'OnlineAttendanceListProvider') {
-                          inAttendanceScreen(context);
-                        } else if (value.runtimeType.toString() ==
-                            'QrListProvider') {
-                          inQrScreen(context);
-                        }
-                      },
-                      child: const Icon(Icons.save_alt_outlined),
-                    ),
-                  )
-                : Container()
+            : Padding(
+                padding: const EdgeInsets.all(8),
+                child: InkWell(
+                  onTap: () async {
+                    if (value.runtimeType.toString() ==
+                            'AttendanceListProvider' ||
+                        value.runtimeType.toString() ==
+                            'OnlineAttendanceListProvider') {
+                      inAttendanceScreen(context);
+                    } else if (value.runtimeType.toString() ==
+                        'QrListProvider') {
+                      inQrScreen(context);
+                    }
+                  },
+                  child: const Icon(Icons.save_alt_outlined),
+                ),
+              )
+        // : Container()
       ],
     );
   }
 
   inAttendanceScreen(var context) async {
     List<String> result = [];
-    String attendanceName = value.selectedTile[0].attendanceName;
-    String details = value.selectedTile[0].details;
-    List<StudentInAttendance> list = [];
-    if (isOnlineMode()) {
-      list = await getContentsInOnline(value.selectedTile[0].attendanceCode);
-    } else {
-      list = await getContentsInLocal();
+    for (int i = 0; i < value.selectedTile.length; ++i) {
+      String attendanceName = value.selectedTile[i].attendanceName;
+      String details = value.selectedTile[i].details;
+      List<StudentInAttendance> list = [];
+      if (isOnlineMode()) {
+        list = await getContentsInOnline(value.selectedTile[i].attendanceCode);
+      } else {
+        list = await getContentsInLocal();
+      }
+
+      result =
+          await ExcelWriter.writeCustomModels(attendanceName, details, list);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Column(
+        children: [Text(result[0]), Text(result[1])],
+      )));
     }
-
-    result = await ExcelWriter.writeCustomModels(attendanceName, details, list);
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Column(
-      children: [Text('Attendance Export'), Text(result[0]), Text(result[1])],
-    )));
   }
 
   inQrScreen(var context) async {
-    String name = value.selectedTile[0].fullname;
-    String idNum = value.selectedTile[0].idNum;
-    String dept = value.selectedTile[0].dept;
-    saveQRCodeToStorage(context, value, name, idNum, dept);
+    for (int i = 0; i < value.selectedTile.length; ++i) {
+      String name = value.selectedTile[i].fullname;
+      String idNum = value.selectedTile[i].idNum;
+      String dept = value.selectedTile[i].dept;
+      saveQRCodeToStorage(context, value, name, idNum, dept);
+    }
   }
 
   getContentsInOnline(code) async {

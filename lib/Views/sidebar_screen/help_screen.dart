@@ -38,8 +38,11 @@ class _HelpScreenState extends State<HelpScreen> {
             <p>2. Only the attendance administrator will have access to the full attendance contents, including the list of attendees who have scanned the QR code.</p>
             <p>3. Other participants will only see the QR code that they have scanned. This ensures privacy and prevents unauthorized access to attendance records.</p>
             
+            <h2>Scanning QR Code:</h2>
+            <p>The scanner's border will initially be <a style="color:#0f9af7">blue</a>. It will change to <a style="color:#3ca832">green</a> once a valid QR Code is scanned, and turn <a style="color:#ed344a">red</a> if the QR Code format does not conform to the expected format. See <i><b>QR Codes</b></i> below for more information.
+
             <h2>Exporting Attendance:</h2>
-            <p>The contents of the attendance can be exported to an <b>Excel file</b>. The exported excel file can be found in the Downloads then in the <b>"Attendances"</b> folder of the phone's storage.</p> 
+            <p>The contents of the attendance can be exported to an <b>Excel file</b>. The exported excel file can be found in the Downloads then in the <b>"Attendance"</b> folder of the phone's storage.</p> 
             <p>Scanned QR codes which are past the set Cutoff time in the attendance would have a <a style="background-color: #ed344a; color:#FFFFFF">red</a> background color in its Date and Time Scanned field in the excel file.</p>
             <b>For online attendances:</b>
             <p>The administrator of the attendance can export the entire contents of the attendance, but participants can only export the QR codes they scanned.</p>

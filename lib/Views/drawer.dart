@@ -18,7 +18,7 @@ Widget drawer(var context) => Drawer(
           height: 130,
         ),
         (getUserName() == 'null')
-            ? Text('')
+            ? const Text('')
             : Text(
                 getUserName(),
                 style: const TextStyle(fontSize: 15, color: Colors.white),
