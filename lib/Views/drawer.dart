@@ -18,24 +18,26 @@ Widget drawer(var context) => Drawer(
           height: 130,
         ),
         (getUserName() == 'null')
-            ? Container()
+            ? Text('')
             : Text(
                 getUserName(),
                 style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
         const Divider(thickness: 3),
-        ListTile(
-          selectedColor: Colors.grey,
-          textColor: Colors.white,
-          iconColor: Colors.white,
-          title: Text(labelProfile),
-          leading: const Icon(Icons.person_2_outlined),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const CustomProfileScreen()));
-          },
-        ),
+        isOnlineMode()
+            ? ListTile(
+                selectedColor: Colors.grey,
+                textColor: Colors.white,
+                iconColor: Colors.white,
+                title: Text(labelProfile),
+                leading: const Icon(Icons.person_2_outlined),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const CustomProfileScreen()));
+                },
+              )
+            : Container(),
         ListTile(
           selectedColor: Colors.grey,
           textColor: Colors.white,

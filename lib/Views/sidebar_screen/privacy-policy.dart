@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -10,6 +11,7 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
+  FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               },
               onPageStarted: (String url) {},
               onPageFinished: (String url) {},
-              onWebResourceError: (WebResourceError error) {},
+              onWebResourceError: (WebResourceError err) {
+                _crashlytics.log('PRIVPOL: ${err.toString()}');
+              },
               onNavigationRequest: (NavigationRequest request) {
                 if (request.url.startsWith('https://www.youtube.com/')) {
                   return NavigationDecision.prevent;

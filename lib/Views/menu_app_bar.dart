@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/Repository/online_repo.dart/online_content_list_repo.dart';
+import 'package:qr_attendance_flut/utils/qr_saver.dart';
 
 import '../Controller/online/online_attdnc_list_provider.dart';
 import '../Models/student_in_attendance.dart';
@@ -84,44 +85,15 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                     padding: const EdgeInsets.all(8),
                     child: InkWell(
                       onTap: () async {
-                        List<String> result = [];
-                        String attendanceName =
-                            value.selectedTile[0].attendanceName;
-                        String details = value.selectedTile[0].details;
-                        List<StudentInAttendance> list = [];
-                        if (isOnlineMode()) {
-                          list = await getContentsInOnline(
-                              value.selectedTile[0].attendanceCode);
-                        } else {
-                          list = await getContentsInLocal();
+                        if (value.runtimeType.toString() ==
+                                'AttendanceListProvider' ||
+                            value.runtimeType.toString() ==
+                                'OnlineAttendanceListProvider') {
+                          inAttendanceScreen(context);
+                        } else if (value.runtimeType.toString() ==
+                            'QrListProvider') {
+                          inQrScreen(context);
                         }
-
-                        result = await ExcelWriter.writeCustomModels(
-                            attendanceName, details, list);
-
-                        //ignore: use_build_context_synchronously
-                        showDialog(
-                            context: context,
-                            builder: ((context) => AlertDialog(
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Attendance Export'),
-                                      Text(result[0])
-                                    ],
-                                  ),
-                                  content: Text(result[1]),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          value.setLongPress();
-                                          value.clearSelectedItems();
-                                          Navigator.pop(context, false);
-                                        },
-                                        child: const Text('Close')),
-                                  ],
-                                )));
                       },
                       child: const Icon(Icons.save_alt_outlined),
                     ),
@@ -129,6 +101,32 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                 : Container()
       ],
     );
+  }
+
+  inAttendanceScreen(var context) async {
+    List<String> result = [];
+    String attendanceName = value.selectedTile[0].attendanceName;
+    String details = value.selectedTile[0].details;
+    List<StudentInAttendance> list = [];
+    if (isOnlineMode()) {
+      list = await getContentsInOnline(value.selectedTile[0].attendanceCode);
+    } else {
+      list = await getContentsInLocal();
+    }
+
+    result = await ExcelWriter.writeCustomModels(attendanceName, details, list);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Column(
+      children: [Text('Attendance Export'), Text(result[0]), Text(result[1])],
+    )));
+  }
+
+  inQrScreen(var context) async {
+    String name = value.selectedTile[0].fullname;
+    String idNum = value.selectedTile[0].idNum;
+    String dept = value.selectedTile[0].dept;
+    saveQRCodeToStorage(context, value, name, idNum, dept);
   }
 
   getContentsInOnline(code) async {
