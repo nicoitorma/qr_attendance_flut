@@ -17,7 +17,6 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       body: WebViewWidget(
         controller: WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..setBackgroundColor(const Color(0x00000000))
           ..setNavigationDelegate(
             NavigationDelegate(
               onProgress: (int progress) {
@@ -34,8 +33,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               },
             ),
           )
-          ..loadRequest(Uri.parse(
-              'https://github.com/nicoitorma/QR_Attendance/blob/master/PrivacyPolicy.md')),
+          ..loadRequest(Uri.parse('https://rentry.co/qr-privacy-policy/raw')),
       ),
     );
   }
