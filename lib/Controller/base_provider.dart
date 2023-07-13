@@ -17,10 +17,12 @@ abstract class BaseProvider extends ChangeNotifier {
 
   selectTile(dynamic selected) {
     selectedTile.add(selected);
+    notifyListeners();
   }
 
   removeItemFromSelected(dynamic selected) {
     selectedTile.remove(selected);
+    notifyListeners();
   }
 
   selectAll() {

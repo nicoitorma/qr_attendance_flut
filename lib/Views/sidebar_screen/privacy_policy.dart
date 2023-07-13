@@ -11,7 +11,7 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-  FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
+  final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+final _crashlytics = FirebaseCrashlytics.instance;
 void saveQRCodeToStorage(
     var context, var value, String name, String idNum, String dept) async {
   // Get the path to the directory where we want to save the image.
@@ -17,8 +19,12 @@ void saveQRCodeToStorage(
     downloadsDirectory = await getApplicationDocumentsDirectory();
   }
 
-  String downloadsPath = '${downloadsDirectory!.path}/QRAttendance/QRCodes';
+  if (downloadsDirectory == null) {
+    _crashlytics.log('QR Codes: DOWNLOAD DIRECTORY NOT FOUND');
+    return;
+  }
 
+  String downloadsPath = '${downloadsDirectory.path}/QRAttendance/QRCodes';
   // Create the directory if it doesn't exist
   await Directory(downloadsPath).create(recursive: true);
 

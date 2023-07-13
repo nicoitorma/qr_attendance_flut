@@ -29,8 +29,6 @@ class _OnlineHomepageState extends State<OnlineHomepage> {
   @override
   void initState() {
     super.initState();
-
-    // TODO: DO not forget to load ads;
     _bannerAd = AdHelper.createBannerAd();
   }
 
