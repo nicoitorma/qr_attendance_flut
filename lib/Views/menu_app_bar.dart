@@ -128,9 +128,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
       String idNum = value.selectedTile[i].idNum;
       String dept = value.selectedTile[i].dept;
 
-      showModalBottomSheet(
-          context: context,
-          builder: (_) => QRSaver(idNum: idNum, fullname: name, dept: dept));
+      QRSaver(idNum: idNum, fullname: name, dept: dept).saveQRCodeToStorage();
     }
   }
 
