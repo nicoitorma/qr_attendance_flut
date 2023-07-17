@@ -1,7 +1,11 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:qr_attendance_flut/utils/ad_helper.dart';
 import 'package:qr_attendance_flut/values/strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../instantiable_widget.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({super.key});
@@ -12,10 +16,19 @@ class PrivacyPolicy extends StatefulWidget {
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
   final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
+  BannerAd? _bannerAd;
+  @override
+  void initState() {
+    super.initState();
+    _bannerAd = AdHelper.createBannerAd();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(labelPrivPol)),
+      bottomNavigationBar:
+          (_bannerAd != null) ? showAd(_bannerAd) : const SizedBox(),
       body: WebViewWidget(
         controller: WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -37,7 +50,10 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               },
             ),
           )
-          ..loadRequest(Uri.parse('https://rentry.co/qr-privacy-policy/raw')),
+          ..clearCache()
+          ..clearLocalStorage()
+          ..loadRequest(Uri.parse(
+              'https://nicoitorma.github.io/qr_sidebar/qr-priv-pol.html')),
       ),
     );
   }

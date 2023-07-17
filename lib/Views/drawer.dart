@@ -13,10 +13,11 @@ Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
     child: Column(
       children: [
-        Image.asset(
-          'assets/images/dev.png',
-          height: 130,
-        ),
+        UserAvatar(auth: FirebaseAuth.instance),
+        // Image.asset(
+        //   'assets/images/dev.png',
+        //   height: 130,
+        // ),
         (getUserName() == 'null')
             ? const Text('')
             : Text(
