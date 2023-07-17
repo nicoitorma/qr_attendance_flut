@@ -17,8 +17,8 @@ isOnlineMode() {
 
 getUserName() {
   User? user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    return user.displayName.toString();
+  if (user?.displayName != null) {
+    return user?.displayName.toString();
   }
   return '';
 }

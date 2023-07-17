@@ -13,17 +13,13 @@ Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
     child: Column(
       children: [
-        UserAvatar(auth: FirebaseAuth.instance),
-        // Image.asset(
-        //   'assets/images/dev.png',
-        //   height: 130,
-        // ),
-        (getUserName() == 'null')
-            ? const Text('')
-            : Text(
-                getUserName(),
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-              ),
+        const SizedBox(height: 10),
+        UserAvatar(placeholderColor: Colors.blue, auth: FirebaseAuth.instance),
+        const SizedBox(height: 8),
+        Text(
+          getUserName(),
+          style: const TextStyle(fontSize: 15, color: Colors.white),
+        ),
         const Divider(thickness: 3),
         isOnlineMode()
             ? ListTile(

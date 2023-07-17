@@ -33,6 +33,9 @@ String labelAbout = 'About';
 String labelSignout = 'Sign out';
 String labelExit = 'Exit';
 
+String labelSave = 'Save';
+String labelSaveSuccess = 'Image uploaded successfully';
+
 /// New Attendance Form
 String labelCreateAttendance = 'Create attendance';
 String labelEmptyFieldError = ' cannot be empty';
@@ -67,7 +70,7 @@ String labelOnlineMode = 'ONLINE MODE';
 String labelOnAttendance = 'Attendances';
 String labelProceed = 'Proceed';
 String msgOnlineAttendance =
-    'The attendance created in the online mode is uploaded online, an attendance code will be generated so that other people can add to the attendance.\nOnly the admin or the one who creates the attendance can edit the content.';
+    'The attendance created in the online mode is can be accessed only with internet, an attendance code will be generated so that other people can add to the attendance.\n\nOnly the admin or the one who creates the attendance can view and edit the entire contents.';
 String msgOfflineAttendance =
     'The attendance created in the offline mode is saved to the phone storage, other people or device will not be able to access it. No attendance code will be generated.';
 String msgQr = 'The QR Codes created is stored locally.';
