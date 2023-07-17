@@ -14,12 +14,16 @@ Widget drawer(var context) => Drawer(
     child: Column(
       children: [
         const SizedBox(height: 10),
-        UserAvatar(placeholderColor: Colors.blue, auth: FirebaseAuth.instance),
+        (isOnlineMode())
+            ? UserAvatar(
+                placeholderColor: Colors.blue, auth: FirebaseAuth.instance)
+            : Image.asset('assets/images/dev.png', width: 300, height: 150),
         const SizedBox(height: 8),
-        Text(
-          getUserName(),
-          style: const TextStyle(fontSize: 15, color: Colors.white),
-        ),
+        if (isOnlineMode())
+          Text(
+            getUserName(),
+            style: const TextStyle(fontSize: 15, color: Colors.white),
+          ),
         const Divider(thickness: 3),
         isOnlineMode()
             ? ListTile(
@@ -92,6 +96,6 @@ Widget drawer(var context) => Drawer(
                 onTap: () {
                   Navigator.pushReplacementNamed(context, '/start');
                 },
-              )
+              ),
       ],
     ));

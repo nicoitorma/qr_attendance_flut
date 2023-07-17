@@ -9,6 +9,7 @@ import 'package:qr_attendance_flut/Repository/offline_repo.dart/attendance_conte
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../values/const.dart';
 import '../values/strings.dart';
 
 class QrScanner extends StatefulWidget {
@@ -42,7 +43,16 @@ class _QrScannerState extends State<QrScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data.attendanceName!),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.data.attendanceName!),
+            (widget.data.cutoffTimeAndDate == 'null')
+                ? Container()
+                : Text('$labelCutoff${widget.data.cutoffTimeAndDate} ',
+                    style: subtitleStyle)
+          ],
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

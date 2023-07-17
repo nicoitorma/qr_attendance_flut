@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_attendance_flut/Repository/online_repo.dart/online_content_list_repo.dart';
 import 'package:qr_attendance_flut/utils/qr_saver.dart';
 
-import '../Controller/online/online_attdnc_list_provider.dart';
 import '../Models/student_in_attendance.dart';
 import '../Repository/offline_repo.dart/attendance_content_repo.dart';
 import '../utils/excel_writer.dart';
@@ -47,10 +46,13 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                             TextButton(
                                 onPressed: () {
                                   if (isOnlineMode()) {
-                                    if (value.runtimeType ==
-                                        OnlineAttendanceListProvider) {
+                                    if (value.runtimeType.toString() ==
+                                        'OnlineAttendanceListProvider') {
                                       value.deleteItemOnFirestore();
-                                    } else {
+                                    } else if (value.runtimeType.toString() ==
+                                        'OnlineAttendanceContentsProv') {
+                                      /// `value.deleteItemOnDocument();` is a method call that is used
+                                      /// to delete an item from a document in a Firestore database.
                                       value.deleteItemOnDocument();
                                     }
                                   } else {
