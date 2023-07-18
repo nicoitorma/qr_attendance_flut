@@ -28,7 +28,7 @@ class StudentInAttendance {
         idNum = item['idNum'] ?? '',
         fullname = item['fullname'] ?? '',
         dept = item['dept'] ?? '',
-        attendanceId = item['attendanceId'] ?? '',
+        attendanceId = item['aId'] ?? '',
         timeAndDate = item['timeAndDate'] ?? '',
         isLate = item['isLate'];
 
@@ -46,7 +46,7 @@ class StudentInAttendance {
       'idNum': idNum ?? '',
       'fullname': fullname ?? '',
       'dept': dept ?? '',
-      'attendanceId': attendanceId ?? '',
+      'aId': attendanceId ?? '',
       'timeAndDate': timeAndDate ?? '',
       'isLate': isLate!
     };

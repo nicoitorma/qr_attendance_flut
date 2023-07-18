@@ -33,7 +33,9 @@ insertAttendance(AttendanceModel attendanceModel) async {
 deleteAttendance(int id) async {
   final db = await AppDatabase().initializeDB();
   try {
-    await db.delete('attendance_table', where: 'id = ?', whereArgs: [id]);
+    await db.delete('attendance_table', where: 'aId = ?', whereArgs: [id]);
+    await db.delete('studentAdded_table', where: 'aId = ?', whereArgs: [id]);
+    await db.close();
   } catch (err) {
     _crashlytics.log('OFFLINE ATTLIST REPO: ${err.toString()}');
   }

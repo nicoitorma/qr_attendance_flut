@@ -38,7 +38,7 @@ class AttendanceModel {
   }
 
   AttendanceModel.fromJson(Map<String, dynamic> item)
-      : id = item['id'] ?? '',
+      : id = item['aId'] ?? '',
         attendanceName = item['attendanceName'] ?? '',
         details = item['details'] ?? '',
         date = DateFormat(labelDateFormat).parse(item['date']),

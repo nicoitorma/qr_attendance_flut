@@ -155,6 +155,7 @@ class _QrScannerState extends State<QrScanner> {
             }
 
             setState(() {
+              borderColor = Colors.green;
               widget.provider!.insertToAttendance(StudentInAttendance(
                   idNum: words[0],
                   fullname: words[1],

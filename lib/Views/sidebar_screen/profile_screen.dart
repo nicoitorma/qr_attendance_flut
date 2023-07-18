@@ -93,7 +93,7 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
               UserAvatar(auth: auth),
               image != null
                   ? CircleAvatar(
-                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.white,
                       backgroundImage: FileImage(image!),
                       radius: 64,
                     )

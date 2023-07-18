@@ -22,7 +22,7 @@ class AttendanceContentRepo {
     try {
       final List<Map<String, Object?>> queryResult = await db.query(
           'studentAdded_table',
-          where: 'attendanceId = ?',
+          where: 'aId = ?',
           whereArgs: [attendanceId],
           orderBy: 'id ASC');
       db.close();
@@ -36,7 +36,7 @@ class AttendanceContentRepo {
     final db = await AppDatabase().initializeDB();
 
     final result = await db.rawQuery(
-        'SELECT COUNT($idNum) FROM studentAdded_table WHERE idNum = ? AND attendanceId = ?',
+        'SELECT COUNT($idNum) FROM studentAdded_table WHERE idNum = ? AND aId = ?',
         [idNum, attendanceId]);
     int? count = Sqflite.firstIntValue(result);
     return count;
