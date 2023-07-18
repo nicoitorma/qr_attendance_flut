@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -15,7 +16,7 @@ class QRSaver {
 
   const QRSaver({this.idNum, this.fullname, this.dept});
 
-  void saveQRCodeToStorage() async {
+  saveQRCodeToStorage() async {
     // Get the path to the directory where we want to save the image.
     Directory? downloadsDirectory;
     if (Platform.isAndroid) {
@@ -39,11 +40,19 @@ class QRSaver {
     ByteData? byteData =
         await painter.toImageData(2040, format: ImageByteFormat.png);
 
-    await writeToFile(
+    final res = await writeToFile(
         byteData!.buffer.asUint8List(), '$downloadsPath/$idNum.png');
+    return res;
   }
 
-  Future<void> writeToFile(var image, String path) async {
-    await File(path).writeAsBytes(image);
+  writeToFile(var image, String path) async {
+    FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+    try {
+      await File(path).writeAsBytes(image);
+      return '$idNum is successfully saved.';
+    } catch (err) {
+      crashlytics.log('QR SAVER: $err');
+      return '$idNum failed to save: $err';
+    }
   }
 }
