@@ -31,6 +31,12 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
     _bannerAd = AdHelper.createBannerAd();
   }
 
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
   Future<void> uploadImage() async {
     if (image == null) {
       return;

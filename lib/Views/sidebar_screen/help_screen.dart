@@ -24,6 +24,12 @@ class _HelpScreenState extends State<HelpScreen> {
   }
 
   @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     WebViewController controller = WebViewController()
       ..clearCache()

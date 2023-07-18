@@ -24,6 +24,12 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   }
 
   @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(labelPrivPol)),
