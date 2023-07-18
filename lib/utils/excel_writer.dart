@@ -63,10 +63,14 @@ class ExcelWriter {
       File(filePath).writeAsBytesSync(fileBytes!);
       result.add('Success');
       result.add('$attendanceName is saved on Downloads folder.');
-    } catch (err) {
+    } on PathExistsException catch (err) {
       _crashlytics.log('XLS WRITER: ${err.toString()}');
       result.add('Failed');
-      result.add(err.toString());
+      result.add(err.osError!.message);
+    } on PathAccessException catch (err) {
+      _crashlytics.log('XLS WRITER: ${err.toString()}');
+      result.add('Failed');
+      result.add(err.osError!.message);
     }
 
     return result;

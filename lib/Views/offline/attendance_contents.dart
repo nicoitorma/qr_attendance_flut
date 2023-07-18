@@ -41,6 +41,12 @@ class _AttendanceContentsState extends State<AttendanceContents> {
   }
 
   @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<AttendanceContentProvider>(
       builder: (context, value, child) => Scaffold(

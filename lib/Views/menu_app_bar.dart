@@ -11,6 +11,7 @@ import '../values/strings.dart';
 class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   final dynamic value;
   const MenuAppBar({super.key, required this.value});
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
@@ -77,27 +78,25 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
 
         /// Download button
-        (value.runtimeType.toString() == 'AttendanceContentProvider' ||
-                value.runtimeType.toString() == 'OnlineAttendanceContentsProv')
-            ? Container()
-            : Padding(
-                padding: const EdgeInsets.all(8),
-                child: InkWell(
-                  onTap: () async {
-                    if (value.runtimeType.toString() ==
-                            'AttendanceListProvider' ||
-                        value.runtimeType.toString() ==
-                            'OnlineAttendanceListProvider') {
-                      inAttendanceScreen(context);
-                    } else if (value.runtimeType.toString() ==
-                        'QrListProvider') {
-                      inQrScreen(context);
-                    }
-                  },
-                  child: const Icon(Icons.save_alt_outlined),
-                ),
-              )
-        // : Container()
+        if (value.runtimeType.toString() == 'AttendanceContentProvider' ||
+            value.runtimeType.toString() == 'OnlineAttendanceContentsProv')
+          Container()
+        else
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: InkWell(
+              onTap: () async {
+                if (value.runtimeType.toString() == 'AttendanceListProvider' ||
+                    value.runtimeType.toString() ==
+                        'OnlineAttendanceListProvider') {
+                  inAttendanceScreen(context);
+                } else if (value.runtimeType.toString() == 'QrListProvider') {
+                  inQrScreen(context);
+                }
+              },
+              child: const Icon(Icons.save_alt_outlined),
+            ),
+          )
       ],
     );
   }

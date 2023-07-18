@@ -50,9 +50,12 @@ class QRSaver {
     try {
       await File(path).writeAsBytes(image);
       return '$idNum is successfully saved.';
-    } catch (err) {
+    } on PathAccessException catch (err) {
       crashlytics.log('QR SAVER: $err');
-      return '$idNum failed to save: $err';
+      return '$idNum failed to save: ${err.message}';
+    } on PathExistsException catch (err) {
+      crashlytics.log('QR SAVER: $err');
+      return '$idNum failed to save: ${err.message}';
     }
   }
 }

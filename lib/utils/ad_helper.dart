@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdHelper {
+  static FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
   static BannerAd? _bannerAd;
-  static int _bannerAdLoadAttemps = 0;
+  static int adLoadAttemps = 0;
   static const int maxFailedLoadAttempts = 3;
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
@@ -26,13 +27,13 @@ class AdHelper {
         request: const AdRequest(),
         listener: BannerAdListener(
           onAdLoaded: (ad) {
-            _bannerAdLoadAttemps = 0;
+            adLoadAttemps = 0;
           },
           onAdFailedToLoad: (ad, error) {
-            _bannerAdLoadAttemps += 1;
-            debugPrint('AD LOADING ERROR: $error');
+            adLoadAttemps += 1;
+            crashlytics.log('AD LOADING ERROR: $error');
             _bannerAd = null;
-            if (_bannerAdLoadAttemps < maxFailedLoadAttempts) {
+            if (adLoadAttemps < maxFailedLoadAttempts) {
               createBannerAd();
             } else {
               ad.dispose();

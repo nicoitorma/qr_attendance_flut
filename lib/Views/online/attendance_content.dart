@@ -26,12 +26,19 @@ class OnlineAttendanceContents extends StatefulWidget {
 class _OnlineAttendanceContentsState extends State<OnlineAttendanceContents> {
   late OnlineAttendanceContentsProv prov;
   BannerAd? _bannerAd;
+
   @override
   void initState() {
     super.initState();
     _bannerAd = AdHelper.createBannerAd();
     prov = Provider.of<OnlineAttendanceContentsProv>(context, listen: false);
     prov.getAttndcContent(widget.data.user!, widget.data.attendanceCode!);
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
