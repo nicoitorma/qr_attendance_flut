@@ -98,13 +98,13 @@ class _QrScannerState extends State<QrScanner> {
         // /// contain "&", it means that the QR code is not supported and a snackbar is shown with the
         // /// message "QR Code not supported". The return statement is used to exit the method and prevent
         // /// further processing of the QR code.
-        // if (!RegExp('&').hasMatch(scanData.code!)) {
-        //   setState(() => borderColor = Colors.red);
-        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //     content: Text('QR Code not supported'),
-        //   ));
-        //   return;
-        // }
+        if (!RegExp('&').hasMatch(scanData.code!)) {
+          setState(() => borderColor = Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('QR Code not supported'),
+          ));
+          return;
+        }
 
         /// To be used in the timeAndDate the QR Scanned
         String timeAndDate =

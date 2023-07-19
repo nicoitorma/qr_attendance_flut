@@ -36,7 +36,7 @@ class AttendanceContentRepo {
     final db = await AppDatabase().initializeDB();
 
     final result = await db.rawQuery(
-        'SELECT COUNT($idNum) FROM studentAdded_table WHERE idNum = ? AND aId = ?',
+        'SELECT COUNT() FROM studentAdded_table WHERE idNum = ? AND aId = ?',
         [idNum, attendanceId]);
     int? count = Sqflite.firstIntValue(result);
     return count;
