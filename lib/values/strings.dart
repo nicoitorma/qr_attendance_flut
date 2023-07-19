@@ -33,8 +33,14 @@ String labelAbout = 'About';
 String labelSignout = 'Sign out';
 String labelExit = 'Exit';
 
+// Profile
 String labelSave = 'Save';
 String labelSaveSuccess = 'Image uploaded successfully';
+String labelDeleteAccount = 'Delete account';
+String labelDeleteAccountTitle =
+    'You are about to delete your account. This is irreversible';
+String labelContinue = 'Continue';
+String labelCancel = 'Cancel';
 
 /// New Attendance Form
 String labelCreateAttendance = 'Create attendance';

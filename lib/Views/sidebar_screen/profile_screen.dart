@@ -75,15 +75,6 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
     }
   }
 
-  Future<bool> reauthenticate(BuildContext context) {
-    return showReauthenticateDialog(
-      context: context,
-      providers: [EmailAuthProvider()],
-      auth: auth,
-      onSignedIn: () => Navigator.of(context).pop(true),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +125,10 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
             SizedBox(
               height: 50,
               child: ElevatedButton(
-                  onPressed: () => auth.signOut(),
+                  onPressed: () {
+                    auth.signOut();
+                    Navigator.pushReplacementNamed(context, '/start');
+                  },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -144,11 +138,38 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
                       ])),
             ),
             const SizedBox(height: 8),
-            DeleteAccountButton(
-              auth: auth,
-              onSignInRequired: () {
-                return reauthenticate(context);
-              },
+            SizedBox(
+              height: 40,
+              child: ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.red)),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                              title: Text(labelDeleteAccount),
+                              content: Text(labelDeleteAccountTitle),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(labelCancel)),
+                                TextButton(
+                                    onPressed: () {
+                                      auth.currentUser?.delete();
+                                      Navigator.pushReplacementNamed(
+                                          context, '/start');
+                                    },
+                                    child: Text(labelContinue))
+                              ],
+                            ));
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.delete),
+                        const SizedBox(width: 8),
+                        Text(labelDeleteAccount)
+                      ])),
             ),
           ]),
         ),

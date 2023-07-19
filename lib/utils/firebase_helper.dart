@@ -22,3 +22,11 @@ getUserName() {
   }
   return '';
 }
+
+hasProfileImage() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user?.photoURL != null) {
+    return true;
+  }
+  return false;
+}

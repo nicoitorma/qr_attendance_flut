@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_flut/Views/sidebar_screen/about_screen.dart';
+import 'package:qr_attendance_flut/Views/sidebar_screen/help_screen.dart';
 import 'package:qr_attendance_flut/Views/sidebar_screen/privacy_policy.dart';
 import 'package:qr_attendance_flut/Views/sidebar_screen/profile_screen.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
-import 'package:qr_attendance_flut/values/strings.dart';
 
-import 'sidebar_screen/about_screen.dart';
-import 'sidebar_screen/help_screen.dart';
+import '../values/strings.dart';
 
 Widget drawer(var context) => Drawer(
     backgroundColor: Colors.blue,
@@ -15,8 +15,10 @@ Widget drawer(var context) => Drawer(
       children: [
         const SizedBox(height: 10),
         (isOnlineMode())
-            ? UserAvatar(
-                placeholderColor: Colors.blue, auth: FirebaseAuth.instance)
+            ? (hasProfileImage())
+                ? UserAvatar(
+                    placeholderColor: Colors.blue, auth: FirebaseAuth.instance)
+                : Image.asset('assets/images/dev.png', width: 300, height: 150)
             : Image.asset('assets/images/dev.png', width: 300, height: 150),
         const SizedBox(height: 8),
         if (isOnlineMode())
