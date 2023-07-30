@@ -8,7 +8,6 @@ import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:qr_attendance_flut/Repository/offline_repo.dart/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:torch_light/torch_light.dart';
 
 import '../values/const.dart';
 import '../values/strings.dart';
@@ -62,14 +61,14 @@ class _QrScannerState extends State<QrScanner> {
                 setState(() {
                   isFlashOn = !isFlashOn;
                 });
-                try {
-                  final isFlashAvail = await TorchLight.isTorchAvailable();
-                  if (isFlashAvail) {
-                    controller?.toggleFlash();
-                  }
-                } catch (err) {
-                  debugPrint('Torch not available');
-                }
+                // try {
+                //   final isFlashAvail = await TorchLight.isTorchAvailable();
+                //   if (isFlashAvail) {
+                controller?.toggleFlash();
+                //   }
+                // } catch (err) {
+                //   debugPrint('Torch not available');
+                // }
               },
               child: (isFlashOn)
                   ? const Icon(Icons.flash_off_outlined)
