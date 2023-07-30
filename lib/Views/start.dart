@@ -22,7 +22,7 @@ class _StartPageState extends State<StartPage> {
   void initState() {
     super.initState();
     _bannerAd = AdHelper.createBannerAd();
-    checkPermission(context);
+    // checkPermission(context);
   }
 
   @override
@@ -177,6 +177,8 @@ class _StartPageState extends State<StartPage> {
                               Navigator.pushReplacementNamed(
                                   context, '/online-homepage');
                             } else {
+                              FirebaseAuth.instance.signOut();
+
                               Navigator.pushReplacementNamed(
                                   context, '/homepage');
                             }

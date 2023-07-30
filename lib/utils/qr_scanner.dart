@@ -8,6 +8,7 @@ import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:qr_attendance_flut/Repository/offline_repo.dart/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:torch_light/torch_light.dart';
 
 import '../values/const.dart';
 import '../values/strings.dart';
@@ -57,11 +58,18 @@ class _QrScannerState extends State<QrScanner> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 setState(() {
                   isFlashOn = !isFlashOn;
                 });
-                controller?.toggleFlash();
+                try {
+                  final isFlashAvail = await TorchLight.isTorchAvailable();
+                  if (isFlashAvail) {
+                    controller?.toggleFlash();
+                  }
+                } catch (err) {
+                  debugPrint('Torch not available');
+                }
               },
               child: (isFlashOn)
                   ? const Icon(Icons.flash_off_outlined)
@@ -93,17 +101,21 @@ class _QrScannerState extends State<QrScanner> {
     controller.scannedDataStream.listen((scanData) {
       if (scanData.code != null) {
         this.controller!.pauseCamera();
+        List words = [];
 
         // /// This code block checks if the scanned QR code contains the character "&". If it does not
         // /// contain "&", it means that the QR code is not supported and a snackbar is shown with the
         // /// message "QR Code not supported". The return statement is used to exit the method and prevent
         // /// further processing of the QR code.
         if (!RegExp('&').hasMatch(scanData.code!)) {
-          setState(() => borderColor = Colors.red);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('QR Code not supported'),
-          ));
-          return;
+          // setState(() => borderColor = Colors.red);
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          //   content: Text('QR Code not supported'),
+          // ));
+          // return;
+          words.add(scanData.code);
+        } else {
+          words = scanData.code!.split('&');
         }
 
         /// To be used in the timeAndDate the QR Scanned
@@ -113,7 +125,6 @@ class _QrScannerState extends State<QrScanner> {
         /// To be used for checking the isLate
         DateTime timeScanned = DateFormat(labelFullDtFormat).parse(timeAndDate);
         bool isLate = false;
-        List words = scanData.code!.split('&');
 
         /// The code block is checking if the `cutoffTimeAndDate` property of the `widget.data` object
         /// is not null. If it is not null, it then checks if the current time (`time`) is after the
@@ -132,13 +143,13 @@ class _QrScannerState extends State<QrScanner> {
             borderColor = Colors.green;
             widget.provider!.insertToAttendance(StudentInAttendance(
                 idNum: words[0],
-                fullname: words[1],
-                dept: words[2],
+                fullname: words.length == 2 ? words[1] : '',
+                dept: words.length == 3 ? words[2] : '',
                 timeAndDate: timeAndDate,
                 code: widget.data.attendanceCode,
                 isLate: isLate.toString()));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${words[1]} is added'),
+              content: Text('${words[0]} is added'),
             ));
           });
         } else {
@@ -149,8 +160,11 @@ class _QrScannerState extends State<QrScanner> {
           AttendanceContentRepo.isAlreadyAdded(words[0], widget.data.id!)
               .then((value) {
             if (value > 0) {
+              setState(() {
+                borderColor = Colors.red;
+              });
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${words[1]} is already added')));
+                  SnackBar(content: Text('${words[0]} is already added')));
               return;
             }
 
@@ -158,13 +172,13 @@ class _QrScannerState extends State<QrScanner> {
               borderColor = Colors.green;
               widget.provider!.insertToAttendance(StudentInAttendance(
                   idNum: words[0],
-                  fullname: words[1],
-                  dept: words[2],
+                  fullname: words.length == 2 ? words[1] : '',
+                  dept: words.length == 3 ? words[2] : '',
                   timeAndDate: timeAndDate,
                   attendanceId: widget.data.id,
                   isLate: isLate.toString()));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('${words[1]} is added'),
+                content: Text('${words[0]} is added'),
               ));
             });
           });

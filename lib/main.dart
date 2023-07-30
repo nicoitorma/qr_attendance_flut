@@ -29,6 +29,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   MobileAds.instance.initialize();
 
   // Pass all uncaught "fatal" errors from the framework to Crashlytics

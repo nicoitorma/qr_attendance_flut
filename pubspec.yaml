@@ -52,12 +52,12 @@ dependencies:
   connectivity_plus:
   excel: ^2.1.0
   path_provider:
-  downloads_path_provider_28: ^0.1.2
   webview_flutter: ^4.2.2
   webview_flutter_android: ^3.9.1
   permission_handler: ^10.4.2
   image_gallery_saver: ^2.0.3
   image_picker: ^1.0.1
+  torch_light: ^1.0.0
 
 dev_dependencies:
   flutter_test:
