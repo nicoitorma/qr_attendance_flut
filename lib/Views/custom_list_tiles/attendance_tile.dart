@@ -16,64 +16,58 @@ class AttendanceTile extends CustomTile {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blue[200],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 5,
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: color, width: 2),
-            borderRadius: BorderRadius.circular(10)),
-        child: ListTile(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Column(children: [
-              Center(
-                child: Padding(
-                  padding: padding,
+        color: Colors.blue[200],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 5,
+        child: Container(
+          padding: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+              border: Border.all(color: color, width: 2),
+              borderRadius: BorderRadius.circular(10)),
+          child: InkWell(
+              onTap: onTap,
+              onLongPress: onLongPress,
+              child: Column(children: [
+                Center(
                   child: Text(
                     data.attendanceName,
                     textAlign: TextAlign.center,
                     style: titleStyle,
                   ),
                 ),
-              ),
-              (data.attendanceCode != null)
-                  ? Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text('$labelAttendanceCode${data.attendanceCode}',
-                          style: subtitleStyle),
-                    )
-                  : Container(),
-              const Divider(thickness: 2),
-            ]),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      /// Details
-                      Align(
-                          alignment: Alignment.topLeft,
-                          child: data.details == ''
-                              ? const SizedBox.shrink()
-                              : Text(
-                                  '$labelDetails: ${data.details}',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: subtitleStyle,
-                                )),
+                (data.attendanceCode != null)
+                    ? Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                            '$labelAttendanceCode${data.attendanceCode}',
+                            style: subtitleStyle),
+                      )
+                    : Container(),
+                const Divider(thickness: 2),
 
-                      /// Attendance creation time
-                      Align(
+                /// Details
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: data.details == ''
+                        ? const SizedBox.shrink()
+                        : Text(
+                            '$labelDetails: ${data.details}',
+                            overflow: TextOverflow.ellipsis,
+                            style: subtitleStyle,
+                          )),
+                const SizedBox(height: 3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: padding,
                           child: (data.date == null)
                               ? Text(
-                                  '$labelCreated${DateFormat(labelDateFormat).format(data.timeAndDate)}',
+                                  '$labelCreated${DateFormat(labelFullDtFormat).format(data.timeAndDate)}',
                                   style: subtitleStyle)
                               : Text(
                                   '$labelCreated${DateFormat(labelDateFormat).format(data.date)} ${DateFormat(labelTimeFormat).format(data.time)}',
@@ -82,26 +76,24 @@ class AttendanceTile extends CustomTile {
                                 ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12, top: 8),
+                            child: data.cutoffTimeAndDate == 'null'
+                                ? const Text('')
+                                : Text(
+                                    '$labelCutoff${data.cutoffTimeAndDate}',
+                                    style: subtitleStyle,
+                                  ),
+                          )),
+                    ),
+                  ],
                 ),
-                const Divider(),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: data.cutoffTimeAndDate == 'null'
-                            ? const Text('')
-                            : Text(
-                                '$labelCutoff${data.cutoffTimeAndDate}',
-                                style: subtitleStyle,
-                              ),
-                      )),
-                ),
-              ],
-            )),
-      ),
-    );
+              ])),
+        ));
   }
 }

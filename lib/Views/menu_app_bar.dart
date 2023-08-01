@@ -138,13 +138,11 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   getContentsInOnline(code) async {
     String user = value.selectedTile[0].user;
-    if (value.selectedTile[0].user == getUserEmail()) {
+    if (user == getUserEmail()) {
       return await OnlineContentListRepo().getAllContentForAdmin(code);
     } else {
       return await OnlineContentListRepo().getAllContent(user, code);
     }
-    // return await OnlineAttendanceContentsProv()
-    // .getAttndcContent(getUserEmail(), code);
   }
 
   getContentsInLocal() async {

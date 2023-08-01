@@ -61,14 +61,14 @@ class _QrScannerState extends State<QrScanner> {
                 setState(() {
                   isFlashOn = !isFlashOn;
                 });
-                // try {
-                //   final isFlashAvail = await TorchLight.isTorchAvailable();
-                //   if (isFlashAvail) {
-                controller?.toggleFlash();
-                //   }
-                // } catch (err) {
-                //   debugPrint('Torch not available');
-                // }
+                try {
+                  //   final isFlashAvail = await TorchLight.isTorchAvailable();
+                  //   if (isFlashAvail) {
+                  controller?.toggleFlash();
+                  //   }
+                } catch (err) {
+                  debugPrint('Torch not available');
+                }
               },
               child: (isFlashOn)
                   ? const Icon(Icons.flash_off_outlined)
@@ -142,7 +142,7 @@ class _QrScannerState extends State<QrScanner> {
             borderColor = Colors.green;
             widget.provider!.insertToAttendance(StudentInAttendance(
                 idNum: words[0],
-                fullname: words.length == 2 ? words[1] : '',
+                fullname: words.length >= 2 ? words[1] : '',
                 dept: words.length == 3 ? words[2] : '',
                 timeAndDate: timeAndDate,
                 code: widget.data.attendanceCode,
@@ -171,7 +171,7 @@ class _QrScannerState extends State<QrScanner> {
               borderColor = Colors.green;
               widget.provider!.insertToAttendance(StudentInAttendance(
                   idNum: words[0],
-                  fullname: words.length == 2 ? words[1] : '',
+                  fullname: words.length >= 2 ? words[1] : '',
                   dept: words.length == 3 ? words[2] : '',
                   timeAndDate: timeAndDate,
                   attendanceId: widget.data.id,

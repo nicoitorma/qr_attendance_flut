@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class _CustomProfileScreenState extends State<CustomProfileScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to upload image: $e')),
       );
+    } catch (err) {
+      FirebaseCrashlytics.instance.log(err.toString());
     } finally {
       setState(() {
         uploading = false;
