@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,7 +21,12 @@ class FileStorage {
     }
 
     final exPath = directory.path;
-    await Directory(exPath).create(recursive: true);
+    try {
+      await Directory(exPath).create(recursive: true);
+    } catch (err) {
+      FirebaseCrashlytics.instance.log(err.toString());
+    }
+
     return exPath;
   }
 }
