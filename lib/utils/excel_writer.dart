@@ -12,8 +12,7 @@ class ExcelWriter {
   static Sheet? sheet;
   static Future writeCustomModels(String attendanceName, String details,
       List<StudentInAttendance> models) async {
-    final path =
-        await FileStorage.getExternalDocumentPath('/QRAttendance/Attendance');
+    final path = await FileStorage.getExternalDocumentPath('QRAttendance');
 
     // Create a new Excel workbook
     excel = Excel.createExcel();

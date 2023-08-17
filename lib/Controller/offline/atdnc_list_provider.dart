@@ -6,8 +6,12 @@ import '../../Repository/offline_repo.dart/attendance_list_repo.dart';
 class AttendanceListProvider extends BaseProvider {
   DateTime? _day;
   getAttendanceListForDay(DateTime day) async {
+    List? localList = [];
     _day = day;
-    list = await getAllAttendance(day);
+    localList = await getAllAttendance(day);
+    if (localList != null) {
+      list = localList;
+    }
     notifyListeners();
   }
 

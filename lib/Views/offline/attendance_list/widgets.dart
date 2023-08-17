@@ -151,27 +151,3 @@ class _CreateAttendancePopupState extends State<CreateAttendancePopup> {
     }
   }
 }
-
-// tableCalendar({
-//   DateTime? focusedDay,
-//   CalendarFormat calendarFormat = CalendarFormat.month,
-//   DateTime? selectedDay,
-//   Function(DateTime?, DateTime?)? onDaySelected,
-//   Function(CalendarFormat)? onFormatChanged,
-// }) =>
-//     TableCalendar(
-//       firstDay: DateTime(2022, 10, 19),
-//       lastDay: DateTime(2030, 10, 19),
-//       focusedDay: focusedDay ?? DateTime.now(),
-//       selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-//       calendarFormat: calendarFormat,
-//       startingDayOfWeek: StartingDayOfWeek.monday,
-//       calendarStyle: const CalendarStyle(
-//         outsideDaysVisible: false,
-//       ),
-//       onDaySelected: onDaySelected,
-//       onFormatChanged: onFormatChanged,
-//       onPageChanged: (focusedDay) {
-//         focusedDay = focusedDay;
-//       },
-//     );

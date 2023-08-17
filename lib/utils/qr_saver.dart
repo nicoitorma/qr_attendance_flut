@@ -17,7 +17,7 @@ class QRSaver {
 
   saveQRCodeToStorage() async {
     final downloadsPath =
-        await FileStorage.getExternalDocumentPath('QRAttendance/QRCodes');
+        await FileStorage.getExternalDocumentPath('QRAttendance');
 
     final qrCode = QrCode.fromData(
         data: '$idNum&$fullname&$dept',

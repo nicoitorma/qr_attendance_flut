@@ -103,23 +103,30 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   inAttendanceScreen(var context) async {
     List<String> result = [];
-    for (int i = 0; i < value.selectedTile.length; ++i) {
+    int i = 0;
+    for (i; i < value.selectedTile.length; ++i) {
       String attendanceName = value.selectedTile[i].attendanceName;
       String details = value.selectedTile[i].details;
       List<StudentInAttendance> list = [];
       if (isOnlineMode()) {
         list = await getContentsInOnline(value.selectedTile[i].attendanceCode);
       } else {
-        list = await getContentsInLocal();
+        list = await getContentsInLocal(i);
       }
 
       result =
           await ExcelWriter.writeCustomModels(attendanceName, details, list);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Column(
-        children: [Text(result[0]), Text(result[1])],
-      )));
+      if (result.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Column(
+          children: [Text(result[0]), Text(result[1])],
+        )));
+      }
+    }
+    if (result.isNotEmpty && i == value.selectedTile.length) {
+      value.clearSelectedItems();
+      value.setLongPress();
     }
   }
 
@@ -129,10 +136,12 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
       String idNum = value.selectedTile[i].idNum;
       String dept = value.selectedTile[i].dept;
 
-      final res = await QRSaver(idNum: idNum, fullname: name, dept: dept)
+      var res = await QRSaver(idNum: idNum, fullname: name, dept: dept)
           .saveQRCodeToStorage();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(res.toString())));
+      if (res.isNotEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res.toString())));
+      }
     }
   }
 
@@ -145,8 +154,8 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
   }
 
-  getContentsInLocal() async {
+  getContentsInLocal(int index) async {
     return await AttendanceContentRepo()
-        .getAllAttendanceContent(value.selectedTile[0].id);
+        .getAllAttendanceContent(value.selectedTile[index].id);
   }
 }
