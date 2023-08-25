@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:android_path_provider/android_path_provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +16,8 @@ class FileStorage {
     Directory directory = Directory('');
     if (Platform.isAndroid) {
       // Redirects it to download folder in android
-      directory = Directory('/storage/emulated/0/Download/$dir');
+      String dlPath = await AndroidPathProvider.downloadsPath;
+      directory = Directory('$dlPath/$dir');
     } else {
       directory = await getApplicationDocumentsDirectory();
     }

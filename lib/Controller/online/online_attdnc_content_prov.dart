@@ -12,13 +12,17 @@ class OnlineAttendanceContentsProv extends BaseProvider {
   getAttndcContent(String user, String code) async {
     attendanceCode = code;
     this.user = user;
+    List? localList = [];
 
     if (user == getUserEmail()) {
       /// The user is the creator of attendance
-      list = await OnlineContentListRepo().getAllContentForAdmin(code);
+      localList = await OnlineContentListRepo().getAllContentForAdmin(code);
     } else {
       /// The user is not the creator
-      list = await OnlineContentListRepo().getAllContent(user, code);
+      localList = await OnlineContentListRepo().getAllContent(user, code);
+    }
+    if (localList != null) {
+      list = localList;
     }
 
     notifyListeners();

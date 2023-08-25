@@ -133,7 +133,7 @@ class _CreateAttendancePopupState extends State<CreateAttendancePopup> {
         /// argument, which is created using the values entered in the form fields and the `cutoffTimeAndDate`
         /// variable. If `cutoffTimeAndDate` is null, it passes the string "null" as the value for the
         /// `cutoffTimeAndDate` field of the `AttendanceModel`.
-        widget.provider.insertNewAttendance(AttendanceModel(
+        widget.provider.createAttendance(AttendanceModel(
             attendanceName: name,
             details: details,
             cutoffTimeAndDate: (cutoffTimeAndDate == null)

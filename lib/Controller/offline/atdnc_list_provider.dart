@@ -15,7 +15,7 @@ class AttendanceListProvider extends BaseProvider {
     notifyListeners();
   }
 
-  insertNewAttendance(AttendanceModel attendanceModel) async {
+  createAttendance(AttendanceModel attendanceModel) async {
     await insertAttendance(attendanceModel);
     await getAttendanceListForDay(_day!);
   }
