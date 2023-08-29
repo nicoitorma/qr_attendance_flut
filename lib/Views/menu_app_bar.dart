@@ -131,14 +131,15 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   inQrScreen(var context) async {
+    String res = '';
     for (int i = 0; i < value.selectedTile.length; ++i) {
       String name = value.selectedTile[i].fullname;
       String idNum = value.selectedTile[i].idNum;
       String dept = value.selectedTile[i].dept;
 
-      var res = await QRSaver(idNum: idNum, fullname: name, dept: dept)
+      res = await QRSaver(idNum: idNum, fullname: name, dept: dept)
           .saveQRCodeToStorage();
-      if (res.isNotEmpty) {
+      if (res != '') {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(res.toString())));
       }

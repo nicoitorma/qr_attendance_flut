@@ -8,6 +8,7 @@ import 'package:qr_attendance_flut/Models/student_in_attendance.dart';
 import 'package:qr_attendance_flut/Repository/offline_repo.dart/attendance_content_repo.dart';
 import 'package:qr_attendance_flut/utils/firebase_helper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:torch_light/torch_light.dart';
 
 import '../values/const.dart';
 import '../values/strings.dart';
@@ -62,10 +63,10 @@ class _QrScannerState extends State<QrScanner> {
                   isFlashOn = !isFlashOn;
                 });
                 try {
-                  //   final isFlashAvail = await TorchLight.isTorchAvailable();
-                  //   if (isFlashAvail) {
-                  controller?.toggleFlash();
-                  //   }
+                  final isFlashAvail = await TorchLight.isTorchAvailable();
+                  if (isFlashAvail) {
+                    controller?.toggleFlash();
+                  }
                 } catch (err) {
                   debugPrint('Torch not available');
                 }
@@ -107,12 +108,12 @@ class _QrScannerState extends State<QrScanner> {
         // /// message "QR Code not supported". The return statement is used to exit the method and prevent
         // /// further processing of the QR code.
         if (!RegExp('&').hasMatch(scanData.code!)) {
-          // setState(() => borderColor = Colors.red);
-          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          //   content: Text('QR Code not supported'),
-          // ));
-          // return;
-          words.add(scanData.code);
+          setState(() => borderColor = Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('QR Code not supported'),
+          ));
+          return;
+          // words.add(scanData.code);
         } else {
           words = scanData.code!.split('&');
         }
