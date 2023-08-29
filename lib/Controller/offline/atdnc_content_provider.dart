@@ -9,8 +9,13 @@ class AttendanceContentProvider extends BaseProvider {
   int _attendanceId = 0;
 
   getAtndContent(int attendanceId) async {
+    List? localList = [];
     _attendanceId = attendanceId;
-    list = await _attendanceContentRepo.getAllAttendanceContent(attendanceId);
+    localList =
+        await _attendanceContentRepo.getAllAttendanceContent(attendanceId);
+    if (localList != null) {
+      list = localList;
+    }
     notifyListeners();
   }
 
