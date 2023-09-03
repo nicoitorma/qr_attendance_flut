@@ -8,7 +8,6 @@ import 'package:qr_attendance_flut/Views/drawer.dart';
 import 'package:qr_attendance_flut/Views/online/attendance_content.dart';
 import 'package:qr_attendance_flut/Views/online/network_widget.dart';
 
-import '../../utils/ad_helper.dart';
 import '../../values/const.dart';
 import '../../values/strings.dart';
 import '../instantiable_widget.dart';
@@ -29,7 +28,7 @@ class _OnlineHomepageState extends State<OnlineHomepage> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = AdHelper.createBannerAd();
+    // _bannerAd = AdHelper.createBannerAd();
   }
 
   @override
